@@ -340,12 +340,12 @@ function populateFiremosTable() {
     const estadoBadgeClass = item.estado === 'firmado' ? 'success' : item.estado === 'error' ? 'error' : 'info';
 
     row.innerHTML = `
-      <td>${item.fecha}</td>
-      <td>${item.documento}</td>
-      <td><span class="badge ${estadoBadgeClass}">${estadoFirmaLabels[item.estado]}</span></td>
-      <td>${item.certificado}</td>
-      <td>${item.hash}</td>
-      <td>
+      <td data-col="fecha">${item.fecha}</td>
+      <td data-col="documento">${item.documento}</td>
+      <td data-col="estado"><span class="badge ${estadoBadgeClass}">${estadoFirmaLabels[item.estado]}</span></td>
+      <td data-col="certificado">${item.certificado}</td>
+      <td data-col="hash">${item.hash}</td>
+      <td data-col="acciones">
         <div class="table-actions">
           <button class="btn-action" onclick="showFirmaDetalle(${item.id})">Ver detalles</button>
         </div>
@@ -354,6 +354,8 @@ function populateFiremosTable() {
 
     tbody.appendChild(row);
   });
+
+  applyColumnConfig('firmas-individual');
 }
 
 function populateFirmasMasivasTable() {
@@ -374,13 +376,13 @@ function populateFirmasMasivasTable() {
     const estadoBadgeClass = item.estado === 'completada' ? 'success' : 'warning';
 
     row.innerHTML = `
-      <td>${item.id}</td>
-      <td>${item.fecha}</td>
-      <td>${item.total}</td>
-      <td><span class="badge success">${item.exitosos}</span></td>
-      <td><span class="badge error">${item.errores}</span></td>
-      <td><span class="badge ${estadoBadgeClass}">${estadoLoteLabels[item.estado]}</span></td>
-      <td>
+      <td data-col="lote">${item.id}</td>
+      <td data-col="fecha">${item.fecha}</td>
+      <td data-col="total">${item.total}</td>
+      <td data-col="exitosos"><span class="badge success">${item.exitosos}</span></td>
+      <td data-col="errores"><span class="badge error">${item.errores}</span></td>
+      <td data-col="estado"><span class="badge ${estadoBadgeClass}">${estadoLoteLabels[item.estado]}</span></td>
+      <td data-col="acciones">
         <div class="table-actions">
           <button class="btn-action" onclick="showLoteDetalle('${item.id}')">Ver lote</button>
           ${item.errores > 0 ? `<button class="btn-action" onclick="reintentarLote('${item.id}')">Reintentar</button>` : ''}
@@ -390,6 +392,8 @@ function populateFirmasMasivasTable() {
 
     tbody.appendChild(row);
   });
+
+  applyColumnConfig('firmas-masiva');
 }
 
 function populateCertificadosTable() {
@@ -412,12 +416,12 @@ function populateCertificadosTable() {
     }
 
     row.innerHTML = `
-      <td>${item.persona}</td>
-      <td><span class="badge ${resultadoBadgeClass}">${resultadoLabel}</span></td>
-      <td>${item.idCert}</td>
-      <td>${item.motivo}</td>
-      <td>${alertaCell}</td>
-      <td>
+      <td data-col="persona">${item.persona}</td>
+      <td data-col="resultado"><span class="badge ${resultadoBadgeClass}">${resultadoLabel}</span></td>
+      <td data-col="id-cert">${item.idCert}</td>
+      <td data-col="motivo">${item.motivo}</td>
+      <td data-col="alertas">${alertaCell}</td>
+      <td data-col="acciones">
         <div class="table-actions">
           <button class="btn-action" onclick="showCertificadoDetalle(${item.id})">Ver certificado</button>
         </div>
@@ -426,6 +430,8 @@ function populateCertificadosTable() {
 
     tbody.appendChild(row);
   });
+
+  applyColumnConfig('certificados');
 }
 
 function populateUsuariosTable() {
@@ -439,12 +445,12 @@ function populateUsuariosTable() {
     const row = document.createElement('tr');
 
     row.innerHTML = `
-      <td>${item.nombre}</td>
-      <td>${item.apellido}</td>
-      <td>${item.email}</td>
-      <td>${item.auth}</td>
-      <td><span class="badge info">${item.rol}</span></td>
-      <td>
+      <td data-col="nombre">${item.nombre}</td>
+      <td data-col="apellido">${item.apellido}</td>
+      <td data-col="email">${item.email}</td>
+      <td data-col="auth">${item.auth}</td>
+      <td data-col="rol"><span class="badge info">${item.rol}</span></td>
+      <td data-col="acciones">
         <div class="table-actions">
           <button class="btn-action-menu" aria-label="Más acciones para ${item.nombre} ${item.apellido}" onclick="showUserMenu(event, ${item.id})">
             <span class="icon">more_vert</span>
@@ -455,6 +461,8 @@ function populateUsuariosTable() {
 
     tbody.appendChild(row);
   });
+
+  applyColumnConfig('usuarios');
 }
 
 function populateActividadTable() {
@@ -468,12 +476,12 @@ function populateActividadTable() {
     const row = document.createElement('tr');
 
     row.innerHTML = `
-      <td>${item.usuario}</td>
-      <td>${item.fecha}</td>
-      <td>${item.ip}</td>
-      <td>${item.origen}</td>
-      <td>${item.dispositivo}</td>
-      <td>
+      <td data-col="usuario">${item.usuario}</td>
+      <td data-col="fecha">${item.fecha}</td>
+      <td data-col="ip">${item.ip}</td>
+      <td data-col="origen">${item.origen}</td>
+      <td data-col="dispositivo">${item.dispositivo}</td>
+      <td data-col="acciones">
         <div class="table-actions">
           <button class="btn-action" onclick="showActividadDetalle(${item.id})">Ver detalles</button>
         </div>
@@ -482,6 +490,8 @@ function populateActividadTable() {
 
     tbody.appendChild(row);
   });
+
+  applyColumnConfig('actividad');
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -699,20 +709,148 @@ function initFilters() {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// COLUMNAS CONFIGURABLES
+// COLUMNAS CONFIGURABLES (mostrar/ocultar y reordenar)
 // ─────────────────────────────────────────────────────────────────────
 
-function initColumnConfig() {
-  const btns = document.querySelectorAll('.btn-column-config');
+const columnConfigs = {
+  'firmas-individual': [
+    { key: 'fecha', label: 'Fecha y hora', visible: true },
+    { key: 'documento', label: 'Documento', visible: true },
+    { key: 'estado', label: 'Estado', visible: true },
+    { key: 'certificado', label: 'Certificado', visible: true },
+    { key: 'hash', label: 'Hash del documento', visible: true }
+  ],
+  'firmas-masiva': [
+    { key: 'lote', label: 'ID del lote', visible: true },
+    { key: 'fecha', label: 'Fecha de creación', visible: true },
+    { key: 'total', label: 'Total de documentos', visible: true },
+    { key: 'exitosos', label: 'Firmados', visible: true },
+    { key: 'errores', label: 'Errores', visible: true },
+    { key: 'estado', label: 'Estado general', visible: true }
+  ],
+  certificados: [
+    { key: 'persona', label: 'Persona', visible: true },
+    { key: 'resultado', label: 'Resultado', visible: true },
+    { key: 'id-cert', label: 'ID del certificado', visible: true },
+    { key: 'motivo', label: 'Motivo del error', visible: true },
+    { key: 'alertas', label: 'Alertas', visible: true }
+  ],
+  usuarios: [
+    { key: 'nombre', label: 'Nombre', visible: true },
+    { key: 'apellido', label: 'Apellido', visible: true },
+    { key: 'email', label: 'Email', visible: true },
+    { key: 'auth', label: 'Método de autenticación', visible: true },
+    { key: 'rol', label: 'Rol', visible: true }
+  ],
+  actividad: [
+    { key: 'usuario', label: 'Usuario', visible: true },
+    { key: 'fecha', label: 'Fecha y hora', visible: true },
+    { key: 'ip', label: 'IP', visible: true },
+    { key: 'origen', label: 'Origen', visible: true },
+    { key: 'dispositivo', label: 'Dispositivo', visible: true }
+  ]
+};
 
-  btns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modal = document.getElementById('modal-columns');
-      if (modal) {
-        modal.style.display = 'flex';
+const columnConfigTableSelectors = {
+  'firmas-individual': '#tab-firmas-individual .data-table',
+  'firmas-masiva': '#tab-firmas-masiva .data-table',
+  certificados: '#section-certificados .data-table',
+  usuarios: '#section-usuarios .data-table',
+  actividad: '#section-actividad .data-table'
+};
+
+let currentColumnConfigTable = null;
+
+// Reordena y muestra/oculta las columnas de la tabla real según el
+// config guardado. "Acciones" queda siempre fija al final.
+function applyColumnConfig(tableKey) {
+  const config = columnConfigs[tableKey];
+  const table = document.querySelector(columnConfigTableSelectors[tableKey]);
+  if (!config || !table) return;
+
+  const headerRow = table.querySelector('thead tr');
+  const bodyRows = table.querySelectorAll('tbody tr');
+
+  const reorderRow = row => {
+    config.forEach(col => {
+      const cell = row.querySelector(`[data-col="${col.key}"]`);
+      if (cell) {
+        cell.style.display = col.visible ? '' : 'none';
+        row.appendChild(cell);
       }
     });
+    const acciones = row.querySelector('[data-col="acciones"]');
+    if (acciones) row.appendChild(acciones);
+  };
+
+  reorderRow(headerRow);
+  bodyRows.forEach(reorderRow);
+}
+
+function openColumnConfig(tableKey) {
+  currentColumnConfigTable = tableKey;
+  const config = columnConfigs[tableKey];
+  const list = document.getElementById('columns-config-list');
+
+  list.innerHTML = config.map(col => `
+    <div class="column-item" draggable="true" data-key="${col.key}">
+      <span class="icon drag-handle">drag_indicator</span>
+      <input type="checkbox" id="col-${tableKey}-${col.key}" ${col.visible ? 'checked' : ''}>
+      <label for="col-${tableKey}-${col.key}">${col.label}</label>
+    </div>
+  `).join('');
+
+  initColumnDragAndDrop(list);
+  document.getElementById('modal-columns').style.display = 'flex';
+}
+
+function initColumnDragAndDrop(list) {
+  let draggedItem = null;
+
+  list.querySelectorAll('.column-item').forEach(item => {
+    item.addEventListener('dragstart', () => {
+      draggedItem = item;
+      setTimeout(() => item.classList.add('dragging'), 0);
+    });
+
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      draggedItem = null;
+    });
+
+    item.addEventListener('dragover', event => {
+      event.preventDefault();
+      if (!draggedItem || draggedItem === item) return;
+      const rect = item.getBoundingClientRect();
+      const isAfter = event.clientY > rect.top + rect.height / 2;
+      list.insertBefore(draggedItem, isAfter ? item.nextSibling : item);
+    });
   });
+}
+
+function saveColumnConfig() {
+  if (!currentColumnConfigTable) return;
+
+  const items = document.querySelectorAll('#columns-config-list .column-item');
+  const previousConfig = columnConfigs[currentColumnConfigTable];
+
+  columnConfigs[currentColumnConfigTable] = Array.from(items).map(item => {
+    const key = item.dataset.key;
+    const checkbox = item.querySelector('input[type="checkbox"]');
+    const original = previousConfig.find(col => col.key === key);
+    return { ...original, visible: checkbox.checked };
+  });
+
+  applyColumnConfig(currentColumnConfigTable);
+  document.getElementById('modal-columns').style.display = 'none';
+}
+
+function initColumnConfig() {
+  document.querySelectorAll('.btn-column-config').forEach(btn => {
+    btn.addEventListener('click', () => openColumnConfig(btn.dataset.table));
+  });
+
+  document.getElementById('btn-save-columns').addEventListener('click', saveColumnConfig);
 }
 
 // ─────────────────────────────────────────────────────────────────────

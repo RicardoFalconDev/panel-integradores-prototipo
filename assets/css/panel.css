@@ -665,10 +665,16 @@ body {
   gap: 20px;
 }
 
+.modal-subtitle {
+  font-size: 14px;
+  color: var(--text-sub);
+  margin-bottom: 16px;
+}
+
 .columns-config {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   margin-bottom: 20px;
 }
 
@@ -676,6 +682,26 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-hdr);
+  border-radius: 8px;
+  background: #fff;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.column-item:hover {
+  background: var(--bg-page);
+}
+
+.column-item.dragging {
+  opacity: 0.4;
+}
+
+.column-item .drag-handle {
+  color: var(--text-ph);
+  font-size: 20px;
+  cursor: grab;
+  flex-shrink: 0;
 }
 
 .column-item input[type="checkbox"] {
@@ -683,6 +709,7 @@ body {
   height: 18px;
   cursor: pointer;
   accent-color: var(--blue);
+  flex-shrink: 0;
 }
 
 .column-item label {
