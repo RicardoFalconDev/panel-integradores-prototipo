@@ -1142,6 +1142,15 @@ body {
   margin-bottom: 20px;
 }
 
+.btn-row-stacked {
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-row-stacked > button {
+  width: 100%;
+}
+
 .column-item {
   display: flex;
   align-items: center;
