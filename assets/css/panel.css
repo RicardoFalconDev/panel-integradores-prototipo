@@ -722,7 +722,7 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════ */
-/* PANTALLAS DE DETALLE (card-wrap + card-footer "POWERED BY") */
+/* PANTALLAS DE DETALLE */
 /* ═══════════════════════════════════════════════════════════════════════ */
 
 .card-wrap {
@@ -734,39 +734,12 @@ body {
 }
 
 /* Adapta .main-card (definido en header.css con width fijo) para vivir
-   dentro de .card-wrap, sumado al card-footer con el logo. */
+   dentro de .card-wrap de un modal. Sin card-footer: los modales no
+   llevan el logo "POWERED BY". */
 .card-wrap .main-card {
   width: 100%;
-  border-radius: 12px 12px 0 0;
+  border-radius: 12px;
   overflow-y: auto;
-}
-
-.card-footer {
-  width: 100%;
-  background: var(--bg-plan);
-  border: 1px solid var(--border-card);
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-  padding: 8px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.card-footer .powered-label {
-  font-size: 10px;
-  line-height: 14px;
-  color: var(--text-main);
-  letter-spacing: 0.1px;
-  font-weight: 400;
-}
-
-.card-footer .powered-logo {
-  height: 16px;
-  width: auto;
-  display: block;
 }
 
 .detail-header {
