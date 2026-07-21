@@ -102,6 +102,7 @@ const demoData = {
       exitosos: 48,
       errores: 2,
       estado: 'con-errores',
+      certificado: 'Isaac Meneses',
       documentosConError: [
         { documento: 'Certificado_representacion.pdf', motivo: 'Certificado vencido' },
         { documento: 'Poder_general.pdf', motivo: 'El firmante no completó la validación de identidad' }
@@ -114,6 +115,7 @@ const demoData = {
       exitosos: 100,
       errores: 0,
       estado: 'completada',
+      certificado: 'María González',
       documentosConError: []
     },
     {
@@ -123,6 +125,7 @@ const demoData = {
       exitosos: 70,
       errores: 5,
       estado: 'con-errores',
+      certificado: 'Carlos López',
       documentosConError: [
         { documento: 'Recibo_haberes_01.pdf', motivo: 'Documento duplicado' },
         { documento: 'Recibo_haberes_02.pdf', motivo: 'Certificado vencido' },
@@ -365,26 +368,25 @@ function populateFirmasMasivasTable() {
   const data = demoData.firmasMasivas;
 
   const estadoLoteLabels = {
-    completada: 'Firma completada',
-    'con-errores': 'Con errores'
+    completada: 'Firmado',
+    'con-errores': 'Error en firmas'
   };
 
   data.forEach(item => {
     const row = document.createElement('tr');
 
-    const estadoBadgeClass = item.estado === 'completada' ? 'success' : 'warning';
+    const estadoBadgeClass = item.estado === 'completada' ? 'success' : 'error';
 
     row.innerHTML = `
       <td data-col="lote">${item.id}</td>
       <td data-col="fecha">${item.fecha}</td>
       <td data-col="total">${item.total}</td>
-      <td data-col="exitosos"><span class="badge success">${item.exitosos}</span></td>
-      <td data-col="errores"><span class="badge error">${item.errores}</span></td>
+      <td data-col="certificado">${item.certificado}</td>
       <td data-col="estado"><span class="badge ${estadoBadgeClass}">${estadoLoteLabels[item.estado]}</span></td>
       <td data-col="acciones">
         <div class="table-actions">
-          <button class="btn-action" onclick="showLoteDetalle('${item.id}')">Ver lote</button>
-          ${item.errores > 0 ? `<button class="btn-action" onclick="reintentarLote('${item.id}')">Reintentar</button>` : ''}
+          <button class="btn-action-pill" onclick="showLoteDetalle('${item.id}')">Mostrar detalles</button>
+          ${item.errores > 0 ? `<button class="btn-action-pill" onclick="reintentarLote('${item.id}')">Reintentar</button>` : ''}
         </div>
       </td>
     `;
@@ -701,14 +703,11 @@ function initFilters() {
 const shortMonthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 const fullMonthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-const calendarState = {
-  start: { year: 2026, month: 6, day: null },
-  end: { year: 2026, month: 6, day: null }
-};
+const calendarState = {};
 
-function populateCalendarSelectors(panelKey) {
-  const yearSelect = document.getElementById(`calendar-year-${panelKey}`);
-  const monthSelect = document.getElementById(`calendar-month-${panelKey}`);
+function populateCalendarSelectors(panelEl) {
+  const yearSelect = panelEl.querySelector('.calendar-year-select');
+  const monthSelect = panelEl.querySelector('.calendar-month-select');
   if (yearSelect.options.length === 0) {
     const currentYear = new Date().getFullYear();
     for (let year = currentYear - 3; year <= currentYear + 3; year++) {
@@ -720,11 +719,13 @@ function populateCalendarSelectors(panelKey) {
   }
 }
 
-function renderCalendarPanel(panelKey) {
-  const state = calendarState[panelKey];
-  const yearSelect = document.getElementById(`calendar-year-${panelKey}`);
-  const monthSelect = document.getElementById(`calendar-month-${panelKey}`);
-  const grid = document.getElementById(`calendar-grid-${panelKey}`);
+function renderCalendarPanel(instanceId, panelKey) {
+  const wrapEl = document.querySelector(`.toolbar-daterange-wrap[data-instance="${instanceId}"]`);
+  const panelEl = wrapEl.querySelector(`.calendar-panel[data-panel="${panelKey}"]`);
+  const state = calendarState[instanceId][panelKey];
+  const yearSelect = panelEl.querySelector('.calendar-year-select');
+  const monthSelect = panelEl.querySelector('.calendar-month-select');
+  const grid = panelEl.querySelector('.calendar-grid');
 
   yearSelect.value = state.year;
   monthSelect.value = state.month;
@@ -732,7 +733,7 @@ function renderCalendarPanel(panelKey) {
   const startWeekday = new Date(state.year, state.month, 1).getDay();
   grid.innerHTML = '';
 
-  const { start, end } = calendarState;
+  const { start, end } = calendarState[instanceId];
   let rangeStartTime = null;
   let rangeEndTime = null;
   if (start.day && end.day) {
@@ -761,37 +762,42 @@ function renderCalendarPanel(panelKey) {
       state.year = cellDate.getFullYear();
       state.month = cellDate.getMonth();
       state.day = cellDate.getDate();
-      renderCalendarPanel('start');
-      renderCalendarPanel('end');
+      renderCalendarPanel(instanceId, 'start');
+      renderCalendarPanel(instanceId, 'end');
     });
     grid.appendChild(cell);
   }
 }
 
-function initCalendarPanel(panelKey) {
-  populateCalendarSelectors(panelKey);
-  renderCalendarPanel(panelKey);
+function initCalendarPanel(instanceId, panelKey, panelEl) {
+  populateCalendarSelectors(panelEl);
+  renderCalendarPanel(instanceId, panelKey);
 
-  document.getElementById(`calendar-year-${panelKey}`).addEventListener('change', event => {
-    calendarState[panelKey].year = parseInt(event.target.value, 10);
-    renderCalendarPanel(panelKey);
+  panelEl.querySelector('.calendar-year-select').addEventListener('change', event => {
+    calendarState[instanceId][panelKey].year = parseInt(event.target.value, 10);
+    renderCalendarPanel(instanceId, panelKey);
   });
 
-  document.getElementById(`calendar-month-${panelKey}`).addEventListener('change', event => {
-    calendarState[panelKey].month = parseInt(event.target.value, 10);
-    renderCalendarPanel(panelKey);
+  panelEl.querySelector('.calendar-month-select').addEventListener('change', event => {
+    calendarState[instanceId][panelKey].month = parseInt(event.target.value, 10);
+    renderCalendarPanel(instanceId, panelKey);
   });
 }
 
-function initDateRangePicker() {
-  const btn = document.getElementById('btn-date-range');
-  const popover = document.getElementById('date-range-popover');
+function initDateRangePicker(wrapEl) {
+  const instanceId = wrapEl.dataset.instance;
+  const btn = wrapEl.querySelector('[data-daterange-trigger]');
+  const popover = wrapEl.querySelector('[data-daterange-popover]');
   if (!btn || !popover) return;
 
-  const label = document.getElementById('date-range-label');
+  const label = wrapEl.querySelector('.date-range-label');
+  calendarState[instanceId] = {
+    start: { year: 2026, month: 6, day: null },
+    end: { year: 2026, month: 6, day: null }
+  };
 
-  initCalendarPanel('start');
-  initCalendarPanel('end');
+  initCalendarPanel(instanceId, 'start', wrapEl.querySelector('.calendar-panel[data-panel="start"]'));
+  initCalendarPanel(instanceId, 'end', wrapEl.querySelector('.calendar-panel[data-panel="end"]'));
 
   btn.addEventListener('click', event => {
     event.stopPropagation();
@@ -804,16 +810,17 @@ function initDateRangePicker() {
     popover.style.display = 'none';
   });
 
-  document.getElementById('btn-swap-calendars').addEventListener('click', () => {
-    const temp = { ...calendarState.start };
-    calendarState.start = { ...calendarState.end };
-    calendarState.end = temp;
-    renderCalendarPanel('start');
-    renderCalendarPanel('end');
+  wrapEl.querySelector('[data-daterange-swap]').addEventListener('click', () => {
+    const state = calendarState[instanceId];
+    const temp = { ...state.start };
+    state.start = { ...state.end };
+    state.end = temp;
+    renderCalendarPanel(instanceId, 'start');
+    renderCalendarPanel(instanceId, 'end');
   });
 
-  document.getElementById('btn-apply-date-range').addEventListener('click', () => {
-    const { start, end } = calendarState;
+  wrapEl.querySelector('[data-daterange-apply]').addEventListener('click', () => {
+    const { start, end } = calendarState[instanceId];
     if (start.day && end.day) {
       label.textContent = `${shortMonthNames[start.month]} ${String(start.day).padStart(2, '0')} - ${shortMonthNames[end.month]} ${String(end.day).padStart(2, '0')}`;
     } else if (start.day) {
@@ -826,7 +833,7 @@ function initDateRangePicker() {
     popover.style.display = 'none';
   });
 
-  document.getElementById('btn-cancel-date-range').addEventListener('click', () => {
+  wrapEl.querySelector('[data-daterange-cancel]').addEventListener('click', () => {
     popover.style.display = 'none';
   });
 }
@@ -837,6 +844,10 @@ function initDateRangePicker() {
 
 const filterConfigs = {
   'firmas-individual': [
+    { key: 'estado', label: 'Estado', visible: true },
+    { key: 'certificado', label: 'Certificado', visible: true }
+  ],
+  'firmas-masiva': [
     { key: 'estado', label: 'Estado', visible: true },
     { key: 'certificado', label: 'Certificado', visible: true }
   ],
@@ -856,6 +867,7 @@ const filterConfigs = {
 
 const filterPanelSelectors = {
   'firmas-individual': '#tab-firmas-individual .toolbar-group',
+  'firmas-masiva': '#tab-firmas-masiva .toolbar-group',
   certificados: '#section-certificados .filters-panel',
   usuarios: '#section-usuarios .filters-panel',
   actividad: '#section-actividad .filters-panel'
@@ -918,9 +930,10 @@ function initFiltersConfig() {
 // MENÚ DE OPCIONES DEL TOOLBAR (⚙ → Filtros / Columnas)
 // ─────────────────────────────────────────────────────────────────────
 
-function initToolbarOptionsMenu() {
-  const btn = document.getElementById('btn-toolbar-options');
-  const menu = document.getElementById('toolbar-options-menu');
+function initToolbarOptionsMenu(wrapEl) {
+  const tableKey = wrapEl.dataset.instance;
+  const btn = wrapEl.querySelector('[data-gear-trigger]');
+  const menu = wrapEl.querySelector('[data-gear-menu]');
   if (!btn || !menu) return;
 
   btn.addEventListener('click', event => {
@@ -936,12 +949,12 @@ function initToolbarOptionsMenu() {
 
   menu.querySelector('[data-action="filtros"]').addEventListener('click', () => {
     menu.style.display = 'none';
-    openFilterConfig('firmas-individual');
+    openFilterConfig(tableKey);
   });
 
   menu.querySelector('[data-action="columnas"]').addEventListener('click', () => {
     menu.style.display = 'none';
-    openColumnConfig('firmas-individual');
+    openColumnConfig(tableKey);
   });
 }
 
@@ -957,12 +970,11 @@ const columnConfigs = {
     { key: 'estado', label: 'Estado', visible: true }
   ],
   'firmas-masiva': [
-    { key: 'lote', label: 'ID del lote', visible: true },
+    { key: 'lote', label: 'Nombre de sobre', visible: true },
     { key: 'fecha', label: 'Fecha de creación', visible: true },
-    { key: 'total', label: 'Total de documentos', visible: true },
-    { key: 'exitosos', label: 'Firmados', visible: true },
-    { key: 'errores', label: 'Errores', visible: true },
-    { key: 'estado', label: 'Estado general', visible: true }
+    { key: 'total', label: 'Cantidad de documentos', visible: true },
+    { key: 'certificado', label: 'Certificado', visible: true },
+    { key: 'estado', label: 'Estado', visible: true }
   ],
   certificados: [
     { key: 'persona', label: 'Persona', visible: true },
@@ -1173,8 +1185,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initFilters();
   initFiltersConfig();
-  initToolbarOptionsMenu();
-  initDateRangePicker();
+  document.querySelectorAll('.toolbar-gear-wrap').forEach(initToolbarOptionsMenu);
+  document.querySelectorAll('.toolbar-daterange-wrap').forEach(initDateRangePicker);
   initColumnConfig();
   initModals();
 

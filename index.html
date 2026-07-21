@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/buttons.css">
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/panel.css?v=15">
+  <link rel="stylesheet" href="assets/css/panel.css?v=16">
 </head>
 <body>
 
@@ -97,42 +97,42 @@
               <input type="text" placeholder="Buscar documentos" aria-label="Buscar documentos">
             </div>
             <div class="toolbar-group">
-              <div class="toolbar-daterange-wrap">
-                <button type="button" class="toolbar-pill toolbar-date-btn" id="btn-date-range">
+              <div class="toolbar-daterange-wrap" data-instance="firmas-individual">
+                <button type="button" class="toolbar-pill toolbar-date-btn" data-daterange-trigger>
                   <span class="icon">calendar_today</span>
-                  <span id="date-range-label">Seleccionar fechas</span>
+                  <span class="date-range-label">Seleccionar fechas</span>
                 </button>
-                <div class="date-range-popover" id="date-range-popover" style="display: none;">
+                <div class="date-range-popover" data-daterange-popover style="display: none;">
                   <div class="calendar-row">
-                    <div class="calendar-panel">
+                    <div class="calendar-panel" data-panel="start">
                       <div class="calendar-dropdown">
-                        <select class="calendar-year-select" id="calendar-year-start" aria-label="Año (desde)"></select>
-                        <select class="calendar-month-select" id="calendar-month-start" aria-label="Mes (desde)"></select>
+                        <select class="calendar-year-select" aria-label="Año (desde)"></select>
+                        <select class="calendar-month-select" aria-label="Mes (desde)"></select>
                       </div>
                       <div class="calendar-weekdays">
                         <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
                       </div>
-                      <div class="calendar-grid" id="calendar-grid-start"></div>
+                      <div class="calendar-grid"></div>
                     </div>
-                    <button type="button" class="calendar-swap-btn" id="btn-swap-calendars" aria-label="Intercambiar meses">
+                    <button type="button" class="calendar-swap-btn" data-daterange-swap aria-label="Intercambiar meses">
                       <span class="icon">swap_horiz</span>
                     </button>
-                    <div class="calendar-panel">
+                    <div class="calendar-panel" data-panel="end">
                       <div class="calendar-dropdown">
-                        <select class="calendar-year-select" id="calendar-year-end" aria-label="Año (hasta)"></select>
-                        <select class="calendar-month-select" id="calendar-month-end" aria-label="Mes (hasta)"></select>
+                        <select class="calendar-year-select" aria-label="Año (hasta)"></select>
+                        <select class="calendar-month-select" aria-label="Mes (hasta)"></select>
                       </div>
                       <div class="calendar-weekdays">
                         <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
                       </div>
-                      <div class="calendar-grid" id="calendar-grid-end"></div>
+                      <div class="calendar-grid"></div>
                     </div>
                   </div>
                   <div class="calendar-footer">
-                    <button type="button" class="btn-cancel-pill" id="btn-cancel-date-range">
+                    <button type="button" class="btn-cancel-pill" data-daterange-cancel>
                       <span>Cancelar</span>
                     </button>
-                    <button type="button" class="btn-accept-pill" id="btn-apply-date-range">
+                    <button type="button" class="btn-accept-pill" data-daterange-apply>
                       <span>Aceptar</span>
                     </button>
                   </div>
@@ -155,11 +155,11 @@
                   <option value="ana">Ana Rodríguez</option>
                 </select>
               </div>
-              <div class="toolbar-gear-wrap">
-                <button type="button" class="toolbar-icon-btn" id="btn-toolbar-options" aria-label="Más opciones">
+              <div class="toolbar-gear-wrap" data-instance="firmas-individual">
+                <button type="button" class="toolbar-icon-btn" data-gear-trigger aria-label="Más opciones">
                   <span class="icon">settings</span>
                 </button>
-                <div class="toolbar-options-menu" id="toolbar-options-menu" style="display: none;">
+                <div class="toolbar-options-menu" data-gear-menu style="display: none;">
                   <button type="button" class="toolbar-option-item" data-action="filtros">
                     <span class="toolbar-option-left">
                       <span class="icon">tune</span>
@@ -210,26 +210,100 @@
       <!-- TAB: FIRMA MASIVA -->
       <div class="tab-content" id="tab-firmas-masiva">
         <div class="table-wrapper">
-          <div class="table-toolbar">
-            <button class="btn-filters-toggle">
-              <span class="icon">tune</span>
-              <span>Filtros</span>
-            </button>
-            <button class="btn-column-config" data-table="firmas-masiva">
-              <span class="icon">settings</span>
-              <span>Columnas</span>
-            </button>
+          <div class="toolbar-v2">
+            <div class="toolbar-search">
+              <span class="icon">search</span>
+              <input type="text" placeholder="Buscar sobre" aria-label="Buscar sobre">
+            </div>
+            <div class="toolbar-group">
+              <div class="toolbar-daterange-wrap" data-instance="firmas-masiva">
+                <button type="button" class="toolbar-pill toolbar-date-btn" data-daterange-trigger>
+                  <span class="icon">calendar_today</span>
+                  <span class="date-range-label">Seleccionar fechas</span>
+                </button>
+                <div class="date-range-popover" data-daterange-popover style="display: none;">
+                  <div class="calendar-row">
+                    <div class="calendar-panel" data-panel="start">
+                      <div class="calendar-dropdown">
+                        <select class="calendar-year-select" aria-label="Año (desde)"></select>
+                        <select class="calendar-month-select" aria-label="Mes (desde)"></select>
+                      </div>
+                      <div class="calendar-weekdays">
+                        <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
+                      </div>
+                      <div class="calendar-grid"></div>
+                    </div>
+                    <button type="button" class="calendar-swap-btn" data-daterange-swap aria-label="Intercambiar meses">
+                      <span class="icon">swap_horiz</span>
+                    </button>
+                    <div class="calendar-panel" data-panel="end">
+                      <div class="calendar-dropdown">
+                        <select class="calendar-year-select" aria-label="Año (hasta)"></select>
+                        <select class="calendar-month-select" aria-label="Mes (hasta)"></select>
+                      </div>
+                      <div class="calendar-weekdays">
+                        <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
+                      </div>
+                      <div class="calendar-grid"></div>
+                    </div>
+                  </div>
+                  <div class="calendar-footer">
+                    <button type="button" class="btn-cancel-pill" data-daterange-cancel>
+                      <span>Cancelar</span>
+                    </button>
+                    <button type="button" class="btn-accept-pill" data-daterange-apply>
+                      <span>Aceptar</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="toolbar-filter-item" data-filter-key="estado">
+                <select class="toolbar-pill toolbar-select" aria-label="Estado">
+                  <option value="">Estado</option>
+                  <option value="completada">Firmado</option>
+                  <option value="con-errores">Error en firmas</option>
+                </select>
+              </div>
+              <div class="toolbar-filter-item" data-filter-key="certificado">
+                <select class="toolbar-pill toolbar-select" aria-label="Certificado">
+                  <option value="">Certificado</option>
+                  <option value="isaac">Isaac Meneses</option>
+                  <option value="maria">María González</option>
+                  <option value="carlos">Carlos López</option>
+                </select>
+              </div>
+              <div class="toolbar-gear-wrap" data-instance="firmas-masiva">
+                <button type="button" class="toolbar-icon-btn" data-gear-trigger aria-label="Más opciones">
+                  <span class="icon">settings</span>
+                </button>
+                <div class="toolbar-options-menu" data-gear-menu style="display: none;">
+                  <button type="button" class="toolbar-option-item" data-action="filtros">
+                    <span class="toolbar-option-left">
+                      <span class="icon">tune</span>
+                      <span>Filtros</span>
+                    </span>
+                    <span class="icon">chevron_right</span>
+                  </button>
+                  <button type="button" class="toolbar-option-item" data-action="columnas">
+                    <span class="toolbar-option-left">
+                      <span class="icon">view_column</span>
+                      <span>Columnas</span>
+                    </span>
+                    <span class="icon">chevron_right</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <table class="data-table">
             <thead>
               <tr>
-                <th data-col="lote">ID del lote</th>
+                <th data-col="lote">Nombre de sobre</th>
                 <th data-col="fecha">Fecha de creación</th>
-                <th data-col="total">Total de documentos</th>
-                <th data-col="exitosos">Firmados</th>
-                <th data-col="errores">Errores</th>
-                <th data-col="estado">Estado general</th>
+                <th data-col="total">Cantidad de documentos</th>
+                <th data-col="certificado">Certificado</th>
+                <th data-col="estado">Estado</th>
                 <th data-col="acciones">Acciones</th>
               </tr>
             </thead>
@@ -238,10 +312,15 @@
             </tbody>
           </table>
 
-          <div class="pagination">
-            <button class="btn-prev" aria-label="Página anterior"><span class="icon">chevron_left</span></button>
-            <span class="page-info">Página <strong>1</strong> de <strong>3</strong></span>
-            <button class="btn-next" aria-label="Página siguiente"><span class="icon">chevron_right</span></button>
+          <div class="pagination-v2">
+            <span class="pagination-info">1-3 de 3 resultados</span>
+            <div class="pagination-controls">
+              <button class="page-nav-btn" aria-label="Primera página" disabled><span class="icon">keyboard_double_arrow_left</span></button>
+              <button class="page-nav-btn" aria-label="Página anterior" disabled><span class="icon">chevron_left</span></button>
+              <button class="page-num-btn active">1</button>
+              <button class="page-nav-btn" aria-label="Página siguiente" disabled><span class="icon">chevron_right</span></button>
+              <button class="page-nav-btn" aria-label="Última página" disabled><span class="icon">keyboard_double_arrow_right</span></button>
+            </div>
           </div>
         </div>
       </div>
@@ -672,7 +751,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=12"></script>
+<script src="js/app.js?v=13"></script>
 
 </body>
 </html>
