@@ -4,7 +4,7 @@
     {
       "name": "panel-dev",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["http-server", "/Users/ricardofalcon/Documents/Panel integradores", "-p", "8000", "-o", "false"],
+      "runtimeArgs": ["http-server", "/Users/ricardofalcon/Documents/Panel integradores", "-p", "8000", "-o", "false", "-c-1"],
       "port": 8000
     }
   ]

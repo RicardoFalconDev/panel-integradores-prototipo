@@ -397,6 +397,10 @@ body {
   color: var(--badge-info);
 }
 
+.no-alert {
+  color: var(--text-sub);
+}
+
 /* ─── Action Buttons en Tabla ──────────────────────────────────────── */
 
 .table-actions {
@@ -612,6 +616,10 @@ body {
   padding: 12px 0;
 }
 
+.modal-transparent {
+  background: transparent;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -626,7 +634,9 @@ body {
   color: var(--text-dark);
 }
 
-.modal-close {
+/* Escopado a .modal-header para no pisar los estilos de btn-primary/btn-outline
+   en los botones "Guardar"/"Cancelar", que también usan .modal-close como hook de JS. */
+.modal-header .modal-close {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -640,7 +650,7 @@ body {
   transition: color 0.15s;
 }
 
-.modal-close:hover {
+.modal-header .modal-close:hover {
   color: var(--text-main);
 }
 

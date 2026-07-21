@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/buttons.css">
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/panel.css">
+  <link rel="stylesheet" href="assets/css/panel.css?v=2">
 </head>
 <body>
 
@@ -60,10 +60,10 @@
     <div class="panel-header-content">
       <h1 class="panel-title">Panel de Gestión</h1>
       <div class="header-actions">
-        <button class="icon-btn">
+        <button class="icon-btn" aria-label="Notificaciones">
           <span class="icon">notifications</span>
         </button>
-        <button class="icon-btn">
+        <button class="icon-btn" aria-label="Configuración">
           <span class="icon">settings</span>
         </button>
       </div>
@@ -79,13 +79,13 @@
     <section class="section active" id="section-firmas">
       <div class="section-header">
         <h2>Firmas</h2>
-        <p class="section-subtitle">Gestión de firmas digitales</p>
+        <p class="section-subtitle">Seguí el estado de cada firma digital.</p>
       </div>
 
       <!-- Tabs: Individual / Masiva -->
       <div class="tabs-container">
-        <button class="tab-btn active" data-tab="firmas-individual">Vista Individual</button>
-        <button class="tab-btn" data-tab="firmas-masiva">Firma Masiva</button>
+        <button class="tab-btn active" data-tab="firmas-individual">Vista individual</button>
+        <button class="tab-btn" data-tab="firmas-masiva">Firma masiva</button>
       </div>
 
       <!-- TAB: VISTA INDIVIDUAL -->
@@ -115,14 +115,14 @@
                 <label>Estado</label>
                 <select class="filter-input" data-filter="estado">
                   <option value="">Todos</option>
-                  <option value="exitosa">Exitosa</option>
-                  <option value="pendiente">Pendiente</option>
+                  <option value="firmado">Firmado</option>
+                  <option value="pendiente">Firma pendiente</option>
                   <option value="error">Error</option>
                 </select>
               </div>
               <div class="filter-item">
                 <label>Certificado</label>
-                <input type="text" class="filter-input" placeholder="Buscar..." data-filter="certificado">
+                <input type="text" class="filter-input" placeholder="Buscar por certificado" data-filter="certificado">
               </div>
             </div>
           </div>
@@ -130,11 +130,11 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th data-col="fecha">Fecha/Hora</th>
+                <th data-col="fecha">Fecha y hora</th>
                 <th data-col="documento">Documento</th>
                 <th data-col="estado">Estado</th>
                 <th data-col="certificado">Certificado</th>
-                <th data-col="hash">Hash del Documento</th>
+                <th data-col="hash">Hash del documento</th>
                 <th data-col="acciones">Acciones</th>
               </tr>
             </thead>
@@ -144,9 +144,9 @@
           </table>
 
           <div class="pagination">
-            <button class="btn-prev"><span class="icon">chevron_left</span></button>
+            <button class="btn-prev" aria-label="Página anterior"><span class="icon">chevron_left</span></button>
             <span class="page-info">Página <strong>1</strong> de <strong>5</strong></span>
-            <button class="btn-next"><span class="icon">chevron_right</span></button>
+            <button class="btn-next" aria-label="Página siguiente"><span class="icon">chevron_right</span></button>
           </div>
         </div>
       </div>
@@ -168,12 +168,12 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th data-col="lote">ID del Lote</th>
-                <th data-col="fecha">Fecha de Creación</th>
-                <th data-col="total">Total de Documentos</th>
-                <th data-col="exitosos">Exitosos</th>
-                <th data-col="errores">Con Error</th>
-                <th data-col="estado">Estado General</th>
+                <th data-col="lote">ID del lote</th>
+                <th data-col="fecha">Fecha de creación</th>
+                <th data-col="total">Total de documentos</th>
+                <th data-col="exitosos">Firmados</th>
+                <th data-col="errores">Errores</th>
+                <th data-col="estado">Estado general</th>
                 <th data-col="acciones">Acciones</th>
               </tr>
             </thead>
@@ -183,9 +183,9 @@
           </table>
 
           <div class="pagination">
-            <button class="btn-prev"><span class="icon">chevron_left</span></button>
+            <button class="btn-prev" aria-label="Página anterior"><span class="icon">chevron_left</span></button>
             <span class="page-info">Página <strong>1</strong> de <strong>3</strong></span>
-            <button class="btn-next"><span class="icon">chevron_right</span></button>
+            <button class="btn-next" aria-label="Página siguiente"><span class="icon">chevron_right</span></button>
           </div>
         </div>
       </div>
@@ -197,7 +197,7 @@
     <section class="section" id="section-certificados">
       <div class="section-header">
         <h2>Emisión de Certificados</h2>
-        <p class="section-subtitle">Historial de emisión y estados</p>
+        <p class="section-subtitle">Consultá el resultado de cada certificado emitido.</p>
       </div>
 
       <div class="table-wrapper">
@@ -226,8 +226,8 @@
               </select>
             </div>
             <div class="filter-item">
-              <label>Motivo de Error</label>
-              <input type="text" class="filter-input" placeholder="Buscar..." data-filter="motivo">
+              <label>Motivo del error</label>
+              <input type="text" class="filter-input" placeholder="Buscar por motivo" data-filter="motivo">
             </div>
           </div>
         </div>
@@ -237,8 +237,8 @@
             <tr>
               <th data-col="persona">Persona</th>
               <th data-col="resultado">Resultado</th>
-              <th data-col="id-cert">ID del Certificado</th>
-              <th data-col="motivo">Motivo de Error</th>
+              <th data-col="id-cert">ID del certificado</th>
+              <th data-col="motivo">Motivo del error</th>
               <th data-col="alertas">Alertas</th>
               <th data-col="acciones">Acciones</th>
             </tr>
@@ -249,9 +249,9 @@
         </table>
 
         <div class="pagination">
-          <button class="btn-prev"><span class="icon">chevron_left</span></button>
+          <button class="btn-prev" aria-label="Página anterior"><span class="icon">chevron_left</span></button>
           <span class="page-info">Página <strong>1</strong> de <strong>4</strong></span>
-          <button class="btn-next"><span class="icon">chevron_right</span></button>
+          <button class="btn-next" aria-label="Página siguiente"><span class="icon">chevron_right</span></button>
         </div>
       </div>
     </section>
@@ -262,9 +262,9 @@
     <section class="section" id="section-usuarios">
       <div class="section-header">
         <h2>Administración de Usuarios</h2>
-        <p class="section-subtitle">Gestión de miembros del equipo</p>
+        <p class="section-subtitle">Administrá quién tiene acceso al panel.</p>
         <button class="btn-primary" id="btn-invite-user" style="width: auto; margin-top: 12px;">
-          <span>+ Invitar Usuario</span>
+          <span>+ Invitar usuario</span>
         </button>
       </div>
 
@@ -294,7 +294,7 @@
               </select>
             </div>
             <div class="filter-item">
-              <label>Método de Autenticación</label>
+              <label>Método de autenticación</label>
               <select class="filter-input" data-filter="auth">
                 <option value="">Todos</option>
                 <option value="email">Email</option>
@@ -310,7 +310,7 @@
               <th data-col="nombre">Nombre</th>
               <th data-col="apellido">Apellido</th>
               <th data-col="email">Email</th>
-              <th data-col="auth">Método de Autenticación</th>
+              <th data-col="auth">Método de autenticación</th>
               <th data-col="rol">Rol</th>
               <th data-col="acciones">Acciones</th>
             </tr>
@@ -321,9 +321,9 @@
         </table>
 
         <div class="pagination">
-          <button class="btn-prev"><span class="icon">chevron_left</span></button>
+          <button class="btn-prev" aria-label="Página anterior"><span class="icon">chevron_left</span></button>
           <span class="page-info">Página <strong>1</strong> de <strong>2</strong></span>
-          <button class="btn-next"><span class="icon">chevron_right</span></button>
+          <button class="btn-next" aria-label="Página siguiente"><span class="icon">chevron_right</span></button>
         </div>
       </div>
     </section>
@@ -334,7 +334,7 @@
     <section class="section" id="section-actividad">
       <div class="section-header">
         <h2>Seguridad y Actividad</h2>
-        <p class="section-subtitle">Logs de inicio de sesión</p>
+        <p class="section-subtitle">Revisá los inicios de sesión de tu equipo.</p>
       </div>
 
       <div class="table-wrapper">
@@ -360,7 +360,7 @@
             </div>
             <div class="filter-item">
               <label>Usuario</label>
-              <input type="text" class="filter-input" placeholder="Buscar..." data-filter="usuario">
+              <input type="text" class="filter-input" placeholder="Buscar por usuario" data-filter="usuario">
             </div>
           </div>
         </div>
@@ -369,7 +369,7 @@
           <thead>
             <tr>
               <th data-col="usuario">Usuario</th>
-              <th data-col="fecha">Fecha/Hora</th>
+              <th data-col="fecha">Fecha y hora</th>
               <th data-col="ip">IP</th>
               <th data-col="origen">Origen</th>
               <th data-col="dispositivo">Dispositivo</th>
@@ -382,9 +382,9 @@
         </table>
 
         <div class="pagination">
-          <button class="btn-prev"><span class="icon">chevron_left</span></button>
+          <button class="btn-prev" aria-label="Página anterior"><span class="icon">chevron_left</span></button>
           <span class="page-info">Página <strong>1</strong> de <strong>6</strong></span>
-          <button class="btn-next"><span class="icon">chevron_right</span></button>
+          <button class="btn-next" aria-label="Página siguiente"><span class="icon">chevron_right</span></button>
         </div>
       </div>
     </section>
@@ -395,7 +395,7 @@
     <section class="section" id="section-perfil">
       <div class="section-header">
         <h2>Mi Perfil</h2>
-        <p class="section-subtitle">Información personal y permisos</p>
+        <p class="section-subtitle">Consultá tus datos y los permisos asignados.</p>
       </div>
 
       <div class="profile-card">
@@ -409,28 +409,28 @@
         </div>
 
         <div class="profile-section">
-          <h4>Información Básica</h4>
+          <h4>Información básica</h4>
           <div class="profile-field">
             <label>CUIL</label>
             <p>20-96081435-2</p>
           </div>
           <div class="profile-field">
-            <label>Correo Electrónico</label>
+            <label>Correo electrónico</label>
             <p>isacris23@gmail.com</p>
           </div>
           <div class="profile-field">
-            <label>Método de Autenticación</label>
+            <label>Método de autenticación</label>
             <p>Email + 2FA</p>
           </div>
         </div>
 
         <div class="profile-section">
-          <h4>Permisos Asignados</h4>
+          <h4>Permisos asignados</h4>
           <ul class="permissions-list">
             <li>✓ Gestionar firmas digitales</li>
-            <li>✓ Emitir certificados</li>
+            <li>✓ Emitir certificados digitales</li>
             <li>✓ Administrar usuarios</li>
-            <li>✓ Ver logs de actividad</li>
+            <li>✓ Ver historial de actividad</li>
             <li>✓ Configurar panel</li>
           </ul>
         </div>
@@ -446,24 +446,24 @@
 <div class="modal" id="modal-invite" style="display: none;">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>Invitar Usuario</h3>
-      <button class="modal-close" type="button">
+      <h3>Invitar usuario</h3>
+      <button class="modal-close" type="button" aria-label="Cerrar">
         <span class="icon">close</span>
       </button>
     </div>
     <div class="modal-body">
       <form id="form-invite-user">
         <div class="field-group">
-          <label class="field-label">Email del Usuario</label>
+          <label class="field-label">Email (obligatorio)</label>
           <div class="input-wrap">
             <input type="email" placeholder="usuario@empresa.com" required>
           </div>
         </div>
         <div class="field-group">
-          <label class="field-label">Rol</label>
+          <label class="field-label">Rol (obligatorio)</label>
           <div class="sel-wrap">
             <select class="field-select" required>
-              <option value="">Seleccionar rol...</option>
+              <option value="">Seleccionar rol</option>
               <option value="admin">Administrador</option>
               <option value="collab">Colaborador</option>
             </select>
@@ -486,8 +486,8 @@
 <div class="modal" id="modal-columns" style="display: none;">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>Configurar Columnas</h3>
-      <button class="modal-close" type="button">
+      <h3>Configurar columnas</h3>
+      <button class="modal-close" type="button" aria-label="Cerrar">
         <span class="icon">close</span>
       </button>
     </div>
@@ -495,7 +495,7 @@
       <div class="columns-config">
         <div class="column-item">
           <input type="checkbox" id="col-fecha" checked>
-          <label for="col-fecha">Fecha/Hora</label>
+          <label for="col-fecha">Fecha y hora</label>
         </div>
         <div class="column-item">
           <input type="checkbox" id="col-documento" checked>
@@ -527,7 +527,7 @@
 </div>
 
 <!-- Modal: Menu de Usuario (⋯) -->
-<div class="modal" id="modal-user-menu" style="display: none;">
+<div class="modal modal-transparent" id="modal-user-menu" style="display: none;">
   <div class="modal-content modal-actions">
     <button class="action-item">
       <span class="icon">refresh</span>
@@ -535,16 +535,16 @@
     </button>
     <button class="action-item">
       <span class="icon">key</span>
-      <span>Editar Método de Login</span>
+      <span>Editar método de inicio de sesión</span>
     </button>
     <button class="action-item danger">
       <span class="icon">lock</span>
-      <span>Bloquear Usuario</span>
+      <span>Bloquear usuario</span>
     </button>
   </div>
 </div>
 
-<script src="js/app.js"></script>
+<script src="js/app.js?v=3"></script>
 
 </body>
 </html>

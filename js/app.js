@@ -51,7 +51,7 @@ const demoData = {
       id: 1,
       fecha: '2026-07-20 14:32:15',
       documento: 'Contrato_001.pdf',
-      estado: 'exitosa',
+      estado: 'firmado',
       certificado: 'CN=Isaac Meneses',
       hash: '3a7b2c8f...'
     },
@@ -59,7 +59,7 @@ const demoData = {
       id: 2,
       fecha: '2026-07-20 13:45:20',
       documento: 'Factura_2026_001.pdf',
-      estado: 'exitosa',
+      estado: 'firmado',
       certificado: 'CN=María González',
       hash: '5d9e4a1c...'
     },
@@ -83,7 +83,7 @@ const demoData = {
       id: 5,
       fecha: '2026-07-19 15:10:30',
       documento: 'Testamento.pdf',
-      estado: 'exitosa',
+      estado: 'firmado',
       certificado: 'CN=Ana Rodríguez',
       hash: '2e4a8b5c...'
     }
@@ -96,7 +96,7 @@ const demoData = {
       total: 50,
       exitosos: 48,
       errores: 2,
-      estado: 'parcial'
+      estado: 'con-errores'
     },
     {
       id: 'LOTE-2026-002',
@@ -104,7 +104,7 @@ const demoData = {
       total: 100,
       exitosos: 100,
       errores: 0,
-      estado: 'completado'
+      estado: 'completada'
     },
     {
       id: 'LOTE-2026-003',
@@ -112,7 +112,7 @@ const demoData = {
       total: 75,
       exitosos: 70,
       errores: 5,
-      estado: 'parcial'
+      estado: 'con-errores'
     }
   ],
 
@@ -122,8 +122,8 @@ const demoData = {
       persona: 'Isaac Cristian Meneses',
       resultado: 'exito',
       idCert: 'CERT-2026-001',
-      motivo: '-',
-      alertas: 'Ninguna'
+      motivo: '—',
+      alertas: null
     },
     {
       id: 2,
@@ -131,23 +131,23 @@ const demoData = {
       resultado: 'error',
       idCert: 'CERT-2026-002',
       motivo: 'Datos inconsistentes',
-      alertas: 'Error crítico'
+      alertas: 'Alerta crítica'
     },
     {
       id: 3,
       persona: 'Carlos López',
       resultado: 'exito',
       idCert: 'CERT-2026-003',
-      motivo: '-',
-      alertas: 'Ninguna'
+      motivo: '—',
+      alertas: null
     },
     {
       id: 4,
       persona: 'Ana Rodríguez',
       resultado: 'exito',
       idCert: 'CERT-2026-004',
-      motivo: '-',
-      alertas: 'Advertencia: vencimiento en 30 días'
+      motivo: '—',
+      alertas: 'Vence en 30 días'
     }
   ],
 
@@ -307,15 +307,21 @@ function populateFiremosTable() {
   tbody.innerHTML = '';
   const data = demoData.firmasIndividuales;
 
+  const estadoFirmaLabels = {
+    firmado: 'Firmado',
+    pendiente: 'Firma pendiente',
+    error: 'Error'
+  };
+
   data.forEach(item => {
     const row = document.createElement('tr');
 
-    const estadoBadgeClass = item.estado === 'exitosa' ? 'success' : item.estado === 'error' ? 'error' : 'info';
+    const estadoBadgeClass = item.estado === 'firmado' ? 'success' : item.estado === 'error' ? 'error' : 'info';
 
     row.innerHTML = `
       <td>${item.fecha}</td>
       <td>${item.documento}</td>
-      <td><span class="badge ${estadoBadgeClass}">${capitalize(item.estado)}</span></td>
+      <td><span class="badge ${estadoBadgeClass}">${estadoFirmaLabels[item.estado]}</span></td>
       <td>${item.certificado}</td>
       <td>${item.hash}</td>
       <td>
@@ -336,10 +342,15 @@ function populateFirmasMasivasTable() {
   tbody.innerHTML = '';
   const data = demoData.firmasMasivas;
 
+  const estadoLoteLabels = {
+    completada: 'Firma completada',
+    'con-errores': 'Con errores'
+  };
+
   data.forEach(item => {
     const row = document.createElement('tr');
 
-    const estadoBadgeClass = item.estado === 'completado' ? 'success' : 'warning';
+    const estadoBadgeClass = item.estado === 'completada' ? 'success' : 'warning';
 
     row.innerHTML = `
       <td>${item.id}</td>
@@ -347,7 +358,7 @@ function populateFirmasMasivasTable() {
       <td>${item.total}</td>
       <td><span class="badge success">${item.exitosos}</span></td>
       <td><span class="badge error">${item.errores}</span></td>
-      <td><span class="badge ${estadoBadgeClass}">${capitalize(item.estado)}</span></td>
+      <td><span class="badge ${estadoBadgeClass}">${estadoLoteLabels[item.estado]}</span></td>
       <td>
         <div class="table-actions">
           <button class="btn-action">Ver lote</button>
@@ -371,14 +382,20 @@ function populateCertificadosTable() {
     const row = document.createElement('tr');
 
     const resultadoBadgeClass = item.resultado === 'exito' ? 'success' : 'error';
-    const alertaBadgeClass = item.alertas.includes('crítico') ? 'error' : item.alertas.includes('Advertencia') ? 'warning' : 'info';
+    const resultadoLabel = item.resultado === 'exito' ? 'Éxito' : 'Error';
+
+    let alertaCell = '<span class="no-alert">—</span>';
+    if (item.alertas) {
+      const alertaBadgeClass = item.alertas === 'Alerta crítica' ? 'error' : 'warning';
+      alertaCell = `<span class="badge ${alertaBadgeClass}">${item.alertas}</span>`;
+    }
 
     row.innerHTML = `
       <td>${item.persona}</td>
-      <td><span class="badge ${resultadoBadgeClass}">${capitalize(item.resultado)}</span></td>
+      <td><span class="badge ${resultadoBadgeClass}">${resultadoLabel}</span></td>
       <td>${item.idCert}</td>
       <td>${item.motivo}</td>
-      <td><span class="badge ${alertaBadgeClass}">${item.alertas}</span></td>
+      <td>${alertaCell}</td>
       <td>
         <div class="table-actions">
           <button class="btn-action">Ver certificado</button>
@@ -408,7 +425,7 @@ function populateUsuariosTable() {
       <td><span class="badge info">${item.rol}</span></td>
       <td>
         <div class="table-actions">
-          <button class="btn-action-menu" onclick="showUserMenu(event, ${item.id})">
+          <button class="btn-action-menu" aria-label="Más acciones para ${item.nombre} ${item.apellido}" onclick="showUserMenu(event, ${item.id})">
             <span class="icon">more_vert</span>
           </button>
         </div>
@@ -546,13 +563,18 @@ function initModals() {
 function showUserMenu(event, userId) {
   event.preventDefault();
   const modal = document.getElementById('modal-user-menu');
-  if (modal) {
-    // Posicionar modal cerca del botón
+  const content = modal ? modal.querySelector('.modal-content') : null;
+  if (modal && content) {
+    // El overlay cubre toda la pantalla (para poder cerrar al hacer clic afuera);
+    // solo el menú se posiciona cerca del botón que lo abrió.
     const rect = event.target.closest('button').getBoundingClientRect();
     modal.style.display = 'flex';
-    modal.style.position = 'fixed';
-    modal.style.top = rect.bottom + 'px';
-    modal.style.left = rect.left + 'px';
+    modal.style.justifyContent = 'flex-start';
+    modal.style.alignItems = 'flex-start';
+    content.style.position = 'fixed';
+    content.style.top = rect.bottom + 8 + 'px';
+    content.style.left = rect.left - 200 + 'px';
+    content.style.margin = '0';
 
     // Cerrar al hacer clic en una acción
     modal.querySelectorAll('.action-item').forEach(item => {
@@ -563,14 +585,6 @@ function showUserMenu(event, userId) {
       });
     });
   }
-}
-
-// ─────────────────────────────────────────────────────────────────────
-// UTILIDADES
-// ─────────────────────────────────────────────────────────────────────
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // ─────────────────────────────────────────────────────────────────────
