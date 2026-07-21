@@ -330,24 +330,23 @@ function populateFiremosTable() {
 
   const estadoFirmaLabels = {
     firmado: 'Firmado',
-    pendiente: 'Firma pendiente',
-    error: 'Error'
+    pendiente: 'Por firmar',
+    error: 'Error en firma'
   };
 
   data.forEach(item => {
     const row = document.createElement('tr');
 
-    const estadoBadgeClass = item.estado === 'firmado' ? 'success' : item.estado === 'error' ? 'error' : 'info';
+    const estadoBadgeClass = item.estado === 'firmado' ? 'success' : item.estado === 'error' ? 'error' : 'warning';
 
     row.innerHTML = `
-      <td data-col="fecha">${item.fecha}</td>
       <td data-col="documento">${item.documento}</td>
-      <td data-col="estado"><span class="badge ${estadoBadgeClass}">${estadoFirmaLabels[item.estado]}</span></td>
+      <td data-col="fecha">${item.fecha}</td>
       <td data-col="certificado">${item.certificado}</td>
-      <td data-col="hash">${item.hash}</td>
+      <td data-col="estado"><span class="badge ${estadoBadgeClass}">${estadoFirmaLabels[item.estado]}</span></td>
       <td data-col="acciones">
         <div class="table-actions">
-          <button class="btn-action" onclick="showFirmaDetalle(${item.id})">Ver detalles</button>
+          <button class="btn-action-pill" onclick="showFirmaDetalle(${item.id})">Mostrar detalles</button>
         </div>
       </td>
     `;
@@ -502,8 +501,8 @@ function showFirmaDetalle(id) {
   const item = demoData.firmasIndividuales.find(f => f.id === id);
   if (!item) return;
 
-  const estadoFirmaLabels = { firmado: 'Firmado', pendiente: 'Firma pendiente', error: 'Error' };
-  const estadoBadgeClass = item.estado === 'firmado' ? 'success' : item.estado === 'error' ? 'error' : 'info';
+  const estadoFirmaLabels = { firmado: 'Firmado', pendiente: 'Por firmar', error: 'Error en firma' };
+  const estadoBadgeClass = item.estado === 'firmado' ? 'success' : item.estado === 'error' ? 'error' : 'warning';
 
   document.getElementById('firma-detalle-body').innerHTML = `
     <div class="profile-field">
@@ -700,11 +699,6 @@ function initFilters() {
 // ─────────────────────────────────────────────────────────────────────
 
 const filterConfigs = {
-  'firmas-individual': [
-    { key: 'fecha', label: 'Fecha', visible: true },
-    { key: 'estado', label: 'Estado', visible: true },
-    { key: 'tipo-certificado', label: 'Tipo de certificado', visible: true }
-  ],
   certificados: [
     { key: 'resultado', label: 'Resultado', visible: true },
     { key: 'motivo', label: 'Motivo del error', visible: true }
@@ -720,7 +714,6 @@ const filterConfigs = {
 };
 
 const filterPanelSelectors = {
-  'firmas-individual': '#tab-firmas-individual .filters-panel',
   certificados: '#section-certificados .filters-panel',
   usuarios: '#section-usuarios .filters-panel',
   actividad: '#section-actividad .filters-panel'
@@ -785,11 +778,10 @@ function initFiltersConfig() {
 
 const columnConfigs = {
   'firmas-individual': [
-    { key: 'fecha', label: 'Fecha y hora', visible: true },
-    { key: 'documento', label: 'Documento', visible: true },
-    { key: 'estado', label: 'Estado', visible: true },
+    { key: 'documento', label: 'Nombre del documento', visible: true },
+    { key: 'fecha', label: 'Fecha de firma', visible: true },
     { key: 'certificado', label: 'Certificado', visible: true },
-    { key: 'hash', label: 'Hash del documento', visible: true }
+    { key: 'estado', label: 'Estado', visible: true }
   ],
   'firmas-masiva': [
     { key: 'lote', label: 'ID del lote', visible: true },

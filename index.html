@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/buttons.css">
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/panel.css?v=7">
+  <link rel="stylesheet" href="assets/css/panel.css?v=8">
 </head>
 <body>
 
@@ -91,59 +91,44 @@
       <!-- TAB: VISTA INDIVIDUAL -->
       <div class="tab-content active" id="tab-firmas-individual">
         <div class="table-wrapper">
-          <div class="table-toolbar">
-            <button class="btn-filters-config" data-table="firmas-individual">
-              <span class="icon">tune</span>
-              <span>Configurar filtros</span>
-            </button>
-            <button class="btn-clear-filters">
-              <span>Limpiar filtros</span>
-            </button>
-            <button class="btn-column-config" data-table="firmas-individual">
-              <span class="icon">settings</span>
-              <span>Columnas</span>
-            </button>
-          </div>
-
-          <div class="filters-panel">
-            <div class="filters-grid">
-              <div class="filter-item" data-filter-key="fecha">
-                <label>Fecha</label>
-                <div class="date-range">
-                  <input type="date" class="filter-input" data-filter="fecha-desde" aria-label="Fecha desde">
-                  <span class="date-range-sep">–</span>
-                  <input type="date" class="filter-input" data-filter="fecha-hasta" aria-label="Fecha hasta">
-                </div>
+          <div class="toolbar-v2">
+            <div class="toolbar-search">
+              <span class="icon">search</span>
+              <input type="text" placeholder="Buscar documentos" aria-label="Buscar documentos">
+            </div>
+            <div class="toolbar-group">
+              <div class="toolbar-pill toolbar-date-range">
+                <span class="icon">calendar_today</span>
+                <input type="date" aria-label="Fecha desde">
+                <span class="toolbar-date-sep">–</span>
+                <input type="date" aria-label="Fecha hasta">
               </div>
-              <div class="filter-item" data-filter-key="estado">
-                <label>Estado</label>
-                <select class="filter-input" data-filter="estado">
-                  <option value="">Todos</option>
-                  <option value="firmado">Firmado</option>
-                  <option value="pendiente">Firma pendiente</option>
-                  <option value="error">Error</option>
-                </select>
-              </div>
-              <div class="filter-item" data-filter-key="tipo-certificado">
-                <label>Tipo de certificado</label>
-                <select class="filter-input" data-filter="tipo-certificado">
-                  <option value="">Todos</option>
-                  <option value="persona-fisica">Persona física</option>
-                  <option value="representacion">Representación legal</option>
-                  <option value="apoderado">Apoderado</option>
-                </select>
-              </div>
+              <select class="toolbar-pill toolbar-select" aria-label="Estado">
+                <option value="">Estado</option>
+                <option value="firmado">Firmado</option>
+                <option value="pendiente">Por firmar</option>
+                <option value="error">Error en firma</option>
+              </select>
+              <select class="toolbar-pill toolbar-select" aria-label="Certificado">
+                <option value="">Certificado</option>
+                <option value="isaac">Isaac Meneses</option>
+                <option value="maria">María González</option>
+                <option value="carlos">Carlos López</option>
+                <option value="ana">Ana Rodríguez</option>
+              </select>
+              <button class="toolbar-icon-btn btn-column-config" data-table="firmas-individual" aria-label="Configurar columnas">
+                <span class="icon">settings</span>
+              </button>
             </div>
           </div>
 
           <table class="data-table">
             <thead>
               <tr>
-                <th data-col="fecha">Fecha y hora</th>
-                <th data-col="documento">Documento</th>
-                <th data-col="estado">Estado</th>
+                <th data-col="documento">Nombre del documento</th>
+                <th data-col="fecha">Fecha de firma</th>
                 <th data-col="certificado">Certificado</th>
-                <th data-col="hash">Hash del documento</th>
+                <th data-col="estado">Estado</th>
                 <th data-col="acciones">Acciones</th>
               </tr>
             </thead>
@@ -152,10 +137,15 @@
             </tbody>
           </table>
 
-          <div class="pagination">
-            <button class="btn-prev" aria-label="Página anterior"><span class="icon">chevron_left</span></button>
-            <span class="page-info">Página <strong>1</strong> de <strong>5</strong></span>
-            <button class="btn-next" aria-label="Página siguiente"><span class="icon">chevron_right</span></button>
+          <div class="pagination-v2">
+            <span class="pagination-info">1-5 de 5 resultados</span>
+            <div class="pagination-controls">
+              <button class="page-nav-btn" aria-label="Primera página" disabled><span class="icon">keyboard_double_arrow_left</span></button>
+              <button class="page-nav-btn" aria-label="Página anterior" disabled><span class="icon">chevron_left</span></button>
+              <button class="page-num-btn active">1</button>
+              <button class="page-nav-btn" aria-label="Página siguiente" disabled><span class="icon">chevron_right</span></button>
+              <button class="page-nav-btn" aria-label="Última página" disabled><span class="icon">keyboard_double_arrow_right</span></button>
+            </div>
           </div>
         </div>
       </div>
@@ -625,7 +615,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=7"></script>
+<script src="js/app.js?v=8"></script>
 
 </body>
 </html>
