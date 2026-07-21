@@ -703,7 +703,6 @@ const filterConfigs = {
   'firmas-individual': [
     { key: 'fecha', label: 'Fecha', visible: true },
     { key: 'estado', label: 'Estado', visible: true },
-    { key: 'certificado', label: 'Certificado', visible: true },
     { key: 'tipo-certificado', label: 'Tipo de certificado', visible: true }
   ],
   certificados: [
