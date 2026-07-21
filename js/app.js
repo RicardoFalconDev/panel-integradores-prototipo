@@ -695,6 +695,58 @@ function initFilters() {
 }
 
 // ─────────────────────────────────────────────────────────────────────
+// SELECTOR DE RANGO DE FECHAS (toolbar compacto tipo Figma)
+// ─────────────────────────────────────────────────────────────────────
+
+const shortMonthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+function formatShortDate(isoDate) {
+  const [, month, day] = isoDate.split('-');
+  return `${shortMonthNames[parseInt(month, 10) - 1]} ${day}`;
+}
+
+function initDateRangePicker() {
+  const btn = document.getElementById('btn-date-range');
+  const popover = document.getElementById('date-range-popover');
+  if (!btn || !popover) return;
+
+  const label = document.getElementById('date-range-label');
+  const desde = document.getElementById('date-range-desde');
+  const hasta = document.getElementById('date-range-hasta');
+
+  btn.addEventListener('click', event => {
+    event.stopPropagation();
+    popover.style.display = popover.style.display === 'none' ? 'flex' : 'none';
+  });
+
+  popover.addEventListener('click', event => event.stopPropagation());
+
+  document.addEventListener('click', () => {
+    popover.style.display = 'none';
+  });
+
+  document.getElementById('btn-apply-date-range').addEventListener('click', () => {
+    if (desde.value && hasta.value) {
+      label.textContent = `${formatShortDate(desde.value)} - ${formatShortDate(hasta.value)}`;
+    } else if (desde.value) {
+      label.textContent = `Desde ${formatShortDate(desde.value)}`;
+    } else if (hasta.value) {
+      label.textContent = `Hasta ${formatShortDate(hasta.value)}`;
+    } else {
+      label.textContent = 'Seleccionar fechas';
+    }
+    popover.style.display = 'none';
+  });
+
+  document.getElementById('btn-clear-date-range').addEventListener('click', () => {
+    desde.value = '';
+    hasta.value = '';
+    label.textContent = 'Seleccionar fechas';
+    popover.style.display = 'none';
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────
 // CONFIGURACIÓN DE FILTROS (elegir qué filtros preestablecidos mostrar)
 // ─────────────────────────────────────────────────────────────────────
 
@@ -1000,6 +1052,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initFilters();
   initFiltersConfig();
+  initDateRangePicker();
   initColumnConfig();
   initModals();
 

@@ -366,19 +366,39 @@ body {
   flex-shrink: 0;
 }
 
-.toolbar-date-range input[type="date"] {
-  border: none;
-  outline: none;
-  background: transparent;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  color: var(--text-dark);
-  width: 120px;
+.toolbar-daterange-wrap {
+  position: relative;
 }
 
-.toolbar-date-sep {
-  color: var(--text-sub);
-  flex-shrink: 0;
+.toolbar-date-btn {
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+}
+
+.date-range-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 50;
+  width: 320px;
+  background: #fff;
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(12, 12, 13, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.date-range-popover-fields {
+  display: flex;
+  gap: 12px;
+}
+
+.date-range-popover-fields .field-group {
+  flex: 1;
 }
 
 .toolbar-select {
