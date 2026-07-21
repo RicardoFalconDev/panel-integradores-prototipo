@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Gestión FID by Lakaut</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/buttons.css">
+  <link rel="stylesheet" href="assets/css/inputs.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/panel.css">
+</head>
+<body>
+
+<!-- SIDEBAR NAVIGATION -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <img src="assets/icons/logo-fid.svg" alt="FID by Lakaut" class="sidebar-logo">
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-section="firmas">
+      <span class="icon">edit</span>
+      <span>Firmas</span>
+    </button>
+    <button class="nav-item" data-section="certificados">
+      <span class="icon">verified</span>
+      <span>Certificados</span>
+    </button>
+    <button class="nav-item" data-section="usuarios">
+      <span class="icon">people</span>
+      <span>Usuarios</span>
+    </button>
+    <button class="nav-item" data-section="actividad">
+      <span class="icon">history</span>
+      <span>Actividad</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="nav-item" data-section="perfil">
+      <span class="icon">account_circle</span>
+      <span>Mi Perfil</span>
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="panel-main">
+  <!-- HEADER -->
+  <header class="panel-header">
+    <div class="panel-header-content">
+      <h1 class="panel-title">Panel de Gestión</h1>
+      <div class="header-actions">
+        <button class="icon-btn">
+          <span class="icon">notifications</span>
+        </button>
+        <button class="icon-btn">
+          <span class="icon">settings</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT AREA -->
+  <div class="panel-content">
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECCIÓN: FIRMAS -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section active" id="section-firmas">
+      <div class="section-header">
+        <h2>Firmas</h2>
+        <p class="section-subtitle">Gestión de firmas digitales</p>
+      </div>
+
+      <!-- Tabs: Individual / Masiva -->
+      <div class="tabs-container">
+        <button class="tab-btn active" data-tab="firmas-individual">Vista Individual</button>
+        <button class="tab-btn" data-tab="firmas-masiva">Firma Masiva</button>
+      </div>
+
+      <!-- TAB: VISTA INDIVIDUAL -->
+      <div class="tab-content active" id="tab-firmas-individual">
+        <div class="table-wrapper">
+          <div class="table-toolbar">
+            <button class="btn-filters-toggle">
+              <span class="icon">tune</span>
+              <span>Filtros</span>
+            </button>
+            <button class="btn-clear-filters" style="display: none;">
+              <span>Limpiar filtros</span>
+            </button>
+            <button class="btn-column-config">
+              <span class="icon">settings</span>
+              <span>Columnas</span>
+            </button>
+          </div>
+
+          <div class="filters-panel" style="display: none;">
+            <div class="filters-grid">
+              <div class="filter-item">
+                <label>Fecha</label>
+                <input type="date" class="filter-input" data-filter="fecha">
+              </div>
+              <div class="filter-item">
+                <label>Estado</label>
+                <select class="filter-input" data-filter="estado">
+                  <option value="">Todos</option>
+                  <option value="exitosa">Exitosa</option>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="error">Error</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>Certificado</label>
+                <input type="text" class="filter-input" placeholder="Buscar..." data-filter="certificado">
+              </div>
+            </div>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-col="fecha">Fecha/Hora</th>
+                <th data-col="documento">Documento</th>
+                <th data-col="estado">Estado</th>
+                <th data-col="certificado">Certificado</th>
+                <th data-col="hash">Hash del Documento</th>
+                <th data-col="acciones">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows populated by JS -->
+            </tbody>
+          </table>
+
+          <div class="pagination">
+            <button class="btn-prev"><span class="icon">chevron_left</span></button>
+            <span class="page-info">Página <strong>1</strong> de <strong>5</strong></span>
+            <button class="btn-next"><span class="icon">chevron_right</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: FIRMA MASIVA -->
+      <div class="tab-content" id="tab-firmas-masiva">
+        <div class="table-wrapper">
+          <div class="table-toolbar">
+            <button class="btn-filters-toggle">
+              <span class="icon">tune</span>
+              <span>Filtros</span>
+            </button>
+            <button class="btn-column-config">
+              <span class="icon">settings</span>
+              <span>Columnas</span>
+            </button>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-col="lote">ID del Lote</th>
+                <th data-col="fecha">Fecha de Creación</th>
+                <th data-col="total">Total de Documentos</th>
+                <th data-col="exitosos">Exitosos</th>
+                <th data-col="errores">Con Error</th>
+                <th data-col="estado">Estado General</th>
+                <th data-col="acciones">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows populated by JS -->
+            </tbody>
+          </table>
+
+          <div class="pagination">
+            <button class="btn-prev"><span class="icon">chevron_left</span></button>
+            <span class="page-info">Página <strong>1</strong> de <strong>3</strong></span>
+            <button class="btn-next"><span class="icon">chevron_right</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECCIÓN: CERTIFICADOS -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="section-certificados">
+      <div class="section-header">
+        <h2>Emisión de Certificados</h2>
+        <p class="section-subtitle">Historial de emisión y estados</p>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-toolbar">
+          <button class="btn-filters-toggle">
+            <span class="icon">tune</span>
+            <span>Filtros</span>
+          </button>
+          <button class="btn-clear-filters" style="display: none;">
+            <span>Limpiar filtros</span>
+          </button>
+          <button class="btn-column-config">
+            <span class="icon">settings</span>
+            <span>Columnas</span>
+          </button>
+        </div>
+
+        <div class="filters-panel" style="display: none;">
+          <div class="filters-grid">
+            <div class="filter-item">
+              <label>Resultado</label>
+              <select class="filter-input" data-filter="resultado">
+                <option value="">Todos</option>
+                <option value="exito">Éxito</option>
+                <option value="error">Error</option>
+              </select>
+            </div>
+            <div class="filter-item">
+              <label>Motivo de Error</label>
+              <input type="text" class="filter-input" placeholder="Buscar..." data-filter="motivo">
+            </div>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-col="persona">Persona</th>
+              <th data-col="resultado">Resultado</th>
+              <th data-col="id-cert">ID del Certificado</th>
+              <th data-col="motivo">Motivo de Error</th>
+              <th data-col="alertas">Alertas</th>
+              <th data-col="acciones">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows populated by JS -->
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <button class="btn-prev"><span class="icon">chevron_left</span></button>
+          <span class="page-info">Página <strong>1</strong> de <strong>4</strong></span>
+          <button class="btn-next"><span class="icon">chevron_right</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECCIÓN: USUARIOS -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="section-usuarios">
+      <div class="section-header">
+        <h2>Administración de Usuarios</h2>
+        <p class="section-subtitle">Gestión de miembros del equipo</p>
+        <button class="btn-primary" id="btn-invite-user" style="width: auto; margin-top: 12px;">
+          <span>+ Invitar Usuario</span>
+        </button>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-toolbar">
+          <button class="btn-filters-toggle">
+            <span class="icon">tune</span>
+            <span>Filtros</span>
+          </button>
+          <button class="btn-clear-filters" style="display: none;">
+            <span>Limpiar filtros</span>
+          </button>
+          <button class="btn-column-config">
+            <span class="icon">settings</span>
+            <span>Columnas</span>
+          </button>
+        </div>
+
+        <div class="filters-panel" style="display: none;">
+          <div class="filters-grid">
+            <div class="filter-item">
+              <label>Rol</label>
+              <select class="filter-input" data-filter="rol">
+                <option value="">Todos</option>
+                <option value="admin">Administrador</option>
+                <option value="collab">Colaborador</option>
+              </select>
+            </div>
+            <div class="filter-item">
+              <label>Método de Autenticación</label>
+              <select class="filter-input" data-filter="auth">
+                <option value="">Todos</option>
+                <option value="email">Email</option>
+                <option value="sso">SSO</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-col="nombre">Nombre</th>
+              <th data-col="apellido">Apellido</th>
+              <th data-col="email">Email</th>
+              <th data-col="auth">Método de Autenticación</th>
+              <th data-col="rol">Rol</th>
+              <th data-col="acciones">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows populated by JS -->
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <button class="btn-prev"><span class="icon">chevron_left</span></button>
+          <span class="page-info">Página <strong>1</strong> de <strong>2</strong></span>
+          <button class="btn-next"><span class="icon">chevron_right</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECCIÓN: ACTIVIDAD -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="section-actividad">
+      <div class="section-header">
+        <h2>Seguridad y Actividad</h2>
+        <p class="section-subtitle">Logs de inicio de sesión</p>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-toolbar">
+          <button class="btn-filters-toggle">
+            <span class="icon">tune</span>
+            <span>Filtros</span>
+          </button>
+          <button class="btn-clear-filters" style="display: none;">
+            <span>Limpiar filtros</span>
+          </button>
+          <button class="btn-column-config">
+            <span class="icon">settings</span>
+            <span>Columnas</span>
+          </button>
+        </div>
+
+        <div class="filters-panel" style="display: none;">
+          <div class="filters-grid">
+            <div class="filter-item">
+              <label>Fecha</label>
+              <input type="date" class="filter-input" data-filter="fecha">
+            </div>
+            <div class="filter-item">
+              <label>Usuario</label>
+              <input type="text" class="filter-input" placeholder="Buscar..." data-filter="usuario">
+            </div>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-col="usuario">Usuario</th>
+              <th data-col="fecha">Fecha/Hora</th>
+              <th data-col="ip">IP</th>
+              <th data-col="origen">Origen</th>
+              <th data-col="dispositivo">Dispositivo</th>
+              <th data-col="acciones">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows populated by JS -->
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <button class="btn-prev"><span class="icon">chevron_left</span></button>
+          <span class="page-info">Página <strong>1</strong> de <strong>6</strong></span>
+          <button class="btn-next"><span class="icon">chevron_right</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECCIÓN: MI PERFIL -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="section-perfil">
+      <div class="section-header">
+        <h2>Mi Perfil</h2>
+        <p class="section-subtitle">Información personal y permisos</p>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-header">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Isaac Meneses" class="profile-avatar">
+          <div class="profile-info">
+            <h3>Isaac Cristian Meneses</h3>
+            <p>isacris23@gmail.com</p>
+            <p class="role-badge">Administrador</p>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h4>Información Básica</h4>
+          <div class="profile-field">
+            <label>CUIL</label>
+            <p>20-96081435-2</p>
+          </div>
+          <div class="profile-field">
+            <label>Correo Electrónico</label>
+            <p>isacris23@gmail.com</p>
+          </div>
+          <div class="profile-field">
+            <label>Método de Autenticación</label>
+            <p>Email + 2FA</p>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h4>Permisos Asignados</h4>
+          <ul class="permissions-list">
+            <li>✓ Gestionar firmas digitales</li>
+            <li>✓ Emitir certificados</li>
+            <li>✓ Administrar usuarios</li>
+            <li>✓ Ver logs de actividad</li>
+            <li>✓ Configurar panel</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- MODALS -->
+
+<!-- Modal: Invitar Usuario -->
+<div class="modal" id="modal-invite" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Invitar Usuario</h3>
+      <button class="modal-close" type="button">
+        <span class="icon">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="form-invite-user">
+        <div class="field-group">
+          <label class="field-label">Email del Usuario</label>
+          <div class="input-wrap">
+            <input type="email" placeholder="usuario@empresa.com" required>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Rol</label>
+          <div class="sel-wrap">
+            <select class="field-select" required>
+              <option value="">Seleccionar rol...</option>
+              <option value="admin">Administrador</option>
+              <option value="collab">Colaborador</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" style="flex: 1;">
+            <span>Invitar</span>
+          </button>
+          <button type="button" class="btn-outline modal-close" style="flex: 1;">
+            <span>Cancelar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Configurar Columnas -->
+<div class="modal" id="modal-columns" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Configurar Columnas</h3>
+      <button class="modal-close" type="button">
+        <span class="icon">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="columns-config">
+        <div class="column-item">
+          <input type="checkbox" id="col-fecha" checked>
+          <label for="col-fecha">Fecha/Hora</label>
+        </div>
+        <div class="column-item">
+          <input type="checkbox" id="col-documento" checked>
+          <label for="col-documento">Documento</label>
+        </div>
+        <div class="column-item">
+          <input type="checkbox" id="col-estado" checked>
+          <label for="col-estado">Estado</label>
+        </div>
+        <div class="column-item">
+          <input type="checkbox" id="col-certificado" checked>
+          <label for="col-certificado">Certificado</label>
+        </div>
+        <div class="column-item">
+          <input type="checkbox" id="col-hash" checked>
+          <label for="col-hash">Hash</label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-primary modal-close" style="flex: 1;">
+          <span>Guardar</span>
+        </button>
+        <button type="button" class="btn-outline modal-close" style="flex: 1;">
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Menu de Usuario (⋯) -->
+<div class="modal" id="modal-user-menu" style="display: none;">
+  <div class="modal-content modal-actions">
+    <button class="action-item">
+      <span class="icon">refresh</span>
+      <span>Resetear 2FA</span>
+    </button>
+    <button class="action-item">
+      <span class="icon">key</span>
+      <span>Editar Método de Login</span>
+    </button>
+    <button class="action-item danger">
+      <span class="icon">lock</span>
+      <span>Bloquear Usuario</span>
+    </button>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>
