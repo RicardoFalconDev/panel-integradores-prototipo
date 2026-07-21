@@ -53,7 +53,8 @@ const demoData = {
       documento: 'Contrato_001.pdf',
       estado: 'firmado',
       certificado: 'CN=Isaac Meneses',
-      hash: '3a7b2c8f...'
+      hash: '3a7b2c8f...',
+      hashCompleto: '3a7b2c8f9d1e4f6a8b2c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f5a7b9c1d3e5f7a'
     },
     {
       id: 2,
@@ -61,7 +62,8 @@ const demoData = {
       documento: 'Factura_2026_001.pdf',
       estado: 'firmado',
       certificado: 'CN=María González',
-      hash: '5d9e4a1c...'
+      hash: '5d9e4a1c...',
+      hashCompleto: '5d9e4a1c3b8f6d2e4a7c9b1d3f5e7a9c1b3d5f7e9a1c3b5d7f9e1a3c5b7d9f1e'
     },
     {
       id: 3,
@@ -69,7 +71,8 @@ const demoData = {
       documento: 'Acuerdo_confidencialidad.pdf',
       estado: 'pendiente',
       certificado: 'CN=Carlos López',
-      hash: '7f2b6c8a...'
+      hash: '7f2b6c8a...',
+      hashCompleto: '7f2b6c8a1d3e5f7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f5a'
     },
     {
       id: 4,
@@ -77,7 +80,8 @@ const demoData = {
       documento: 'Poder_notarial.pdf',
       estado: 'error',
       certificado: 'CN=Isaac Meneses',
-      hash: '9c3d7e1f...'
+      hash: '9c3d7e1f...',
+      hashCompleto: '9c3d7e1f2a4b6c8d1e3f5a7b9c1d3e5f7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d'
     },
     {
       id: 5,
@@ -85,7 +89,8 @@ const demoData = {
       documento: 'Testamento.pdf',
       estado: 'firmado',
       certificado: 'CN=Ana Rodríguez',
-      hash: '2e4a8b5c...'
+      hash: '2e4a8b5c...',
+      hashCompleto: '2e4a8b5c7d9f1a3b5c7d9e1f3a5b7c9d1e3f5a7b9c1d3e5f7a9b1c3d5e7f9a1b'
     }
   ],
 
@@ -96,7 +101,11 @@ const demoData = {
       total: 50,
       exitosos: 48,
       errores: 2,
-      estado: 'con-errores'
+      estado: 'con-errores',
+      documentosConError: [
+        { documento: 'Certificado_representacion.pdf', motivo: 'Certificado vencido' },
+        { documento: 'Poder_general.pdf', motivo: 'El firmante no completó la validación de identidad' }
+      ]
     },
     {
       id: 'LOTE-2026-002',
@@ -104,7 +113,8 @@ const demoData = {
       total: 100,
       exitosos: 100,
       errores: 0,
-      estado: 'completada'
+      estado: 'completada',
+      documentosConError: []
     },
     {
       id: 'LOTE-2026-003',
@@ -112,7 +122,14 @@ const demoData = {
       total: 75,
       exitosos: 70,
       errores: 5,
-      estado: 'con-errores'
+      estado: 'con-errores',
+      documentosConError: [
+        { documento: 'Recibo_haberes_01.pdf', motivo: 'Documento duplicado' },
+        { documento: 'Recibo_haberes_02.pdf', motivo: 'Certificado vencido' },
+        { documento: 'Recibo_haberes_03.pdf', motivo: 'El firmante no completó la validación de identidad' },
+        { documento: 'Recibo_haberes_04.pdf', motivo: 'Formato de documento no soportado' },
+        { documento: 'Recibo_haberes_05.pdf', motivo: 'Error de conexión con el firmante' }
+      ]
     }
   ],
 
@@ -122,6 +139,7 @@ const demoData = {
       persona: 'Isaac Cristian Meneses',
       resultado: 'exito',
       idCert: 'CERT-2026-001',
+      fechaEmision: '2026-07-15 10:20:00',
       motivo: '—',
       alertas: null
     },
@@ -130,6 +148,7 @@ const demoData = {
       persona: 'María González',
       resultado: 'error',
       idCert: 'CERT-2026-002',
+      fechaEmision: '—',
       motivo: 'Datos inconsistentes',
       alertas: 'Alerta crítica'
     },
@@ -138,6 +157,7 @@ const demoData = {
       persona: 'Carlos López',
       resultado: 'exito',
       idCert: 'CERT-2026-003',
+      fechaEmision: '2026-07-10 09:15:00',
       motivo: '—',
       alertas: null
     },
@@ -146,6 +166,7 @@ const demoData = {
       persona: 'Ana Rodríguez',
       resultado: 'exito',
       idCert: 'CERT-2026-004',
+      fechaEmision: '2025-08-20 14:40:00',
       motivo: '—',
       alertas: 'Vence en 30 días'
     }
@@ -326,7 +347,7 @@ function populateFiremosTable() {
       <td>${item.hash}</td>
       <td>
         <div class="table-actions">
-          <button class="btn-action">Ver detalles</button>
+          <button class="btn-action" onclick="showFirmaDetalle(${item.id})">Ver detalles</button>
         </div>
       </td>
     `;
@@ -361,8 +382,8 @@ function populateFirmasMasivasTable() {
       <td><span class="badge ${estadoBadgeClass}">${estadoLoteLabels[item.estado]}</span></td>
       <td>
         <div class="table-actions">
-          <button class="btn-action">Ver lote</button>
-          <button class="btn-action">Reintentar</button>
+          <button class="btn-action" onclick="showLoteDetalle('${item.id}')">Ver lote</button>
+          ${item.errores > 0 ? `<button class="btn-action" onclick="reintentarLote('${item.id}')">Reintentar</button>` : ''}
         </div>
       </td>
     `;
@@ -398,7 +419,7 @@ function populateCertificadosTable() {
       <td>${alertaCell}</td>
       <td>
         <div class="table-actions">
-          <button class="btn-action">Ver certificado</button>
+          <button class="btn-action" onclick="showCertificadoDetalle(${item.id})">Ver certificado</button>
         </div>
       </td>
     `;
@@ -454,13 +475,195 @@ function populateActividadTable() {
       <td>${item.dispositivo}</td>
       <td>
         <div class="table-actions">
-          <button class="btn-action">Ver detalles</button>
+          <button class="btn-action" onclick="showActividadDetalle(${item.id})">Ver detalles</button>
         </div>
       </td>
     `;
 
     tbody.appendChild(row);
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// PANTALLAS DE DETALLE
+// ─────────────────────────────────────────────────────────────────────
+
+function showFirmaDetalle(id) {
+  const item = demoData.firmasIndividuales.find(f => f.id === id);
+  if (!item) return;
+
+  const estadoFirmaLabels = { firmado: 'Firmado', pendiente: 'Firma pendiente', error: 'Error' };
+  const estadoBadgeClass = item.estado === 'firmado' ? 'success' : item.estado === 'error' ? 'error' : 'info';
+
+  document.getElementById('firma-detalle-body').innerHTML = `
+    <div class="profile-field">
+      <label>Documento</label>
+      <p>${item.documento}</p>
+    </div>
+    <div class="profile-field">
+      <label>Estado</label>
+      <p><span class="badge ${estadoBadgeClass}">${estadoFirmaLabels[item.estado]}</span></p>
+    </div>
+    <div class="profile-field">
+      <label>Fecha y hora de firma</label>
+      <p>${item.fecha}</p>
+    </div>
+    <div class="profile-field">
+      <label>Certificado usado</label>
+      <p>${item.certificado}</p>
+    </div>
+    <div class="profile-field">
+      <label>Hash del documento</label>
+      <p class="hash-value">${item.hashCompleto}</p>
+    </div>
+  `;
+
+  document.getElementById('modal-firma-detalle').style.display = 'flex';
+}
+
+function showLoteDetalle(id) {
+  const item = demoData.firmasMasivas.find(l => l.id === id);
+  if (!item) return;
+
+  const estadoLoteLabels = { completada: 'Firma completada', 'con-errores': 'Con errores' };
+  const estadoBadgeClass = item.estado === 'completada' ? 'success' : 'warning';
+
+  let erroresHtml = '<p class="empty-state">No hay documentos con error en este lote.</p>';
+  if (item.documentosConError.length > 0) {
+    erroresHtml = item.documentosConError.map((doc, index) => `
+      <div class="error-doc-item">
+        <div class="error-doc-info">
+          <p class="error-doc-name">${doc.documento}</p>
+          <p class="error-doc-motivo">${doc.motivo}</p>
+        </div>
+        <div class="table-actions">
+          <button class="btn-action" onclick="reintentarDocumento('${item.id}', ${index})">Reintentar</button>
+          <button class="btn-action btn-action-danger" onclick="eliminarDocumento('${item.id}', ${index})">Eliminar</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('lote-detalle-titulo').textContent = `Lote ${item.id}`;
+  document.getElementById('lote-detalle-body').innerHTML = `
+    <div class="lote-summary">
+      <div class="profile-field">
+        <label>Fecha de creación</label>
+        <p>${item.fecha}</p>
+      </div>
+      <div class="profile-field">
+        <label>Total de documentos</label>
+        <p>${item.total}</p>
+      </div>
+      <div class="profile-field">
+        <label>Firmados</label>
+        <p><span class="badge success">${item.exitosos}</span></p>
+      </div>
+      <div class="profile-field">
+        <label>Estado general</label>
+        <p><span class="badge ${estadoBadgeClass}">${estadoLoteLabels[item.estado]}</span></p>
+      </div>
+    </div>
+    <h4 class="detail-section-title">Documentos con error</h4>
+    <div class="error-doc-list">
+      ${erroresHtml}
+    </div>
+  `;
+
+  document.getElementById('modal-lote-detalle').style.display = 'flex';
+}
+
+function reintentarLote(id) {
+  if (confirm('¿Reintentar todos los documentos con error de este lote?')) {
+    alert(`Reintentando los documentos con error del lote ${id}.`);
+  }
+}
+
+function reintentarDocumento(loteId, index) {
+  const lote = demoData.firmasMasivas.find(l => l.id === loteId);
+  const doc = lote.documentosConError[index];
+  alert(`Reintentando la firma de "${doc.documento}".`);
+}
+
+function eliminarDocumento(loteId, index) {
+  const lote = demoData.firmasMasivas.find(l => l.id === loteId);
+  const doc = lote.documentosConError[index];
+  if (confirm(`¿Eliminar "${doc.documento}" del lote? No vas a poder deshacer esta acción.`)) {
+    lote.documentosConError.splice(index, 1);
+    lote.errores = lote.documentosConError.length;
+    showLoteDetalle(loteId);
+    populateFirmasMasivasTable();
+  }
+}
+
+function showCertificadoDetalle(id) {
+  const item = demoData.certificados.find(c => c.id === id);
+  if (!item) return;
+
+  const resultadoBadgeClass = item.resultado === 'exito' ? 'success' : 'error';
+  const resultadoLabel = item.resultado === 'exito' ? 'Éxito' : 'Error';
+  const alertaHtml = item.alertas
+    ? `<span class="badge ${item.alertas === 'Alerta crítica' ? 'error' : 'warning'}">${item.alertas}</span>`
+    : '<span class="no-alert">—</span>';
+
+  document.getElementById('certificado-detalle-body').innerHTML = `
+    <div class="profile-field">
+      <label>Persona</label>
+      <p>${item.persona}</p>
+    </div>
+    <div class="profile-field">
+      <label>Resultado</label>
+      <p><span class="badge ${resultadoBadgeClass}">${resultadoLabel}</span></p>
+    </div>
+    <div class="profile-field">
+      <label>ID del certificado</label>
+      <p>${item.idCert}</p>
+    </div>
+    <div class="profile-field">
+      <label>Fecha de emisión</label>
+      <p>${item.fechaEmision}</p>
+    </div>
+    <div class="profile-field">
+      <label>Motivo del error</label>
+      <p>${item.motivo}</p>
+    </div>
+    <div class="profile-field">
+      <label>Alertas</label>
+      <p>${alertaHtml}</p>
+    </div>
+  `;
+
+  document.getElementById('modal-certificado-detalle').style.display = 'flex';
+}
+
+function showActividadDetalle(id) {
+  const item = demoData.actividad.find(a => a.id === id);
+  if (!item) return;
+
+  document.getElementById('actividad-detalle-body').innerHTML = `
+    <div class="profile-field">
+      <label>Usuario</label>
+      <p>${item.usuario}</p>
+    </div>
+    <div class="profile-field">
+      <label>Fecha y hora</label>
+      <p>${item.fecha}</p>
+    </div>
+    <div class="profile-field">
+      <label>IP</label>
+      <p>${item.ip}</p>
+    </div>
+    <div class="profile-field">
+      <label>Origen</label>
+      <p>${item.origen}</p>
+    </div>
+    <div class="profile-field">
+      <label>Dispositivo</label>
+      <p>${item.dispositivo}</p>
+    </div>
+  `;
+
+  document.getElementById('modal-actividad-detalle').style.display = 'flex';
 }
 
 // ─────────────────────────────────────────────────────────────────────

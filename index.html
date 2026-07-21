@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/buttons.css">
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/panel.css?v=2">
+  <link rel="stylesheet" href="assets/css/panel.css?v=3">
 </head>
 <body>
 
@@ -544,7 +544,83 @@
   </div>
 </div>
 
-<script src="js/app.js?v=3"></script>
+<!-- Modal: Detalle de la firma -->
+<div class="modal" id="modal-firma-detalle" style="display: none;">
+  <div class="card-wrap">
+    <div class="main-card">
+      <div class="detail-header">
+        <h3 class="card-title">Detalle de la firma</h3>
+        <button class="modal-close" type="button" aria-label="Cerrar">
+          <span class="icon">close</span>
+        </button>
+      </div>
+      <div id="firma-detalle-body"><!-- Contenido cargado por JS --></div>
+    </div>
+    <div class="card-footer">
+      <span class="powered-label">POWERED BY</span>
+      <img class="powered-logo" src="assets/icons/logo-fid.svg" alt="FID by Lakaut">
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Sobre del lote (firma masiva) -->
+<div class="modal" id="modal-lote-detalle" style="display: none;">
+  <div class="card-wrap">
+    <div class="main-card">
+      <div class="detail-header">
+        <h3 class="card-title" id="lote-detalle-titulo">Lote</h3>
+        <button class="modal-close" type="button" aria-label="Cerrar">
+          <span class="icon">close</span>
+        </button>
+      </div>
+      <div id="lote-detalle-body"><!-- Contenido cargado por JS --></div>
+    </div>
+    <div class="card-footer">
+      <span class="powered-label">POWERED BY</span>
+      <img class="powered-logo" src="assets/icons/logo-fid.svg" alt="FID by Lakaut">
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Detalle del certificado -->
+<div class="modal" id="modal-certificado-detalle" style="display: none;">
+  <div class="card-wrap">
+    <div class="main-card">
+      <div class="detail-header">
+        <h3 class="card-title">Detalle del certificado</h3>
+        <button class="modal-close" type="button" aria-label="Cerrar">
+          <span class="icon">close</span>
+        </button>
+      </div>
+      <div id="certificado-detalle-body"><!-- Contenido cargado por JS --></div>
+    </div>
+    <div class="card-footer">
+      <span class="powered-label">POWERED BY</span>
+      <img class="powered-logo" src="assets/icons/logo-fid.svg" alt="FID by Lakaut">
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Detalle de inicio de sesión -->
+<div class="modal" id="modal-actividad-detalle" style="display: none;">
+  <div class="card-wrap">
+    <div class="main-card">
+      <div class="detail-header">
+        <h3 class="card-title">Detalle del inicio de sesión</h3>
+        <button class="modal-close" type="button" aria-label="Cerrar">
+          <span class="icon">close</span>
+        </button>
+      </div>
+      <div id="actividad-detalle-body"><!-- Contenido cargado por JS --></div>
+    </div>
+    <div class="card-footer">
+      <span class="powered-label">POWERED BY</span>
+      <img class="powered-logo" src="assets/icons/logo-fid.svg" alt="FID by Lakaut">
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js?v=4"></script>
 
 </body>
 </html>

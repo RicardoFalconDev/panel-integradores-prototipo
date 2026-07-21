@@ -722,6 +722,138 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════ */
+/* PANTALLAS DE DETALLE (card-wrap + card-footer "POWERED BY") */
+/* ═══════════════════════════════════════════════════════════════════════ */
+
+.card-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+}
+
+/* Adapta .main-card (definido en header.css con width fijo) para vivir
+   dentro de .card-wrap, sumado al card-footer con el logo. */
+.card-wrap .main-card {
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+  overflow-y: auto;
+}
+
+.card-footer {
+  width: 100%;
+  background: var(--bg-plan);
+  border: 1px solid var(--border-card);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.card-footer .powered-label {
+  font-size: 10px;
+  line-height: 14px;
+  color: var(--text-main);
+  letter-spacing: 0.1px;
+  font-weight: 400;
+}
+
+.card-footer .powered-logo {
+  height: 16px;
+  width: auto;
+  display: block;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.detail-header .modal-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-sub);
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.detail-header .modal-close:hover {
+  color: var(--text-main);
+}
+
+.hash-value {
+  font-family: monospace;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.detail-section-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-dark);
+  margin-top: 8px;
+}
+
+.lote-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.error-doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.error-doc-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-hdr);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.error-doc-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.error-doc-motivo {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-top: 2px;
+}
+
+.btn-action-danger {
+  color: var(--badge-error);
+  border-color: var(--badge-error);
+}
+
+.empty-state {
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════ */
 /* RESPONSIVE */
 /* ═══════════════════════════════════════════════════════════════════════ */
 
@@ -802,6 +934,15 @@ body {
   .modal-content {
     width: 95%;
     max-width: 100%;
+  }
+
+  .card-wrap {
+    width: 95%;
+    max-width: 100%;
+  }
+
+  .lote-summary {
+    grid-template-columns: 1fr;
   }
 }
 
