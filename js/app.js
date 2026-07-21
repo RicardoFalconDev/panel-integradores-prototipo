@@ -732,20 +732,37 @@ function renderCalendarPanel(panelKey) {
   const startWeekday = new Date(state.year, state.month, 1).getDay();
   grid.innerHTML = '';
 
+  const { start, end } = calendarState;
+  let rangeStartTime = null;
+  let rangeEndTime = null;
+  if (start.day && end.day) {
+    const startTime = new Date(start.year, start.month, start.day).getTime();
+    const endTime = new Date(end.year, end.month, end.day).getTime();
+    rangeStartTime = Math.min(startTime, endTime);
+    rangeEndTime = Math.max(startTime, endTime);
+  }
+
   for (let i = 0; i < 42; i++) {
     const cellDate = new Date(state.year, state.month, i - startWeekday + 1);
     const isCurrentMonth = cellDate.getMonth() === state.month;
     const isSelected = isCurrentMonth && state.day === cellDate.getDate();
+    const cellTime = cellDate.getTime();
+    const isInRange = isCurrentMonth && !isSelected && rangeStartTime !== null
+      && cellTime > rangeStartTime && cellTime < rangeEndTime;
 
     const cell = document.createElement('button');
     cell.type = 'button';
-    cell.className = 'calendar-day' + (isCurrentMonth ? '' : ' calendar-day-muted') + (isSelected ? ' calendar-day-selected' : '');
+    cell.className = 'calendar-day'
+      + (isCurrentMonth ? '' : ' calendar-day-muted')
+      + (isInRange ? ' calendar-day-in-range' : '')
+      + (isSelected ? ' calendar-day-selected' : '');
     cell.textContent = cellDate.getDate();
     cell.addEventListener('click', () => {
       state.year = cellDate.getFullYear();
       state.month = cellDate.getMonth();
       state.day = cellDate.getDate();
-      renderCalendarPanel(panelKey);
+      renderCalendarPanel('start');
+      renderCalendarPanel('end');
     });
     grid.appendChild(cell);
   }
