@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/buttons.css">
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/panel.css?v=6">
+  <link rel="stylesheet" href="assets/css/panel.css?v=7">
 </head>
 <body>
 
@@ -92,11 +92,11 @@
       <div class="tab-content active" id="tab-firmas-individual">
         <div class="table-wrapper">
           <div class="table-toolbar">
-            <button class="btn-filters-toggle">
+            <button class="btn-filters-config" data-table="firmas-individual">
               <span class="icon">tune</span>
-              <span>Filtros</span>
+              <span>Configurar filtros</span>
             </button>
-            <button class="btn-clear-filters" style="display: none;">
+            <button class="btn-clear-filters">
               <span>Limpiar filtros</span>
             </button>
             <button class="btn-column-config" data-table="firmas-individual">
@@ -105,13 +105,17 @@
             </button>
           </div>
 
-          <div class="filters-panel" style="display: none;">
+          <div class="filters-panel">
             <div class="filters-grid">
-              <div class="filter-item">
+              <div class="filter-item" data-filter-key="fecha">
                 <label>Fecha</label>
-                <input type="date" class="filter-input" data-filter="fecha">
+                <div class="date-range">
+                  <input type="date" class="filter-input" data-filter="fecha-desde" aria-label="Fecha desde">
+                  <span class="date-range-sep">–</span>
+                  <input type="date" class="filter-input" data-filter="fecha-hasta" aria-label="Fecha hasta">
+                </div>
               </div>
-              <div class="filter-item">
+              <div class="filter-item" data-filter-key="estado">
                 <label>Estado</label>
                 <select class="filter-input" data-filter="estado">
                   <option value="">Todos</option>
@@ -120,9 +124,18 @@
                   <option value="error">Error</option>
                 </select>
               </div>
-              <div class="filter-item">
+              <div class="filter-item" data-filter-key="certificado">
                 <label>Certificado</label>
                 <input type="text" class="filter-input" placeholder="Buscar por certificado" data-filter="certificado">
+              </div>
+              <div class="filter-item" data-filter-key="tipo-certificado">
+                <label>Tipo de certificado</label>
+                <select class="filter-input" data-filter="tipo-certificado">
+                  <option value="">Todos</option>
+                  <option value="persona-fisica">Persona física</option>
+                  <option value="representacion">Representación legal</option>
+                  <option value="apoderado">Apoderado</option>
+                </select>
               </div>
             </div>
           </div>
@@ -202,11 +215,11 @@
 
       <div class="table-wrapper">
         <div class="table-toolbar">
-          <button class="btn-filters-toggle">
+          <button class="btn-filters-config" data-table="certificados">
             <span class="icon">tune</span>
-            <span>Filtros</span>
+            <span>Configurar filtros</span>
           </button>
-          <button class="btn-clear-filters" style="display: none;">
+          <button class="btn-clear-filters">
             <span>Limpiar filtros</span>
           </button>
           <button class="btn-column-config" data-table="certificados">
@@ -215,9 +228,9 @@
           </button>
         </div>
 
-        <div class="filters-panel" style="display: none;">
+        <div class="filters-panel">
           <div class="filters-grid">
-            <div class="filter-item">
+            <div class="filter-item" data-filter-key="resultado">
               <label>Resultado</label>
               <select class="filter-input" data-filter="resultado">
                 <option value="">Todos</option>
@@ -225,7 +238,7 @@
                 <option value="error">Error</option>
               </select>
             </div>
-            <div class="filter-item">
+            <div class="filter-item" data-filter-key="motivo">
               <label>Motivo del error</label>
               <input type="text" class="filter-input" placeholder="Buscar por motivo" data-filter="motivo">
             </div>
@@ -270,11 +283,11 @@
 
       <div class="table-wrapper">
         <div class="table-toolbar">
-          <button class="btn-filters-toggle">
+          <button class="btn-filters-config" data-table="usuarios">
             <span class="icon">tune</span>
-            <span>Filtros</span>
+            <span>Configurar filtros</span>
           </button>
-          <button class="btn-clear-filters" style="display: none;">
+          <button class="btn-clear-filters">
             <span>Limpiar filtros</span>
           </button>
           <button class="btn-column-config" data-table="usuarios">
@@ -283,9 +296,9 @@
           </button>
         </div>
 
-        <div class="filters-panel" style="display: none;">
+        <div class="filters-panel">
           <div class="filters-grid">
-            <div class="filter-item">
+            <div class="filter-item" data-filter-key="rol">
               <label>Rol</label>
               <select class="filter-input" data-filter="rol">
                 <option value="">Todos</option>
@@ -293,7 +306,7 @@
                 <option value="collab">Colaborador</option>
               </select>
             </div>
-            <div class="filter-item">
+            <div class="filter-item" data-filter-key="auth">
               <label>Método de autenticación</label>
               <select class="filter-input" data-filter="auth">
                 <option value="">Todos</option>
@@ -339,11 +352,11 @@
 
       <div class="table-wrapper">
         <div class="table-toolbar">
-          <button class="btn-filters-toggle">
+          <button class="btn-filters-config" data-table="actividad">
             <span class="icon">tune</span>
-            <span>Filtros</span>
+            <span>Configurar filtros</span>
           </button>
-          <button class="btn-clear-filters" style="display: none;">
+          <button class="btn-clear-filters">
             <span>Limpiar filtros</span>
           </button>
           <button class="btn-column-config" data-table="actividad">
@@ -352,13 +365,17 @@
           </button>
         </div>
 
-        <div class="filters-panel" style="display: none;">
+        <div class="filters-panel">
           <div class="filters-grid">
-            <div class="filter-item">
+            <div class="filter-item" data-filter-key="fecha">
               <label>Fecha</label>
-              <input type="date" class="filter-input" data-filter="fecha">
+              <div class="date-range">
+                <input type="date" class="filter-input" data-filter="fecha-desde" aria-label="Fecha desde">
+                <span class="date-range-sep">–</span>
+                <input type="date" class="filter-input" data-filter="fecha-hasta" aria-label="Fecha hasta">
+              </div>
             </div>
-            <div class="filter-item">
+            <div class="filter-item" data-filter-key="usuario">
               <label>Usuario</label>
               <input type="text" class="filter-input" placeholder="Buscar por usuario" data-filter="usuario">
             </div>
@@ -508,6 +525,32 @@
   </div>
 </div>
 
+<!-- Modal: Configurar Filtros -->
+<div class="modal" id="modal-filters-config" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Configurar filtros</h3>
+      <button class="modal-close" type="button" aria-label="Cerrar">
+        <span class="icon">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-subtitle">Elegí qué filtros preestablecidos mostrar en esta tabla.</p>
+      <div class="columns-config" id="filters-config-list">
+        <!-- Filtros cargados por JS según la tabla -->
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-primary" id="btn-save-filters-config" style="flex: 1;">
+          <span>Guardar</span>
+        </button>
+        <button type="button" class="btn-outline modal-close" style="flex: 1;">
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Menu de Usuario (⋯) -->
 <div class="modal modal-transparent" id="modal-user-menu" style="display: none;">
   <div class="modal-content modal-actions">
@@ -586,7 +629,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=5"></script>
+<script src="js/app.js?v=6"></script>
 
 </body>
 </html>

@@ -254,7 +254,7 @@ body {
   flex-wrap: wrap;
 }
 
-.btn-filters-toggle,
+.btn-filters-config,
 .btn-clear-filters,
 .btn-column-config {
   display: flex;
@@ -271,7 +271,7 @@ body {
   transition: background 0.15s, border-color 0.15s;
 }
 
-.btn-filters-toggle:hover,
+.btn-filters-config:hover,
 .btn-column-config:hover {
   background: var(--btn-outline-hover);
 }
@@ -286,7 +286,7 @@ body {
   background: rgba(255, 193, 7, 0.06);
 }
 
-.btn-filters-toggle .icon,
+.btn-filters-config .icon,
 .btn-column-config .icon,
 .btn-clear-filters .icon {
   font-size: 20px;
@@ -329,6 +329,23 @@ body {
   font-size: 14px;
   color: var(--text-main);
   transition: border-color 0.15s;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-range .filter-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.date-range-sep {
+  color: var(--text-sub);
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
 .filter-input:focus {

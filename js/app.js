@@ -681,19 +681,7 @@ function showActividadDetalle(id) {
 // ─────────────────────────────────────────────────────────────────────
 
 function initFilters() {
-  const toggleBtns = document.querySelectorAll('.btn-filters-toggle');
-
-  toggleBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filtersPanel = btn.closest('.table-toolbar').parentElement.querySelector('.filters-panel');
-      if (filtersPanel) {
-        const isHidden = filtersPanel.style.display === 'none';
-        filtersPanel.style.display = isHidden ? 'block' : 'none';
-      }
-    });
-  });
-
-  // Clear filters
+  // Los filtros quedan siempre visibles; este botón solo limpia los valores cargados.
   const clearBtns = document.querySelectorAll('.btn-clear-filters');
   clearBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -702,10 +690,94 @@ function initFilters() {
         filtersPanel.querySelectorAll('.filter-input').forEach(input => {
           input.value = '';
         });
-        btn.style.display = 'none';
       }
     });
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// CONFIGURACIÓN DE FILTROS (elegir qué filtros preestablecidos mostrar)
+// ─────────────────────────────────────────────────────────────────────
+
+const filterConfigs = {
+  'firmas-individual': [
+    { key: 'fecha', label: 'Fecha', visible: true },
+    { key: 'estado', label: 'Estado', visible: true },
+    { key: 'certificado', label: 'Certificado', visible: true },
+    { key: 'tipo-certificado', label: 'Tipo de certificado', visible: true }
+  ],
+  certificados: [
+    { key: 'resultado', label: 'Resultado', visible: true },
+    { key: 'motivo', label: 'Motivo del error', visible: true }
+  ],
+  usuarios: [
+    { key: 'rol', label: 'Rol', visible: true },
+    { key: 'auth', label: 'Método de autenticación', visible: true }
+  ],
+  actividad: [
+    { key: 'fecha', label: 'Fecha', visible: true },
+    { key: 'usuario', label: 'Usuario', visible: true }
+  ]
+};
+
+const filterPanelSelectors = {
+  'firmas-individual': '#tab-firmas-individual .filters-panel',
+  certificados: '#section-certificados .filters-panel',
+  usuarios: '#section-usuarios .filters-panel',
+  actividad: '#section-actividad .filters-panel'
+};
+
+let currentFilterConfigTable = null;
+
+function applyFilterConfig(tableKey) {
+  const config = filterConfigs[tableKey];
+  const panel = document.querySelector(filterPanelSelectors[tableKey]);
+  if (!config || !panel) return;
+
+  config.forEach(filter => {
+    const item = panel.querySelector(`[data-filter-key="${filter.key}"]`);
+    if (item) item.style.display = filter.visible ? '' : 'none';
+  });
+}
+
+function openFilterConfig(tableKey) {
+  currentFilterConfigTable = tableKey;
+  const config = filterConfigs[tableKey];
+  const list = document.getElementById('filters-config-list');
+
+  list.innerHTML = config.map(filter => `
+    <div class="column-item" data-key="${filter.key}">
+      <input type="checkbox" id="filter-cfg-${tableKey}-${filter.key}" ${filter.visible ? 'checked' : ''}>
+      <label for="filter-cfg-${tableKey}-${filter.key}">${filter.label}</label>
+    </div>
+  `).join('');
+
+  document.getElementById('modal-filters-config').style.display = 'flex';
+}
+
+function saveFilterConfig() {
+  if (!currentFilterConfigTable) return;
+
+  const items = document.querySelectorAll('#filters-config-list .column-item');
+  const previousConfig = filterConfigs[currentFilterConfigTable];
+
+  filterConfigs[currentFilterConfigTable] = Array.from(items).map(item => {
+    const key = item.dataset.key;
+    const checkbox = item.querySelector('input[type="checkbox"]');
+    const original = previousConfig.find(filter => filter.key === key);
+    return { ...original, visible: checkbox.checked };
+  });
+
+  applyFilterConfig(currentFilterConfigTable);
+  document.getElementById('modal-filters-config').style.display = 'none';
+}
+
+function initFiltersConfig() {
+  document.querySelectorAll('.btn-filters-config').forEach(btn => {
+    btn.addEventListener('click', () => openFilterConfig(btn.dataset.table));
+  });
+
+  document.getElementById('btn-save-filters-config').addEventListener('click', saveFilterConfig);
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -936,6 +1008,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initTabs();
   initFilters();
+  initFiltersConfig();
   initColumnConfig();
   initModals();
 
