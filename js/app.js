@@ -836,6 +836,10 @@ function initDateRangePicker() {
 // ─────────────────────────────────────────────────────────────────────
 
 const filterConfigs = {
+  'firmas-individual': [
+    { key: 'estado', label: 'Estado', visible: true },
+    { key: 'certificado', label: 'Certificado', visible: true }
+  ],
   certificados: [
     { key: 'resultado', label: 'Resultado', visible: true },
     { key: 'motivo', label: 'Motivo del error', visible: true }
@@ -851,6 +855,7 @@ const filterConfigs = {
 };
 
 const filterPanelSelectors = {
+  'firmas-individual': '#tab-firmas-individual .toolbar-group',
   certificados: '#section-certificados .filters-panel',
   usuarios: '#section-usuarios .filters-panel',
   actividad: '#section-actividad .filters-panel'
@@ -907,6 +912,37 @@ function initFiltersConfig() {
   });
 
   document.getElementById('btn-save-filters-config').addEventListener('click', saveFilterConfig);
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// MENÚ DE OPCIONES DEL TOOLBAR (⚙ → Filtros / Columnas)
+// ─────────────────────────────────────────────────────────────────────
+
+function initToolbarOptionsMenu() {
+  const btn = document.getElementById('btn-toolbar-options');
+  const menu = document.getElementById('toolbar-options-menu');
+  if (!btn || !menu) return;
+
+  btn.addEventListener('click', event => {
+    event.stopPropagation();
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  });
+
+  menu.addEventListener('click', event => event.stopPropagation());
+
+  document.addEventListener('click', () => {
+    menu.style.display = 'none';
+  });
+
+  menu.querySelector('[data-action="filtros"]').addEventListener('click', () => {
+    menu.style.display = 'none';
+    openFilterConfig('firmas-individual');
+  });
+
+  menu.querySelector('[data-action="columnas"]').addEventListener('click', () => {
+    menu.style.display = 'none';
+    openColumnConfig('firmas-individual');
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -1137,6 +1173,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initFilters();
   initFiltersConfig();
+  initToolbarOptionsMenu();
   initDateRangePicker();
   initColumnConfig();
   initModals();

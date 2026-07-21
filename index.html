@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/buttons.css">
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/panel.css?v=13">
+  <link rel="stylesheet" href="assets/css/panel.css?v=14">
 </head>
 <body>
 
@@ -138,22 +138,44 @@
                   </div>
                 </div>
               </div>
-              <select class="toolbar-pill toolbar-select" aria-label="Estado">
-                <option value="">Estado</option>
-                <option value="firmado">Firmado</option>
-                <option value="pendiente">Por firmar</option>
-                <option value="error">Error en firma</option>
-              </select>
-              <select class="toolbar-pill toolbar-select" aria-label="Certificado">
-                <option value="">Certificado</option>
-                <option value="isaac">Isaac Meneses</option>
-                <option value="maria">María González</option>
-                <option value="carlos">Carlos López</option>
-                <option value="ana">Ana Rodríguez</option>
-              </select>
-              <button class="toolbar-icon-btn btn-column-config" data-table="firmas-individual" aria-label="Configurar columnas">
-                <span class="icon">settings</span>
-              </button>
+              <div class="toolbar-filter-item" data-filter-key="estado">
+                <select class="toolbar-pill toolbar-select" aria-label="Estado">
+                  <option value="">Estado</option>
+                  <option value="firmado">Firmado</option>
+                  <option value="pendiente">Por firmar</option>
+                  <option value="error">Error en firma</option>
+                </select>
+              </div>
+              <div class="toolbar-filter-item" data-filter-key="certificado">
+                <select class="toolbar-pill toolbar-select" aria-label="Certificado">
+                  <option value="">Certificado</option>
+                  <option value="isaac">Isaac Meneses</option>
+                  <option value="maria">María González</option>
+                  <option value="carlos">Carlos López</option>
+                  <option value="ana">Ana Rodríguez</option>
+                </select>
+              </div>
+              <div class="toolbar-gear-wrap">
+                <button type="button" class="toolbar-icon-btn" id="btn-toolbar-options" aria-label="Más opciones">
+                  <span class="icon">settings</span>
+                </button>
+                <div class="toolbar-options-menu" id="toolbar-options-menu" style="display: none;">
+                  <button type="button" class="toolbar-option-item" data-action="filtros">
+                    <span class="toolbar-option-left">
+                      <span class="icon">tune</span>
+                      <span>Filtros</span>
+                    </span>
+                    <span class="icon">chevron_right</span>
+                  </button>
+                  <button type="button" class="toolbar-option-item" data-action="columnas">
+                    <span class="toolbar-option-left">
+                      <span class="icon">view_column</span>
+                      <span>Columnas</span>
+                    </span>
+                    <span class="icon">chevron_right</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -650,7 +672,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=11"></script>
+<script src="js/app.js?v=12"></script>
 
 </body>
 </html>
