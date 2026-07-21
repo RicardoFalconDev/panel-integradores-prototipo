@@ -695,14 +695,75 @@ function initFilters() {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// SELECTOR DE RANGO DE FECHAS (toolbar compacto tipo Figma)
+// SELECTOR DE RANGO DE FECHAS (calendario doble, tipo Figma)
 // ─────────────────────────────────────────────────────────────────────
 
 const shortMonthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+const fullMonthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-function formatShortDate(isoDate) {
-  const [, month, day] = isoDate.split('-');
-  return `${shortMonthNames[parseInt(month, 10) - 1]} ${day}`;
+const calendarState = {
+  start: { year: 2026, month: 6, day: null },
+  end: { year: 2026, month: 6, day: null }
+};
+
+function populateCalendarSelectors(panelKey) {
+  const yearSelect = document.getElementById(`calendar-year-${panelKey}`);
+  const monthSelect = document.getElementById(`calendar-month-${panelKey}`);
+  if (yearSelect.options.length === 0) {
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear - 3; year <= currentYear + 3; year++) {
+      yearSelect.add(new Option(year, year));
+    }
+  }
+  if (monthSelect.options.length === 0) {
+    fullMonthNames.forEach((name, index) => monthSelect.add(new Option(name, index)));
+  }
+}
+
+function renderCalendarPanel(panelKey) {
+  const state = calendarState[panelKey];
+  const yearSelect = document.getElementById(`calendar-year-${panelKey}`);
+  const monthSelect = document.getElementById(`calendar-month-${panelKey}`);
+  const grid = document.getElementById(`calendar-grid-${panelKey}`);
+
+  yearSelect.value = state.year;
+  monthSelect.value = state.month;
+
+  const startWeekday = new Date(state.year, state.month, 1).getDay();
+  grid.innerHTML = '';
+
+  for (let i = 0; i < 42; i++) {
+    const cellDate = new Date(state.year, state.month, i - startWeekday + 1);
+    const isCurrentMonth = cellDate.getMonth() === state.month;
+    const isSelected = isCurrentMonth && state.day === cellDate.getDate();
+
+    const cell = document.createElement('button');
+    cell.type = 'button';
+    cell.className = 'calendar-day' + (isCurrentMonth ? '' : ' calendar-day-muted') + (isSelected ? ' calendar-day-selected' : '');
+    cell.textContent = cellDate.getDate();
+    cell.addEventListener('click', () => {
+      state.year = cellDate.getFullYear();
+      state.month = cellDate.getMonth();
+      state.day = cellDate.getDate();
+      renderCalendarPanel(panelKey);
+    });
+    grid.appendChild(cell);
+  }
+}
+
+function initCalendarPanel(panelKey) {
+  populateCalendarSelectors(panelKey);
+  renderCalendarPanel(panelKey);
+
+  document.getElementById(`calendar-year-${panelKey}`).addEventListener('change', event => {
+    calendarState[panelKey].year = parseInt(event.target.value, 10);
+    renderCalendarPanel(panelKey);
+  });
+
+  document.getElementById(`calendar-month-${panelKey}`).addEventListener('change', event => {
+    calendarState[panelKey].month = parseInt(event.target.value, 10);
+    renderCalendarPanel(panelKey);
+  });
 }
 
 function initDateRangePicker() {
@@ -711,8 +772,9 @@ function initDateRangePicker() {
   if (!btn || !popover) return;
 
   const label = document.getElementById('date-range-label');
-  const desde = document.getElementById('date-range-desde');
-  const hasta = document.getElementById('date-range-hasta');
+
+  initCalendarPanel('start');
+  initCalendarPanel('end');
 
   btn.addEventListener('click', event => {
     event.stopPropagation();
@@ -725,23 +787,29 @@ function initDateRangePicker() {
     popover.style.display = 'none';
   });
 
+  document.getElementById('btn-swap-calendars').addEventListener('click', () => {
+    const temp = { ...calendarState.start };
+    calendarState.start = { ...calendarState.end };
+    calendarState.end = temp;
+    renderCalendarPanel('start');
+    renderCalendarPanel('end');
+  });
+
   document.getElementById('btn-apply-date-range').addEventListener('click', () => {
-    if (desde.value && hasta.value) {
-      label.textContent = `${formatShortDate(desde.value)} - ${formatShortDate(hasta.value)}`;
-    } else if (desde.value) {
-      label.textContent = `Desde ${formatShortDate(desde.value)}`;
-    } else if (hasta.value) {
-      label.textContent = `Hasta ${formatShortDate(hasta.value)}`;
+    const { start, end } = calendarState;
+    if (start.day && end.day) {
+      label.textContent = `${shortMonthNames[start.month]} ${String(start.day).padStart(2, '0')} - ${shortMonthNames[end.month]} ${String(end.day).padStart(2, '0')}`;
+    } else if (start.day) {
+      label.textContent = `Desde ${shortMonthNames[start.month]} ${String(start.day).padStart(2, '0')}`;
+    } else if (end.day) {
+      label.textContent = `Hasta ${shortMonthNames[end.month]} ${String(end.day).padStart(2, '0')}`;
     } else {
       label.textContent = 'Seleccionar fechas';
     }
     popover.style.display = 'none';
   });
 
-  document.getElementById('btn-clear-date-range').addEventListener('click', () => {
-    desde.value = '';
-    hasta.value = '';
-    label.textContent = 'Seleccionar fechas';
+  document.getElementById('btn-cancel-date-range').addEventListener('click', () => {
     popover.style.display = 'none';
   });
 }
