@@ -15,6 +15,7 @@ const demoData = {
       email: 'isacris23@gmail.com',
       auth: 'Email',
       rol: 'Administrador',
+      fechaInvitacion: '2026-07-17 14:32:15',
       avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
     },
     {
@@ -24,6 +25,7 @@ const demoData = {
       email: 'maria.gonzalez@empresa.com',
       auth: 'Email',
       rol: 'Colaborador',
+      fechaInvitacion: '2026-07-17 13:58:00',
       avatar: 'https://randomuser.me/api/portraits/women/1.jpg'
     },
     {
@@ -33,6 +35,7 @@ const demoData = {
       email: 'carlos.lopez@empresa.com',
       auth: 'Email',
       rol: 'Colaborador',
+      fechaInvitacion: '2026-07-16 18:21:00',
       avatar: 'https://randomuser.me/api/portraits/men/5.jpg'
     },
     {
@@ -42,6 +45,7 @@ const demoData = {
       email: 'ana.rodriguez@empresa.com',
       auth: 'Email',
       rol: 'Administrador',
+      fechaInvitacion: '2026-07-12 16:45:00',
       avatar: 'https://randomuser.me/api/portraits/women/8.jpg'
     }
   ],
@@ -446,11 +450,10 @@ function populateUsuariosTable() {
     const row = document.createElement('tr');
 
     row.innerHTML = `
-      <td data-col="nombre">${item.nombre}</td>
-      <td data-col="apellido">${item.apellido}</td>
+      <td data-col="nombre">${item.nombre} ${item.apellido}</td>
       <td data-col="email">${item.email}</td>
-      <td data-col="auth">${item.auth}</td>
-      <td data-col="rol"><span class="badge info">${item.rol}</span></td>
+      <td data-col="invitacion">${item.fechaInvitacion}</td>
+      <td data-col="rol">${item.rol}</td>
       <td data-col="acciones">
         <div class="table-actions">
           <button class="btn-action-menu" aria-label="Más acciones para ${item.nombre} ${item.apellido}" onclick="showUserMenu(event, ${item.id})">
@@ -462,8 +465,6 @@ function populateUsuariosTable() {
 
     tbody.appendChild(row);
   });
-
-  applyColumnConfig('usuarios');
 }
 
 function populateActividadTable() {
@@ -855,10 +856,6 @@ const filterConfigs = {
     { key: 'resultado', label: 'Resultado', visible: true },
     { key: 'motivo', label: 'Motivo del error', visible: true }
   ],
-  usuarios: [
-    { key: 'rol', label: 'Rol', visible: true },
-    { key: 'auth', label: 'Método de autenticación', visible: true }
-  ],
   actividad: [
     { key: 'fecha', label: 'Fecha', visible: true },
     { key: 'usuario', label: 'Usuario', visible: true }
@@ -869,7 +866,6 @@ const filterPanelSelectors = {
   'firmas-individual': '#tab-firmas-individual .toolbar-group',
   'firmas-masiva': '#tab-firmas-masiva .toolbar-group',
   certificados: '#section-certificados .filters-panel',
-  usuarios: '#section-usuarios .filters-panel',
   actividad: '#section-actividad .filters-panel'
 };
 
@@ -983,13 +979,6 @@ const columnConfigs = {
     { key: 'motivo', label: 'Motivo del error', visible: true },
     { key: 'alertas', label: 'Alertas', visible: true }
   ],
-  usuarios: [
-    { key: 'nombre', label: 'Nombre', visible: true },
-    { key: 'apellido', label: 'Apellido', visible: true },
-    { key: 'email', label: 'Email', visible: true },
-    { key: 'auth', label: 'Método de autenticación', visible: true },
-    { key: 'rol', label: 'Rol', visible: true }
-  ],
   actividad: [
     { key: 'usuario', label: 'Usuario', visible: true },
     { key: 'fecha', label: 'Fecha y hora', visible: true },
@@ -1003,7 +992,6 @@ const columnConfigTableSelectors = {
   'firmas-individual': '#tab-firmas-individual .data-table',
   'firmas-masiva': '#tab-firmas-masiva .data-table',
   certificados: '#section-certificados .data-table',
-  usuarios: '#section-usuarios .data-table',
   actividad: '#section-actividad .data-table'
 };
 

@@ -179,6 +179,14 @@ body {
   margin-bottom: 24px;
 }
 
+.section-header-with-action {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .section-header h2 {
   font-weight: 600;
   font-size: 28px;
