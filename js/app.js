@@ -857,7 +857,6 @@ const filterConfigs = {
     { key: 'motivo', label: 'Motivo del error', visible: true }
   ],
   actividad: [
-    { key: 'fecha', label: 'Fecha', visible: true },
     { key: 'usuario', label: 'Usuario', visible: true }
   ]
 };
@@ -866,7 +865,7 @@ const filterPanelSelectors = {
   'firmas-individual': '#tab-firmas-individual .toolbar-group',
   'firmas-masiva': '#tab-firmas-masiva .toolbar-group',
   certificados: '#section-certificados .filters-panel',
-  actividad: '#section-actividad .filters-panel'
+  actividad: '#section-actividad .toolbar-group'
 };
 
 let currentFilterConfigTable = null;
