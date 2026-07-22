@@ -1479,3 +1479,39 @@ body {
   font-size: 32px;
   color: #2b2fd4;
 }
+
+/* ─── Códigos sensibles enmascarados (ej. PIN de revocación) ──────── */
+
+.pin-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pin-masked {
+  font-family: monospace;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.icon-copy-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  color: var(--text-sub);
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.icon-copy-btn:hover {
+  color: var(--blue);
+}
+
+.icon-copy-btn .icon {
+  font-size: 18px;
+}

@@ -147,7 +147,7 @@ const demoData = {
       cuil: '20-96081435-2',
       emision: '15/07/2026',
       vencimiento: '15/07/2028',
-      pinRevocacion: '4821',
+      pinRevocacion: 'A3F9-K2M8-XZ01-QW7R',
       nroSerie: 'CERT-2026-001',
       estado: 'activo'
     },
@@ -157,7 +157,7 @@ const demoData = {
       cuil: '27-34567890-1',
       emision: '10/06/2026',
       vencimiento: '10/06/2028',
-      pinRevocacion: '7093',
+      pinRevocacion: 'B7L2-P9T4-YH35-VC8N',
       nroSerie: 'CERT-2026-002',
       estado: 'revocado'
     },
@@ -167,7 +167,7 @@ const demoData = {
       cuil: '20-30123456-7',
       emision: '10/07/2026',
       vencimiento: '10/07/2028',
-      pinRevocacion: '5567',
+      pinRevocacion: 'D1Q6-R5W0-JK92-ES4X',
       nroSerie: 'CERT-2026-003',
       estado: 'activo'
     },
@@ -177,7 +177,7 @@ const demoData = {
       cuil: '27-28901234-5',
       emision: '20/08/2023',
       vencimiento: '20/08/2025',
-      pinRevocacion: '2214',
+      pinRevocacion: 'F8N3-M7C1-UT60-BL9Y',
       nroSerie: 'CERT-2026-004',
       estado: 'vencido'
     }
@@ -414,6 +414,47 @@ function populateFirmasMasivasTable() {
   applyToolbarFilters(document.getElementById('tab-firmas-masiva'));
 }
 
+// Muestra solo los primeros caracteres de un código sensible (ej. PIN de
+// revocación) y oculta el resto con bullets, para no exponerlo completo.
+function maskSensitiveCode(code, visibleChars = 4) {
+  if (!code || code.length <= visibleChars) return code;
+  return code.slice(0, visibleChars) + '…';
+}
+
+function fallbackCopyToClipboard(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+  } catch (error) {
+    // Si tampoco funciona el método de respaldo, no hay más alternativas sin permisos.
+  }
+  document.body.removeChild(textarea);
+}
+
+function copySensitiveCode(code, btn) {
+  const showCopiedFeedback = () => {
+    const icon = btn.querySelector('.icon');
+    const original = icon.textContent;
+    icon.textContent = 'check';
+    setTimeout(() => { icon.textContent = original; }, 1500);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(showCopiedFeedback).catch(() => {
+      fallbackCopyToClipboard(code);
+      showCopiedFeedback();
+    });
+  } else {
+    fallbackCopyToClipboard(code);
+    showCopiedFeedback();
+  }
+}
+
 function populateCertificadosTable() {
   const tbody = document.querySelector('#section-certificados .data-table tbody');
   if (!tbody) return;
@@ -437,7 +478,14 @@ function populateCertificadosTable() {
       <td data-col="cuil">${item.cuil}</td>
       <td data-col="vencimiento">${item.vencimiento}</td>
       <td data-col="emision">${item.emision}</td>
-      <td data-col="pin">${item.pinRevocacion}</td>
+      <td data-col="pin">
+        <div class="pin-cell">
+          <span class="pin-masked">${maskSensitiveCode(item.pinRevocacion)}</span>
+          <button type="button" class="icon-copy-btn" aria-label="Copiar PIN de revocación" onclick="copySensitiveCode('${item.pinRevocacion}', this)">
+            <span class="icon">content_copy</span>
+          </button>
+        </div>
+      </td>
       <td data-col="serie">${item.nroSerie}</td>
       <td data-col="estado"><span class="badge ${estadoBadgeClass}">${estadoCertLabels[item.estado]}</span></td>
       <td data-col="acciones">
@@ -655,7 +703,12 @@ function showCertificadoDetalle(id) {
     </div>
     <div class="profile-field">
       <label>PIN de revocación</label>
-      <p>${item.pinRevocacion}</p>
+      <p class="pin-cell">
+        <span class="pin-masked">${maskSensitiveCode(item.pinRevocacion)}</span>
+        <button type="button" class="icon-copy-btn" aria-label="Copiar PIN de revocación" onclick="copySensitiveCode('${item.pinRevocacion}', this)">
+          <span class="icon">content_copy</span>
+        </button>
+      </p>
     </div>
     <div class="profile-field">
       <label>Nro de serie</label>
