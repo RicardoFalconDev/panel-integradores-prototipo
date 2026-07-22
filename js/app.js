@@ -143,39 +143,39 @@ const demoData = {
   certificados: [
     {
       id: 1,
-      persona: 'Isaac Cristian Meneses',
-      resultado: 'exito',
-      idCert: 'CERT-2026-001',
-      fechaEmision: '2026-07-15 10:20:00',
-      motivo: '—',
-      alertas: null
+      nombre: 'Isaac Cristian Meneses',
+      cuil: '20-96081435-2',
+      emision: '15/07/2026',
+      vencimiento: '15/07/2028',
+      pinRevocacion: '4821',
+      nroSerie: 'CERT-2026-001'
     },
     {
       id: 2,
-      persona: 'María González',
-      resultado: 'error',
-      idCert: 'CERT-2026-002',
-      fechaEmision: '—',
-      motivo: 'Datos inconsistentes',
-      alertas: 'Alerta crítica'
+      nombre: 'María González',
+      cuil: '27-34567890-1',
+      emision: '10/06/2026',
+      vencimiento: '10/06/2028',
+      pinRevocacion: '7093',
+      nroSerie: 'CERT-2026-002'
     },
     {
       id: 3,
-      persona: 'Carlos López',
-      resultado: 'exito',
-      idCert: 'CERT-2026-003',
-      fechaEmision: '2026-07-10 09:15:00',
-      motivo: '—',
-      alertas: null
+      nombre: 'Carlos López',
+      cuil: '20-30123456-7',
+      emision: '10/07/2026',
+      vencimiento: '10/07/2028',
+      pinRevocacion: '5567',
+      nroSerie: 'CERT-2026-003'
     },
     {
       id: 4,
-      persona: 'Ana Rodríguez',
-      resultado: 'exito',
-      idCert: 'CERT-2026-004',
-      fechaEmision: '2025-08-20 14:40:00',
-      motivo: '—',
-      alertas: 'Vence en 30 días'
+      nombre: 'Ana Rodríguez',
+      cuil: '27-28901234-5',
+      emision: '20/08/2025',
+      vencimiento: '20/08/2027',
+      pinRevocacion: '2214',
+      nroSerie: 'CERT-2026-004'
     }
   ],
 
@@ -410,32 +410,25 @@ function populateCertificadosTable() {
   data.forEach(item => {
     const row = document.createElement('tr');
 
-    const resultadoBadgeClass = item.resultado === 'exito' ? 'success' : 'error';
-    const resultadoLabel = item.resultado === 'exito' ? 'Éxito' : 'Error';
-
-    let alertaCell = '<span class="no-alert">—</span>';
-    if (item.alertas) {
-      const alertaBadgeClass = item.alertas === 'Alerta crítica' ? 'error' : 'warning';
-      alertaCell = `<span class="badge ${alertaBadgeClass}">${item.alertas}</span>`;
-    }
-
     row.innerHTML = `
-      <td data-col="persona">${item.persona}</td>
-      <td data-col="resultado"><span class="badge ${resultadoBadgeClass}">${resultadoLabel}</span></td>
-      <td data-col="id-cert">${item.idCert}</td>
-      <td data-col="motivo">${item.motivo}</td>
-      <td data-col="alertas">${alertaCell}</td>
+      <td data-col="nombre">${item.nombre}</td>
+      <td data-col="cuil">${item.cuil}</td>
+      <td data-col="vencimiento">${item.vencimiento}</td>
+      <td data-col="emision">${item.emision}</td>
+      <td data-col="pin">${item.pinRevocacion}</td>
+      <td data-col="serie">${item.nroSerie}</td>
       <td data-col="acciones">
         <div class="table-actions">
-          <button class="btn-action" onclick="showCertificadoDetalle(${item.id})">Ver certificado</button>
+          <button class="btn-action-pill" onclick="showCertificadoDetalle(${item.id})">Mostrar detalles</button>
+          <button class="btn-action-menu" aria-label="Más acciones para ${item.nombre}" onclick="showCertMenu(event, ${item.id})">
+            <span class="icon">more_vert</span>
+          </button>
         </div>
       </td>
     `;
 
     tbody.appendChild(row);
   });
-
-  applyColumnConfig('certificados');
 }
 
 function populateUsuariosTable() {
@@ -603,40 +596,93 @@ function showCertificadoDetalle(id) {
   const item = demoData.certificados.find(c => c.id === id);
   if (!item) return;
 
-  const resultadoBadgeClass = item.resultado === 'exito' ? 'success' : 'error';
-  const resultadoLabel = item.resultado === 'exito' ? 'Éxito' : 'Error';
-  const alertaHtml = item.alertas
-    ? `<span class="badge ${item.alertas === 'Alerta crítica' ? 'error' : 'warning'}">${item.alertas}</span>`
-    : '<span class="no-alert">—</span>';
-
   document.getElementById('certificado-detalle-body').innerHTML = `
     <div class="profile-field">
-      <label>Persona</label>
-      <p>${item.persona}</p>
+      <label>Nombre</label>
+      <p>${item.nombre}</p>
     </div>
     <div class="profile-field">
-      <label>Resultado</label>
-      <p><span class="badge ${resultadoBadgeClass}">${resultadoLabel}</span></p>
+      <label>CUIL</label>
+      <p>${item.cuil}</p>
     </div>
     <div class="profile-field">
-      <label>ID del certificado</label>
-      <p>${item.idCert}</p>
+      <label>Vencimiento</label>
+      <p>${item.vencimiento}</p>
     </div>
     <div class="profile-field">
-      <label>Fecha de emisión</label>
-      <p>${item.fechaEmision}</p>
+      <label>Emisión</label>
+      <p>${item.emision}</p>
     </div>
     <div class="profile-field">
-      <label>Motivo del error</label>
-      <p>${item.motivo}</p>
+      <label>PIN de revocación</label>
+      <p>${item.pinRevocacion}</p>
     </div>
     <div class="profile-field">
-      <label>Alertas</label>
-      <p>${alertaHtml}</p>
+      <label>Nro de serie</label>
+      <p>${item.nroSerie}</p>
     </div>
   `;
 
   document.getElementById('modal-certificado-detalle').style.display = 'flex';
+}
+
+let currentCertMenuId = null;
+
+function showCertMenu(event, certId) {
+  event.preventDefault();
+  const modal = document.getElementById('modal-cert-menu');
+  const content = modal ? modal.querySelector('.modal-content') : null;
+  if (modal && content) {
+    currentCertMenuId = certId;
+
+    const rect = event.target.closest('button').getBoundingClientRect();
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'flex-start';
+    modal.style.alignItems = 'flex-start';
+    content.style.position = 'fixed';
+    content.style.top = rect.bottom + 8 + 'px';
+    content.style.left = rect.left - 180 + 'px';
+    content.style.margin = '0';
+  }
+}
+
+function openRevokeCertModal(certId) {
+  const item = demoData.certificados.find(c => c.id === certId);
+  if (!item) return;
+
+  document.getElementById('revoke-cert-message').textContent =
+    `¿Revocar el certificado de ${item.nombre} (${item.nroSerie})? No vas a poder deshacer esta acción.`;
+
+  const overlay = document.getElementById('modal-revoke-cert');
+  overlay.dataset.certId = certId;
+  overlay.classList.add('visible');
+}
+
+function initCertActionModals() {
+  document.querySelectorAll('#modal-cert-menu .action-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.getElementById('modal-cert-menu').style.display = 'none';
+      if (item.dataset.action === 'revocar-certificado') {
+        openRevokeCertModal(currentCertMenuId);
+      }
+    });
+  });
+
+  const revokeOverlay = document.getElementById('modal-revoke-cert');
+  const closeRevokeModal = () => revokeOverlay.classList.remove('visible');
+
+  document.getElementById('btn-cancel-revoke-cert').addEventListener('click', closeRevokeModal);
+  document.getElementById('btn-close-revoke-cert').addEventListener('click', closeRevokeModal);
+  revokeOverlay.addEventListener('click', event => {
+    if (event.target === revokeOverlay) closeRevokeModal();
+  });
+
+  document.getElementById('btn-confirm-revoke-cert').addEventListener('click', () => {
+    const certId = parseInt(revokeOverlay.dataset.certId, 10);
+    demoData.certificados = demoData.certificados.filter(c => c.id !== certId);
+    populateCertificadosTable();
+    closeRevokeModal();
+  });
 }
 
 function showActividadDetalle(id) {
@@ -868,17 +914,12 @@ const filterConfigs = {
   'firmas-masiva': [
     { key: 'estado', label: 'Estado', visible: true },
     { key: 'certificado', label: 'Certificado', visible: true }
-  ],
-  certificados: [
-    { key: 'resultado', label: 'Resultado', visible: true },
-    { key: 'motivo', label: 'Motivo del error', visible: true }
   ]
 };
 
 const filterPanelSelectors = {
   'firmas-individual': '#tab-firmas-individual .toolbar-group',
-  'firmas-masiva': '#tab-firmas-masiva .toolbar-group',
-  certificados: '#section-certificados .filters-panel'
+  'firmas-masiva': '#tab-firmas-masiva .toolbar-group'
 };
 
 let currentFilterConfigTable = null;
@@ -992,20 +1033,12 @@ const columnConfigs = {
     { key: 'total', label: 'Cantidad de documentos', visible: true },
     { key: 'certificado', label: 'Certificado', visible: true },
     { key: 'estado', label: 'Estado', visible: true }
-  ],
-  certificados: [
-    { key: 'persona', label: 'Persona', visible: true },
-    { key: 'resultado', label: 'Resultado', visible: true },
-    { key: 'id-cert', label: 'ID del certificado', visible: true },
-    { key: 'motivo', label: 'Motivo del error', visible: true },
-    { key: 'alertas', label: 'Alertas', visible: true }
   ]
 };
 
 const columnConfigTableSelectors = {
   'firmas-individual': '#tab-firmas-individual .data-table',
-  'firmas-masiva': '#tab-firmas-masiva .data-table',
-  certificados: '#section-certificados .data-table'
+  'firmas-masiva': '#tab-firmas-masiva .data-table'
 };
 
 let currentColumnConfigTable = null;
@@ -1284,6 +1317,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initColumnConfig();
   initModals();
   initUserActionModals();
+  initCertActionModals();
 
   // Mostrar sección inicial
   showSection('firmas');

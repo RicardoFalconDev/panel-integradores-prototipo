@@ -318,49 +318,26 @@
     <section class="section" id="section-certificados">
       <div class="section-header">
         <h2>Emisión de Certificados</h2>
-        <p class="section-subtitle">Consultá el resultado de cada certificado emitido.</p>
+        <p class="section-subtitle">Consultá y gestioná los certificados emitidos.</p>
       </div>
 
       <div class="table-wrapper">
-        <div class="table-toolbar">
-          <button class="btn-filters-config" data-table="certificados">
-            <span class="icon">tune</span>
-            <span>Configurar filtros</span>
-          </button>
-          <button class="btn-clear-filters">
-            <span>Limpiar filtros</span>
-          </button>
-          <button class="btn-column-config" data-table="certificados">
-            <span class="icon">settings</span>
-            <span>Columnas</span>
-          </button>
-        </div>
-
-        <div class="filters-panel">
-          <div class="filters-grid">
-            <div class="filter-item" data-filter-key="resultado">
-              <label>Resultado</label>
-              <select class="filter-input" data-filter="resultado">
-                <option value="">Todos</option>
-                <option value="exito">Éxito</option>
-                <option value="error">Error</option>
-              </select>
-            </div>
-            <div class="filter-item" data-filter-key="motivo">
-              <label>Motivo del error</label>
-              <input type="text" class="filter-input" placeholder="Buscar por motivo" data-filter="motivo">
-            </div>
+        <div class="toolbar-v2">
+          <div class="toolbar-search">
+            <span class="icon">search</span>
+            <input type="text" placeholder="Buscar certificados" aria-label="Buscar certificados">
           </div>
         </div>
 
         <table class="data-table">
           <thead>
             <tr>
-              <th data-col="persona">Persona</th>
-              <th data-col="resultado">Resultado</th>
-              <th data-col="id-cert">ID del certificado</th>
-              <th data-col="motivo">Motivo del error</th>
-              <th data-col="alertas">Alertas</th>
+              <th data-col="nombre">Nombre</th>
+              <th data-col="cuil">CUIL</th>
+              <th data-col="vencimiento">Vencimiento</th>
+              <th data-col="emision">Emisión</th>
+              <th data-col="pin">PIN de revocación</th>
+              <th data-col="serie">Nro de serie</th>
               <th data-col="acciones">Acciones</th>
             </tr>
           </thead>
@@ -368,12 +345,6 @@
             <!-- Rows populated by JS -->
           </tbody>
         </table>
-
-        <div class="pagination">
-          <button class="btn-prev" aria-label="Página anterior"><span class="icon">chevron_left</span></button>
-          <span class="page-info">Página <strong>1</strong> de <strong>4</strong></span>
-          <button class="btn-next" aria-label="Página siguiente"><span class="icon">chevron_right</span></button>
-        </div>
       </div>
     </section>
 
@@ -772,6 +743,36 @@
   </div>
 </div>
 
+<!-- Menú (⋯) de acciones de certificado -->
+<div class="modal modal-transparent" id="modal-cert-menu" style="display: none;">
+  <div class="modal-content modal-actions">
+    <button class="action-item danger" data-action="revocar-certificado">
+      <span class="icon">block</span>
+      <span>Revocar certificado</span>
+    </button>
+  </div>
+</div>
+
+<!-- Modal: Revocar Certificado (confirmación destructiva) -->
+<div class="exit-modal-overlay" id="modal-revoke-cert">
+  <div class="exit-modal">
+    <button class="exit-modal-close" type="button" id="btn-close-revoke-cert" aria-label="Cerrar">
+      <span class="icon">close</span>
+    </button>
+    <div class="exit-modal-icon">
+      <span class="icon">block</span>
+    </div>
+    <h3 class="exit-modal-title">Revocar certificado</h3>
+    <p class="exit-modal-body" id="revoke-cert-message">¿Revocar este certificado? No vas a poder deshacer esta acción.</p>
+    <button class="exit-modal-btn-primary" type="button" id="btn-cancel-revoke-cert">
+      <span>Cancelar</span>
+    </button>
+    <button class="exit-modal-btn-secondary" type="button" id="btn-confirm-revoke-cert">
+      <span>Revocar certificado</span>
+    </button>
+  </div>
+</div>
+
 <!-- Modal: Detalle de la firma -->
 <div class="modal" id="modal-firma-detalle" style="display: none;">
   <div class="card-wrap">
@@ -832,7 +833,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=21"></script>
+<script src="js/app.js?v=22"></script>
 
 </body>
 </html>
