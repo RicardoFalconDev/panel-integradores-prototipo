@@ -385,10 +385,8 @@ body {
 }
 
 .date-range-popover {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  z-index: 50;
+  position: fixed;
+  z-index: 200;
   width: max-content;
   background: #fff;
   border: 1px solid var(--border-card);
@@ -602,10 +600,8 @@ body {
 }
 
 .toolbar-options-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  z-index: 50;
+  position: fixed;
+  z-index: 200;
   width: 236px;
   background: #fff;
   border: 1px solid var(--border-hdr);

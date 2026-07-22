@@ -793,7 +793,15 @@ function initDateRangePicker(wrapEl) {
 
   btn.addEventListener('click', event => {
     event.stopPropagation();
-    popover.style.display = popover.style.display === 'none' ? 'flex' : 'none';
+    const isHidden = popover.style.display === 'none' || !popover.style.display;
+    if (isHidden) {
+      const rect = btn.getBoundingClientRect();
+      popover.style.top = rect.bottom + 8 + 'px';
+      popover.style.left = rect.left + 'px';
+      popover.style.display = 'flex';
+    } else {
+      popover.style.display = 'none';
+    }
   });
 
   popover.addEventListener('click', event => event.stopPropagation());
@@ -920,7 +928,16 @@ function initToolbarOptionsMenu(wrapEl) {
 
   btn.addEventListener('click', event => {
     event.stopPropagation();
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    const isHidden = menu.style.display === 'none' || !menu.style.display;
+    if (isHidden) {
+      const rect = btn.getBoundingClientRect();
+      menu.style.top = rect.bottom + 8 + 'px';
+      menu.style.right = (window.innerWidth - rect.right) + 'px';
+      menu.style.left = 'auto';
+      menu.style.display = 'block';
+    } else {
+      menu.style.display = 'none';
+    }
   });
 
   menu.addEventListener('click', event => event.stopPropagation());
