@@ -362,10 +362,15 @@ function populateFiremosTable() {
       </td>
     `;
 
+    row.dataset.estado = item.estado;
+    row.dataset.certificado = nameToSlug(item.certificado);
+    row.dataset.filterText = item.documento.toLowerCase();
+
     tbody.appendChild(row);
   });
 
   applyColumnConfig('firmas-individual');
+  applyToolbarFilters(document.getElementById('tab-firmas-individual'));
 }
 
 function populateFirmasMasivasTable() {
@@ -398,10 +403,15 @@ function populateFirmasMasivasTable() {
       </td>
     `;
 
+    row.dataset.estado = item.estado;
+    row.dataset.certificado = nameToSlug(item.certificado);
+    row.dataset.filterText = item.id.toLowerCase();
+
     tbody.appendChild(row);
   });
 
   applyColumnConfig('firmas-masiva');
+  applyToolbarFilters(document.getElementById('tab-firmas-masiva'));
 }
 
 function populateCertificadosTable() {
@@ -439,10 +449,14 @@ function populateCertificadosTable() {
       </td>
     `;
 
+    row.dataset.estado = item.estado;
+    row.dataset.filterText = `${item.nombre} ${item.cuil} ${item.nroSerie}`.toLowerCase();
+
     tbody.appendChild(row);
   });
 
   applyColumnConfig('certificados');
+  applyToolbarFilters(document.getElementById('section-certificados'));
 }
 
 function populateUsuariosTable() {
@@ -496,8 +510,13 @@ function populateActividadTable() {
       </td>
     `;
 
+    row.dataset.usuario = nameToSlug(item.usuario);
+    row.dataset.filterText = item.usuario.toLowerCase();
+
     tbody.appendChild(row);
   });
+
+  applyToolbarFilters(document.getElementById('section-actividad'));
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -746,6 +765,54 @@ function showActividadDetalle(id) {
 // ─────────────────────────────────────────────────────────────────────
 // FILTROS
 // ─────────────────────────────────────────────────────────────────────
+
+// Convierte un nombre completo (o "CN=Nombre Apellido") al value usado
+// en los selects de Certificado/Usuario, para poder filtrar las filas.
+function nameToSlug(name) {
+  const lower = name.toLowerCase();
+  if (lower.includes('isaac')) return 'isaac';
+  if (lower.includes('maría') || lower.includes('maria')) return 'maria';
+  if (lower.includes('carlos')) return 'carlos';
+  if (lower.includes('ana')) return 'ana';
+  return '';
+}
+
+// Aplica los filtros del toolbar (buscador + selects) mostrando/ocultando
+// filas ya renderizadas. Cada fila se etiqueta al poblar la tabla con
+// data-attributes (data-filter-text, data-estado, data-certificado, etc.)
+// que acá se comparan contra los controles del toolbar.
+function applyToolbarFilters(containerEl) {
+  if (!containerEl) return;
+
+  const searchInput = containerEl.querySelector('.toolbar-search input');
+  const term = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  const selects = containerEl.querySelectorAll('.toolbar-select[data-filter-attr]');
+
+  containerEl.querySelectorAll('.data-table tbody tr').forEach(row => {
+    let visible = !term || (row.dataset.filterText || '').includes(term);
+
+    selects.forEach(select => {
+      if (!visible || !select.value) return;
+      const attr = select.dataset.filterAttr;
+      if (row.dataset[attr] !== select.value) visible = false;
+    });
+
+    row.style.display = visible ? '' : 'none';
+  });
+}
+
+function initToolbarFilters(containerEl) {
+  if (!containerEl) return;
+
+  const searchInput = containerEl.querySelector('.toolbar-search input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => applyToolbarFilters(containerEl));
+  }
+
+  containerEl.querySelectorAll('.toolbar-select[data-filter-attr]').forEach(select => {
+    select.addEventListener('change', () => applyToolbarFilters(containerEl));
+  });
+}
 
 function initFilters() {
   // Los filtros quedan siempre visibles; este botón solo limpia los valores cargados.
@@ -1356,6 +1423,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initFiltersConfig();
   document.querySelectorAll('.toolbar-gear-wrap').forEach(initToolbarOptionsMenu);
   document.querySelectorAll('.toolbar-daterange-wrap').forEach(initDateRangePicker);
+  initToolbarFilters(document.getElementById('tab-firmas-individual'));
+  initToolbarFilters(document.getElementById('tab-firmas-masiva'));
+  initToolbarFilters(document.getElementById('section-certificados'));
+  initToolbarFilters(document.getElementById('section-actividad'));
   initColumnConfig();
   initModals();
   initUserActionModals();
