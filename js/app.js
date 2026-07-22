@@ -390,7 +390,6 @@ function populateFirmasMasivasTable() {
       <td data-col="acciones">
         <div class="table-actions">
           <button class="btn-action-pill" onclick="showLoteDetalle('${item.id}')">Mostrar detalles</button>
-          ${item.errores > 0 ? `<button class="btn-action-pill" onclick="reintentarLote('${item.id}')">Reintentar</button>` : ''}
         </div>
       </td>
     `;
@@ -485,7 +484,7 @@ function populateActividadTable() {
       <td data-col="dispositivo">${item.dispositivo}</td>
       <td data-col="acciones">
         <div class="table-actions">
-          <button class="btn-action" onclick="showActividadDetalle(${item.id})">Ver detalles</button>
+          <button class="btn-action-pill" onclick="showActividadDetalle(${item.id})">Mostrar detalles</button>
         </div>
       </td>
     `;
@@ -581,12 +580,6 @@ function showLoteDetalle(id) {
   `;
 
   document.getElementById('modal-lote-detalle').style.display = 'flex';
-}
-
-function reintentarLote(id) {
-  if (confirm('¿Reintentar todos los documentos con error de este lote?')) {
-    alert(`Reintentando los documentos con error del lote ${id}.`);
-  }
 }
 
 function reintentarDocumento(loteId, index) {
