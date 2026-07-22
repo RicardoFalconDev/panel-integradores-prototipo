@@ -419,7 +419,6 @@ function populateCertificadosTable() {
       <td data-col="serie">${item.nroSerie}</td>
       <td data-col="acciones">
         <div class="table-actions">
-          <button class="btn-action-pill" onclick="showCertificadoDetalle(${item.id})">Mostrar detalles</button>
           <button class="btn-action-menu" aria-label="Más acciones para ${item.nombre}" onclick="showCertMenu(event, ${item.id})">
             <span class="icon">more_vert</span>
           </button>
@@ -662,7 +661,9 @@ function initCertActionModals() {
   document.querySelectorAll('#modal-cert-menu .action-item').forEach(item => {
     item.addEventListener('click', () => {
       document.getElementById('modal-cert-menu').style.display = 'none';
-      if (item.dataset.action === 'revocar-certificado') {
+      if (item.dataset.action === 'mostrar-detalles') {
+        showCertificadoDetalle(currentCertMenuId);
+      } else if (item.dataset.action === 'revocar-certificado') {
         openRevokeCertModal(currentCertMenuId);
       }
     });
