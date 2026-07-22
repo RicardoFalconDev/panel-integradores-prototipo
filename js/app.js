@@ -1137,11 +1137,15 @@ function initModals() {
   }
 }
 
+let currentUserMenuId = null;
+
 function showUserMenu(event, userId) {
   event.preventDefault();
   const modal = document.getElementById('modal-user-menu');
   const content = modal ? modal.querySelector('.modal-content') : null;
   if (modal && content) {
+    currentUserMenuId = userId;
+
     // El overlay cubre toda la pantalla (para poder cerrar al hacer clic afuera);
     // solo el menú se posiciona cerca del botón que lo abrió.
     const rect = event.target.closest('button').getBoundingClientRect();
@@ -1152,16 +1156,105 @@ function showUserMenu(event, userId) {
     content.style.top = rect.bottom + 8 + 'px';
     content.style.left = rect.left - 200 + 'px';
     content.style.margin = '0';
-
-    // Cerrar al hacer clic en una acción
-    modal.querySelectorAll('.action-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const action = item.textContent.trim();
-        alert(`Acción: ${action} para usuario ${userId}`);
-        modal.style.display = 'none';
-      });
-    });
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// MODALES DE ACCIONES DE USUARIO (Editar datos / Cambiar rol / Eliminar)
+// ─────────────────────────────────────────────────────────────────────
+
+function openEditUserModal(userId) {
+  const user = demoData.usuarios.find(u => u.id === userId);
+  if (!user) return;
+
+  document.getElementById('edit-user-nombre').value = user.nombre;
+  document.getElementById('edit-user-apellido').value = user.apellido;
+  document.getElementById('edit-user-email').value = user.email;
+
+  const modal = document.getElementById('modal-edit-user');
+  modal.dataset.userId = userId;
+  modal.style.display = 'flex';
+}
+
+function openChangeRoleModal(userId) {
+  const user = demoData.usuarios.find(u => u.id === userId);
+  if (!user) return;
+
+  document.getElementById('change-role-select').value = user.rol;
+
+  const modal = document.getElementById('modal-change-role');
+  modal.dataset.userId = userId;
+  modal.style.display = 'flex';
+}
+
+function openDeleteUserModal(userId) {
+  const user = demoData.usuarios.find(u => u.id === userId);
+  if (!user) return;
+
+  document.getElementById('delete-user-message').textContent =
+    `¿Eliminar a ${user.nombre} ${user.apellido} del equipo? No vas a poder deshacer esta acción.`;
+
+  const overlay = document.getElementById('modal-delete-user');
+  overlay.dataset.userId = userId;
+  overlay.classList.add('visible');
+}
+
+function initUserActionModals() {
+  // Menú (⋯): cada acción cierra el menú y abre su modal correspondiente
+  document.querySelectorAll('#modal-user-menu .action-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.getElementById('modal-user-menu').style.display = 'none';
+      const userId = currentUserMenuId;
+      const action = item.dataset.action;
+      if (action === 'editar-datos') openEditUserModal(userId);
+      else if (action === 'cambiar-rol') openChangeRoleModal(userId);
+      else if (action === 'eliminar-usuario') openDeleteUserModal(userId);
+    });
+  });
+
+  // Editar datos
+  document.getElementById('form-edit-user').addEventListener('submit', event => {
+    event.preventDefault();
+    const modal = document.getElementById('modal-edit-user');
+    const user = demoData.usuarios.find(u => u.id === parseInt(modal.dataset.userId, 10));
+    if (user) {
+      user.nombre = document.getElementById('edit-user-nombre').value;
+      user.apellido = document.getElementById('edit-user-apellido').value;
+      user.email = document.getElementById('edit-user-email').value;
+      populateUsuariosTable();
+    }
+    modal.style.display = 'none';
+  });
+
+  // Cambiar rol
+  document.getElementById('form-change-role').addEventListener('submit', event => {
+    event.preventDefault();
+    const modal = document.getElementById('modal-change-role');
+    const user = demoData.usuarios.find(u => u.id === parseInt(modal.dataset.userId, 10));
+    if (user) {
+      user.rol = document.getElementById('change-role-select').value;
+      populateUsuariosTable();
+    }
+    modal.style.display = 'none';
+  });
+
+  // Eliminar usuario
+  const deleteOverlay = document.getElementById('modal-delete-user');
+
+  const closeDeleteModal = () => deleteOverlay.classList.remove('visible');
+
+  document.getElementById('btn-cancel-delete-user').addEventListener('click', closeDeleteModal);
+  document.getElementById('btn-close-delete-user').addEventListener('click', closeDeleteModal);
+  deleteOverlay.addEventListener('click', event => {
+    if (event.target === deleteOverlay) closeDeleteModal();
+  });
+
+  document.getElementById('btn-confirm-delete-user').addEventListener('click', () => {
+    const userId = parseInt(deleteOverlay.dataset.userId, 10);
+    demoData.usuarios = demoData.usuarios.filter(u => u.id !== userId);
+    populateUsuariosTable();
+    closeDeleteModal();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -1177,6 +1270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.toolbar-daterange-wrap').forEach(initDateRangePicker);
   initColumnConfig();
   initModals();
+  initUserActionModals();
 
   // Mostrar sección inicial
   showSection('firmas');

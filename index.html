@@ -16,7 +16,8 @@
   <link rel="stylesheet" href="assets/css/buttons.css">
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/panel.css?v=17">
+  <link rel="stylesheet" href="assets/css/exit-modal.css">
+  <link rel="stylesheet" href="assets/css/panel.css?v=18">
 </head>
 <body>
 
@@ -643,16 +644,111 @@
 <!-- Modal: Menu de Usuario (⋯) -->
 <div class="modal modal-transparent" id="modal-user-menu" style="display: none;">
   <div class="modal-content modal-actions">
-    <button class="action-item">
+    <button class="action-item" data-action="editar-datos">
       <span class="icon">edit</span>
       <span>Editar datos</span>
     </button>
-    <button class="action-item">
+    <button class="action-item" data-action="cambiar-rol">
       <span class="icon">manage_accounts</span>
       <span>Cambiar rol</span>
     </button>
-    <button class="action-item danger">
+    <button class="action-item danger" data-action="eliminar-usuario">
       <span class="icon">delete</span>
+      <span>Eliminar usuario</span>
+    </button>
+  </div>
+</div>
+
+<!-- Modal: Editar Datos de Usuario -->
+<div class="modal" id="modal-edit-user" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Editar datos</h3>
+      <button class="modal-close" type="button" aria-label="Cerrar">
+        <span class="icon">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="form-edit-user">
+        <div class="field-group">
+          <label class="field-label">Nombre</label>
+          <div class="input-wrap">
+            <input type="text" id="edit-user-nombre" required>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Apellido</label>
+          <div class="input-wrap">
+            <input type="text" id="edit-user-apellido" required>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Email</label>
+          <div class="input-wrap">
+            <input type="email" id="edit-user-email" required>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" style="flex: 1;">
+            <span>Guardar</span>
+          </button>
+          <button type="button" class="btn-outline modal-close" style="flex: 1;">
+            <span>Cancelar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Cambiar Rol -->
+<div class="modal" id="modal-change-role" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Cambiar rol</h3>
+      <button class="modal-close" type="button" aria-label="Cerrar">
+        <span class="icon">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="form-change-role">
+        <div class="field-group">
+          <label class="field-label">Rol</label>
+          <div class="sel-wrap">
+            <select class="field-select selected" id="change-role-select" required>
+              <option value="Administrador">Administrador</option>
+              <option value="Colaborador">Colaborador</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" style="flex: 1;">
+            <span>Guardar</span>
+          </button>
+          <button type="button" class="btn-outline modal-close" style="flex: 1;">
+            <span>Cancelar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Eliminar Usuario (confirmación destructiva) -->
+<div class="exit-modal-overlay" id="modal-delete-user">
+  <div class="exit-modal">
+    <button class="exit-modal-close" type="button" id="btn-close-delete-user" aria-label="Cerrar">
+      <span class="icon">close</span>
+    </button>
+    <div class="exit-modal-icon">
+      <span class="icon">delete</span>
+    </div>
+    <h3 class="exit-modal-title">Eliminar usuario</h3>
+    <p class="exit-modal-body" id="delete-user-message">¿Eliminar a este usuario del equipo? No vas a poder deshacer esta acción.</p>
+    <button class="exit-modal-btn-primary" type="button" id="btn-cancel-delete-user">
+      <span>Cancelar</span>
+    </button>
+    <button class="exit-modal-btn-secondary" type="button" id="btn-confirm-delete-user">
       <span>Eliminar usuario</span>
     </button>
   </div>
@@ -718,7 +814,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=14"></script>
+<script src="js/app.js?v=15"></script>
 
 </body>
 </html>

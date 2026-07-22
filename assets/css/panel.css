@@ -1476,3 +1476,10 @@ body {
     text-align: center;
   }
 }
+
+/* ─── Ajuste del ícono del exit-modal (reutiliza Material Symbols Outlined) ── */
+
+.exit-modal-icon .icon {
+  font-size: 32px;
+  color: #2b2fd4;
+}
