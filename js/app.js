@@ -795,10 +795,12 @@ function initDateRangePicker(wrapEl) {
   if (!btn || !popover) return;
 
   const label = wrapEl.querySelector('.date-range-label');
+  const today = new Date();
+  const nextMonthDate = new Date(today.getFullYear(), today.getMonth() + 1, 1);
   calendarState[instanceId] = {
     display: {
-      start: { year: 2026, month: 6 },
-      end: { year: 2026, month: 6 }
+      start: { year: today.getFullYear(), month: today.getMonth() },
+      end: { year: nextMonthDate.getFullYear(), month: nextMonthDate.getMonth() }
     },
     range: { start: null, end: null }
   };
