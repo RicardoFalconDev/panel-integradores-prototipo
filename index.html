@@ -327,6 +327,37 @@
             <span class="icon">search</span>
             <input type="text" placeholder="Buscar certificados" aria-label="Buscar certificados">
           </div>
+          <div class="toolbar-group">
+            <div class="toolbar-filter-item" data-filter-key="estado">
+              <select class="toolbar-pill toolbar-select" aria-label="Estado">
+                <option value="">Estado</option>
+                <option value="activo">Activo</option>
+                <option value="revocado">Revocado</option>
+                <option value="vencido">Vencido</option>
+              </select>
+            </div>
+            <div class="toolbar-gear-wrap" data-instance="certificados">
+              <button type="button" class="toolbar-icon-btn" data-gear-trigger aria-label="Más opciones">
+                <span class="icon">settings</span>
+              </button>
+              <div class="toolbar-options-menu" data-gear-menu style="display: none;">
+                <button type="button" class="toolbar-option-item" data-action="filtros">
+                  <span class="toolbar-option-left">
+                    <span class="icon">tune</span>
+                    <span>Filtros</span>
+                  </span>
+                  <span class="icon">chevron_right</span>
+                </button>
+                <button type="button" class="toolbar-option-item" data-action="columnas">
+                  <span class="toolbar-option-left">
+                    <span class="icon">view_column</span>
+                    <span>Columnas</span>
+                  </span>
+                  <span class="icon">chevron_right</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <table class="data-table">
@@ -338,6 +369,7 @@
               <th data-col="emision">Emisión</th>
               <th data-col="pin">PIN de revocación</th>
               <th data-col="serie">Nro de serie</th>
+              <th data-col="estado">Estado</th>
               <th data-col="acciones">Acciones</th>
             </tr>
           </thead>
@@ -837,7 +869,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=23"></script>
+<script src="js/app.js?v=24"></script>
 
 </body>
 </html>

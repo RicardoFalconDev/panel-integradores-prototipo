@@ -148,7 +148,8 @@ const demoData = {
       emision: '15/07/2026',
       vencimiento: '15/07/2028',
       pinRevocacion: '4821',
-      nroSerie: 'CERT-2026-001'
+      nroSerie: 'CERT-2026-001',
+      estado: 'activo'
     },
     {
       id: 2,
@@ -157,7 +158,8 @@ const demoData = {
       emision: '10/06/2026',
       vencimiento: '10/06/2028',
       pinRevocacion: '7093',
-      nroSerie: 'CERT-2026-002'
+      nroSerie: 'CERT-2026-002',
+      estado: 'revocado'
     },
     {
       id: 3,
@@ -166,16 +168,18 @@ const demoData = {
       emision: '10/07/2026',
       vencimiento: '10/07/2028',
       pinRevocacion: '5567',
-      nroSerie: 'CERT-2026-003'
+      nroSerie: 'CERT-2026-003',
+      estado: 'activo'
     },
     {
       id: 4,
       nombre: 'Ana Rodríguez',
       cuil: '27-28901234-5',
-      emision: '20/08/2025',
-      vencimiento: '20/08/2027',
+      emision: '20/08/2023',
+      vencimiento: '20/08/2025',
       pinRevocacion: '2214',
-      nroSerie: 'CERT-2026-004'
+      nroSerie: 'CERT-2026-004',
+      estado: 'vencido'
     }
   ],
 
@@ -407,8 +411,16 @@ function populateCertificadosTable() {
   tbody.innerHTML = '';
   const data = demoData.certificados;
 
+  const estadoCertLabels = {
+    activo: 'Activo',
+    revocado: 'Revocado',
+    vencido: 'Vencido'
+  };
+
   data.forEach(item => {
     const row = document.createElement('tr');
+
+    const estadoBadgeClass = item.estado === 'activo' ? 'success' : item.estado === 'revocado' ? 'error' : 'warning';
 
     row.innerHTML = `
       <td data-col="nombre">${item.nombre}</td>
@@ -417,6 +429,7 @@ function populateCertificadosTable() {
       <td data-col="emision">${item.emision}</td>
       <td data-col="pin">${item.pinRevocacion}</td>
       <td data-col="serie">${item.nroSerie}</td>
+      <td data-col="estado"><span class="badge ${estadoBadgeClass}">${estadoCertLabels[item.estado]}</span></td>
       <td data-col="acciones">
         <div class="table-actions">
           <button class="btn-action-menu" aria-label="Más acciones para ${item.nombre}" onclick="showCertMenu(event, ${item.id})">
@@ -428,6 +441,8 @@ function populateCertificadosTable() {
 
     tbody.appendChild(row);
   });
+
+  applyColumnConfig('certificados');
 }
 
 function populateUsuariosTable() {
@@ -595,7 +610,14 @@ function showCertificadoDetalle(id) {
   const item = demoData.certificados.find(c => c.id === id);
   if (!item) return;
 
+  const estadoCertLabels = { activo: 'Activo', revocado: 'Revocado', vencido: 'Vencido' };
+  const estadoBadgeClass = item.estado === 'activo' ? 'success' : item.estado === 'revocado' ? 'error' : 'warning';
+
   document.getElementById('certificado-detalle-body').innerHTML = `
+    <div class="profile-field">
+      <label>Estado</label>
+      <p><span class="badge ${estadoBadgeClass}">${estadoCertLabels[item.estado]}</span></p>
+    </div>
     <div class="profile-field">
       <label>Nombre</label>
       <p>${item.nombre}</p>
@@ -633,6 +655,10 @@ function showCertMenu(event, certId) {
   const content = modal ? modal.querySelector('.modal-content') : null;
   if (modal && content) {
     currentCertMenuId = certId;
+
+    const item = demoData.certificados.find(c => c.id === certId);
+    const revokeBtn = modal.querySelector('[data-action="revocar-certificado"]');
+    revokeBtn.style.display = item && item.estado === 'activo' ? 'flex' : 'none';
 
     const rect = event.target.closest('button').getBoundingClientRect();
     modal.style.display = 'flex';
@@ -680,7 +706,8 @@ function initCertActionModals() {
 
   document.getElementById('btn-confirm-revoke-cert').addEventListener('click', () => {
     const certId = parseInt(revokeOverlay.dataset.certId, 10);
-    demoData.certificados = demoData.certificados.filter(c => c.id !== certId);
+    const item = demoData.certificados.find(c => c.id === certId);
+    if (item) item.estado = 'revocado';
     populateCertificadosTable();
     closeRevokeModal();
   });
@@ -915,12 +942,16 @@ const filterConfigs = {
   'firmas-masiva': [
     { key: 'estado', label: 'Estado', visible: true },
     { key: 'certificado', label: 'Certificado', visible: true }
+  ],
+  certificados: [
+    { key: 'estado', label: 'Estado', visible: true }
   ]
 };
 
 const filterPanelSelectors = {
   'firmas-individual': '#tab-firmas-individual .toolbar-group',
-  'firmas-masiva': '#tab-firmas-masiva .toolbar-group'
+  'firmas-masiva': '#tab-firmas-masiva .toolbar-group',
+  certificados: '#section-certificados .toolbar-group'
 };
 
 let currentFilterConfigTable = null;
@@ -1034,12 +1065,22 @@ const columnConfigs = {
     { key: 'total', label: 'Cantidad de documentos', visible: true },
     { key: 'certificado', label: 'Certificado', visible: true },
     { key: 'estado', label: 'Estado', visible: true }
+  ],
+  certificados: [
+    { key: 'nombre', label: 'Nombre', visible: true },
+    { key: 'cuil', label: 'CUIL', visible: true },
+    { key: 'vencimiento', label: 'Vencimiento', visible: true },
+    { key: 'emision', label: 'Emisión', visible: true },
+    { key: 'pin', label: 'PIN de revocación', visible: true },
+    { key: 'serie', label: 'Nro de serie', visible: true },
+    { key: 'estado', label: 'Estado', visible: true }
   ]
 };
 
 const columnConfigTableSelectors = {
   'firmas-individual': '#tab-firmas-individual .data-table',
-  'firmas-masiva': '#tab-firmas-masiva .data-table'
+  'firmas-masiva': '#tab-firmas-masiva .data-table',
+  certificados: '#section-certificados .data-table'
 };
 
 let currentColumnConfigTable = null;
