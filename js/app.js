@@ -492,8 +492,6 @@ function populateActividadTable() {
 
     tbody.appendChild(row);
   });
-
-  applyColumnConfig('actividad');
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -855,17 +853,13 @@ const filterConfigs = {
   certificados: [
     { key: 'resultado', label: 'Resultado', visible: true },
     { key: 'motivo', label: 'Motivo del error', visible: true }
-  ],
-  actividad: [
-    { key: 'usuario', label: 'Usuario', visible: true }
   ]
 };
 
 const filterPanelSelectors = {
   'firmas-individual': '#tab-firmas-individual .toolbar-group',
   'firmas-masiva': '#tab-firmas-masiva .toolbar-group',
-  certificados: '#section-certificados .filters-panel',
-  actividad: '#section-actividad .toolbar-group'
+  certificados: '#section-certificados .filters-panel'
 };
 
 let currentFilterConfigTable = null;
@@ -977,21 +971,13 @@ const columnConfigs = {
     { key: 'id-cert', label: 'ID del certificado', visible: true },
     { key: 'motivo', label: 'Motivo del error', visible: true },
     { key: 'alertas', label: 'Alertas', visible: true }
-  ],
-  actividad: [
-    { key: 'usuario', label: 'Usuario', visible: true },
-    { key: 'fecha', label: 'Fecha y hora', visible: true },
-    { key: 'ip', label: 'IP', visible: true },
-    { key: 'origen', label: 'Origen', visible: true },
-    { key: 'dispositivo', label: 'Dispositivo', visible: true }
   ]
 };
 
 const columnConfigTableSelectors = {
   'firmas-individual': '#tab-firmas-individual .data-table',
   'firmas-masiva': '#tab-firmas-masiva .data-table',
-  certificados: '#section-certificados .data-table',
-  actividad: '#section-actividad .data-table'
+  certificados: '#section-certificados .data-table'
 };
 
 let currentColumnConfigTable = null;
