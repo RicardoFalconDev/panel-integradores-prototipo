@@ -711,35 +711,53 @@ function populateCalendarSelectors(panelEl) {
   }
 }
 
+// Selecciona una fecha dentro del rango compartido (independiente del panel
+// donde se hizo clic): el 1er clic fija "desde" y reinicia "hasta"; el 2do
+// clic fija "hasta"; si ya había un rango completo, el siguiente clic
+// reinicia la selección. Esto permite elegir un rango dentro del mismo mes,
+// clickeando dos días del mismo panel.
+function selectCalendarDate(instanceId, date) {
+  const range = calendarState[instanceId].range;
+
+  if (!range.start || (range.start && range.end)) {
+    range.start = date;
+    range.end = null;
+  } else {
+    range.end = date;
+  }
+
+  renderCalendarPanel(instanceId, 'start');
+  renderCalendarPanel(instanceId, 'end');
+}
+
 function renderCalendarPanel(instanceId, panelKey) {
   const wrapEl = document.querySelector(`.toolbar-daterange-wrap[data-instance="${instanceId}"]`);
   const panelEl = wrapEl.querySelector(`.calendar-panel[data-panel="${panelKey}"]`);
-  const state = calendarState[instanceId][panelKey];
+  const display = calendarState[instanceId].display[panelKey];
+  const range = calendarState[instanceId].range;
   const yearSelect = panelEl.querySelector('.calendar-year-select');
   const monthSelect = panelEl.querySelector('.calendar-month-select');
   const grid = panelEl.querySelector('.calendar-grid');
 
-  yearSelect.value = state.year;
-  monthSelect.value = state.month;
+  yearSelect.value = display.year;
+  monthSelect.value = display.month;
 
-  const startWeekday = new Date(state.year, state.month, 1).getDay();
+  const startWeekday = new Date(display.year, display.month, 1).getDay();
   grid.innerHTML = '';
 
-  const { start, end } = calendarState[instanceId];
   let rangeStartTime = null;
   let rangeEndTime = null;
-  if (start.day && end.day) {
-    const startTime = new Date(start.year, start.month, start.day).getTime();
-    const endTime = new Date(end.year, end.month, end.day).getTime();
-    rangeStartTime = Math.min(startTime, endTime);
-    rangeEndTime = Math.max(startTime, endTime);
+  if (range.start && range.end) {
+    rangeStartTime = Math.min(range.start.getTime(), range.end.getTime());
+    rangeEndTime = Math.max(range.start.getTime(), range.end.getTime());
   }
 
   for (let i = 0; i < 42; i++) {
-    const cellDate = new Date(state.year, state.month, i - startWeekday + 1);
-    const isCurrentMonth = cellDate.getMonth() === state.month;
-    const isSelected = isCurrentMonth && state.day === cellDate.getDate();
+    const cellDate = new Date(display.year, display.month, i - startWeekday + 1);
+    const isCurrentMonth = cellDate.getMonth() === display.month;
     const cellTime = cellDate.getTime();
+    const isSelected = isCurrentMonth
+      && ((range.start && cellTime === range.start.getTime()) || (range.end && cellTime === range.end.getTime()));
     const isInRange = isCurrentMonth && !isSelected && rangeStartTime !== null
       && cellTime > rangeStartTime && cellTime < rangeEndTime;
 
@@ -750,13 +768,7 @@ function renderCalendarPanel(instanceId, panelKey) {
       + (isInRange ? ' calendar-day-in-range' : '')
       + (isSelected ? ' calendar-day-selected' : '');
     cell.textContent = cellDate.getDate();
-    cell.addEventListener('click', () => {
-      state.year = cellDate.getFullYear();
-      state.month = cellDate.getMonth();
-      state.day = cellDate.getDate();
-      renderCalendarPanel(instanceId, 'start');
-      renderCalendarPanel(instanceId, 'end');
-    });
+    cell.addEventListener('click', () => selectCalendarDate(instanceId, cellDate));
     grid.appendChild(cell);
   }
 }
@@ -766,12 +778,12 @@ function initCalendarPanel(instanceId, panelKey, panelEl) {
   renderCalendarPanel(instanceId, panelKey);
 
   panelEl.querySelector('.calendar-year-select').addEventListener('change', event => {
-    calendarState[instanceId][panelKey].year = parseInt(event.target.value, 10);
+    calendarState[instanceId].display[panelKey].year = parseInt(event.target.value, 10);
     renderCalendarPanel(instanceId, panelKey);
   });
 
   panelEl.querySelector('.calendar-month-select').addEventListener('change', event => {
-    calendarState[instanceId][panelKey].month = parseInt(event.target.value, 10);
+    calendarState[instanceId].display[panelKey].month = parseInt(event.target.value, 10);
     renderCalendarPanel(instanceId, panelKey);
   });
 }
@@ -784,8 +796,11 @@ function initDateRangePicker(wrapEl) {
 
   const label = wrapEl.querySelector('.date-range-label');
   calendarState[instanceId] = {
-    start: { year: 2026, month: 6, day: null },
-    end: { year: 2026, month: 6, day: null }
+    display: {
+      start: { year: 2026, month: 6 },
+      end: { year: 2026, month: 6 }
+    },
+    range: { start: null, end: null }
   };
 
   initCalendarPanel(instanceId, 'start', wrapEl.querySelector('.calendar-panel[data-panel="start"]'));
@@ -811,22 +826,23 @@ function initDateRangePicker(wrapEl) {
   });
 
   wrapEl.querySelector('[data-daterange-swap]').addEventListener('click', () => {
-    const state = calendarState[instanceId];
-    const temp = { ...state.start };
-    state.start = { ...state.end };
-    state.end = temp;
+    const display = calendarState[instanceId].display;
+    const temp = { ...display.start };
+    display.start = { ...display.end };
+    display.end = temp;
     renderCalendarPanel(instanceId, 'start');
     renderCalendarPanel(instanceId, 'end');
   });
 
   wrapEl.querySelector('[data-daterange-apply]').addEventListener('click', () => {
-    const { start, end } = calendarState[instanceId];
-    if (start.day && end.day) {
-      label.textContent = `${shortMonthNames[start.month]} ${String(start.day).padStart(2, '0')} - ${shortMonthNames[end.month]} ${String(end.day).padStart(2, '0')}`;
-    } else if (start.day) {
-      label.textContent = `Desde ${shortMonthNames[start.month]} ${String(start.day).padStart(2, '0')}`;
-    } else if (end.day) {
-      label.textContent = `Hasta ${shortMonthNames[end.month]} ${String(end.day).padStart(2, '0')}`;
+    const { start, end } = calendarState[instanceId].range;
+    const rangeStart = start && end ? (start.getTime() <= end.getTime() ? start : end) : start;
+    const rangeEnd = start && end ? (start.getTime() <= end.getTime() ? end : start) : null;
+
+    if (rangeStart && rangeEnd) {
+      label.textContent = `${shortMonthNames[rangeStart.getMonth()]} ${String(rangeStart.getDate()).padStart(2, '0')} - ${shortMonthNames[rangeEnd.getMonth()]} ${String(rangeEnd.getDate()).padStart(2, '0')}`;
+    } else if (rangeStart) {
+      label.textContent = `Desde ${shortMonthNames[rangeStart.getMonth()]} ${String(rangeStart.getDate()).padStart(2, '0')}`;
     } else {
       label.textContent = 'Seleccionar fechas';
     }
