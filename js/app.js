@@ -416,7 +416,7 @@ function populateFirmasMasivasTable() {
 
 // Muestra solo los primeros caracteres de un código sensible (ej. PIN de
 // revocación) y oculta el resto con bullets, para no exponerlo completo.
-function maskSensitiveCode(code, visibleChars = 4) {
+function maskSensitiveCode(code, visibleChars = 12) {
   if (!code || code.length <= visibleChars) return code;
   return code.slice(0, visibleChars) + '…';
 }
