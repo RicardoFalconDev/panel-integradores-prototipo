@@ -10,6 +10,21 @@
   --badge-info: #17a2b8;
 }
 
+/* ─── Iconos: Material Symbols Outlined ────────────────────────────── */
+.icon {
+  font-family: 'Material Symbols Outlined';
+  font-weight: 400;
+  font-style: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  direction: ltr;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════ */
 /* LAYOUT PRINCIPAL */
 /* ═══════════════════════════════════════════════════════════════════════ */
