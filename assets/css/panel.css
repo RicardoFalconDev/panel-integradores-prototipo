@@ -1196,7 +1196,8 @@ body {
   flex-shrink: 0;
 }
 
-.column-item input[type="checkbox"] {
+.column-item input[type="checkbox"],
+.column-item input[type="radio"] {
   width: 18px;
   height: 18px;
   cursor: pointer;
@@ -1204,11 +1205,27 @@ body {
   flex-shrink: 0;
 }
 
-.column-item label {
+.column-item label,
+label.column-item span {
   font-size: 14px;
   color: var(--text-main);
   cursor: pointer;
   flex: 1;
+}
+
+.export-section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.toolbar-export-btn {
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
 }
 
 /* ─── Action Menu Modal ────────────────────────────────────────────── */

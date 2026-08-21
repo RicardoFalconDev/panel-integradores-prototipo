@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
   <link rel="stylesheet" href="assets/css/exit-modal.css">
-  <link rel="stylesheet" href="assets/css/panel.css?v=21">
+  <link rel="stylesheet" href="assets/css/panel.css?v=22">
 </head>
 <body>
 
@@ -141,6 +141,10 @@
                   <option value="ana">Ana Rodríguez</option>
                 </select>
               </div>
+              <button type="button" class="toolbar-pill toolbar-export-btn" data-export-trigger data-table="firmas-individual">
+                <span class="icon">download</span>
+                <span>Exportar CSV</span>
+              </button>
               <div class="toolbar-gear-wrap" data-instance="firmas-individual">
                 <button type="button" class="toolbar-icon-btn" data-gear-trigger aria-label="Más opciones">
                   <span class="icon">settings</span>
@@ -258,6 +262,10 @@
                   <option value="carlos">Carlos López</option>
                 </select>
               </div>
+              <button type="button" class="toolbar-pill toolbar-export-btn" data-export-trigger data-table="firmas-masiva">
+                <span class="icon">download</span>
+                <span>Exportar CSV</span>
+              </button>
               <div class="toolbar-gear-wrap" data-instance="firmas-masiva">
                 <button type="button" class="toolbar-icon-btn" data-gear-trigger aria-label="Más opciones">
                   <span class="icon">settings</span>
@@ -662,6 +670,47 @@
   </div>
 </div>
 
+<!-- Modal: Exportar CSV -->
+<div class="modal" id="modal-export-csv" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Exportar CSV</h3>
+      <button class="modal-close" type="button" aria-label="Cerrar">
+        <span class="icon">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-subtitle">Elegí qué datos incluir en el archivo.</p>
+
+      <p class="export-section-label">Alcance</p>
+      <div class="columns-config" id="export-scope-list">
+        <label class="column-item">
+          <input type="radio" name="export-scope" value="todos" checked>
+          <span>Todos los resultados</span>
+        </label>
+        <label class="column-item">
+          <input type="radio" name="export-scope" value="filtrado">
+          <span>Solo resultados filtrados</span>
+        </label>
+      </div>
+
+      <p class="export-section-label">Columnas a incluir</p>
+      <div class="columns-config" id="export-columns-list">
+        <!-- Checkboxes cargados por JS según la tabla -->
+      </div>
+
+      <div class="btn-row btn-row-stacked">
+        <button type="button" class="btn-primary" id="btn-confirm-export-csv">
+          <span>Descargar CSV</span>
+        </button>
+        <button type="button" class="btn-outline modal-close">
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Menu de Usuario (⋯) -->
 <div class="modal modal-transparent" id="modal-user-menu" style="display: none;">
   <div class="modal-content modal-actions">
@@ -869,7 +918,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=28"></script>
+<script src="js/app.js?v=29"></script>
 
 </body>
 </html>

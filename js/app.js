@@ -1466,6 +1466,95 @@ function initUserActionModals() {
 }
 
 // ─────────────────────────────────────────────────────────────────────
+// EXPORTAR CSV
+// ─────────────────────────────────────────────────────────────────────
+
+const exportTableSelectors = {
+  'firmas-individual': '#tab-firmas-individual .data-table',
+  'firmas-masiva': '#tab-firmas-masiva .data-table'
+};
+
+const exportFileNames = {
+  'firmas-individual': 'firmas-individuales.csv',
+  'firmas-masiva': 'firma-masiva.csv'
+};
+
+function openExportModal(tableKey) {
+  const modal = document.getElementById('modal-export-csv');
+  modal.dataset.table = tableKey;
+  modal.querySelector('input[name="export-scope"][value="todos"]').checked = true;
+
+  const config = columnConfigs[tableKey] || [];
+  const list = document.getElementById('export-columns-list');
+  list.innerHTML = config.map(col => `
+    <label class="column-item">
+      <input type="checkbox" value="${col.key}" checked>
+      <span>${col.label}</span>
+    </label>
+  `).join('');
+
+  modal.style.display = 'flex';
+}
+
+function escapeCsvValue(value) {
+  const str = String(value ?? '');
+  if (/[",\r\n]/.test(str)) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+function downloadTableAsCsv(tableKey, scope, columnKeys) {
+  const tableEl = document.querySelector(exportTableSelectors[tableKey]);
+  if (!tableEl || columnKeys.length === 0) return;
+
+  const labelByKey = {};
+  (columnConfigs[tableKey] || []).forEach(c => { labelByKey[c.key] = c.label; });
+
+  const rows = Array.from(tableEl.querySelectorAll('tbody tr')).filter(row => {
+    return scope === 'filtrado' ? row.style.display !== 'none' : true;
+  });
+
+  const headerRow = columnKeys.map(key => labelByKey[key] || key);
+  const dataRows = rows.map(row => columnKeys.map(key => {
+    const cell = row.querySelector(`td[data-col="${key}"]`);
+    return cell ? cell.textContent.trim() : '';
+  }));
+
+  const csvContent = [headerRow, ...dataRows]
+    .map(row => row.map(escapeCsvValue).join(','))
+    .join('\r\n');
+
+  const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = exportFileNames[tableKey] || 'export.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function initExportCsv() {
+  document.querySelectorAll('[data-export-trigger]').forEach(btn => {
+    btn.addEventListener('click', () => openExportModal(btn.dataset.table));
+  });
+
+  document.getElementById('btn-confirm-export-csv').addEventListener('click', () => {
+    const modal = document.getElementById('modal-export-csv');
+    const tableKey = modal.dataset.table;
+    const scope = modal.querySelector('input[name="export-scope"]:checked').value;
+    const selectedCols = Array.from(
+      modal.querySelectorAll('#export-columns-list input[type="checkbox"]:checked')
+    ).map(cb => cb.value);
+
+    downloadTableAsCsv(tableKey, scope, selectedCols);
+    modal.style.display = 'none';
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────
 // INICIALIZACIÓN
 // ─────────────────────────────────────────────────────────────────────
 
@@ -1484,6 +1573,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initModals();
   initUserActionModals();
   initCertActionModals();
+  initExportCsv();
 
   // Mostrar sección inicial
   showSection('firmas');
