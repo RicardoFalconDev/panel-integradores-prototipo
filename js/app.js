@@ -50,6 +50,21 @@ const demoData = {
     }
   ],
 
+  currentUser: {
+    id: 1,
+    nombre: 'Isaac',
+    apellido: 'Meneses',
+    cuil: '20-96081435-2',
+    email: 'isacris23@gmail.com',
+    rol: 'Administrador',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+    metodoAutenticacion: 'email', // 'sms' | 'email'
+    telefonos: [
+      { id: 1, numero: '+54 9 11 4455-6677', principal: true },
+      { id: 2, numero: '+54 9 11 2233-4499', principal: false }
+    ]
+  },
+
   firmasIndividuales: [
     {
       id: 1,
@@ -290,6 +305,8 @@ function showSection(sectionId) {
       populateUsuariosTable();
     } else if (sectionId === 'actividad') {
       populateActividadTable();
+    } else if (sectionId === 'perfil') {
+      populatePerfil();
     }
   }
 }
@@ -535,6 +552,36 @@ function populateUsuariosTable() {
   });
 }
 
+function populatePerfil() {
+  const u = demoData.currentUser;
+
+  document.getElementById('perfil-avatar').src = u.avatar;
+  document.getElementById('perfil-avatar').alt = `${u.nombre} ${u.apellido}`;
+  document.getElementById('perfil-nombre-completo').textContent = `${u.nombre} ${u.apellido}`;
+  document.getElementById('perfil-email-header').textContent = u.email;
+  document.getElementById('perfil-rol-badge').textContent = u.rol;
+
+  document.getElementById('perfil-cuil').textContent = u.cuil;
+  document.getElementById('perfil-email').textContent = u.email;
+  document.getElementById('perfil-rol').textContent = u.rol;
+
+  const principal = u.telefonos.find(t => t.principal);
+  document.getElementById('perfil-telefono-principal').textContent = principal ? principal.numero : '—';
+
+  document.getElementById('perfil-2fa-sms').checked = u.metodoAutenticacion === 'sms';
+  document.getElementById('perfil-2fa-email').checked = u.metodoAutenticacion === 'email';
+
+  document.getElementById('perfil-phone-list').innerHTML = u.telefonos.map(t => `
+    <div class="phone-row" data-phone-id="${t.id}">
+      <span class="phone-row-number">${t.numero}</span>
+      ${t.principal ? '<span class="role-badge">Predeterminado</span>' : ''}
+      <button type="button" class="btn-action-menu" aria-label="Más acciones para ${t.numero}" onclick="showPhoneMenu(event, ${t.id})">
+        <span class="icon">more_vert</span>
+      </button>
+    </div>
+  `).join('');
+}
+
 function populateActividadTable() {
   const tbody = document.querySelector('#section-actividad .data-table tbody');
   if (!tbody) return;
@@ -743,6 +790,30 @@ function showCertMenu(event, certId) {
   }
 }
 
+let currentPhoneMenuId = null;
+
+function showPhoneMenu(event, phoneId) {
+  event.preventDefault();
+  const modal = document.getElementById('modal-phone-menu');
+  const content = modal ? modal.querySelector('.modal-content') : null;
+  if (modal && content) {
+    currentPhoneMenuId = phoneId;
+
+    const phone = demoData.currentUser.telefonos.find(t => t.id === phoneId);
+    const setDefaultBtn = modal.querySelector('[data-action="usar-predeterminado"]');
+    setDefaultBtn.style.display = phone && phone.principal ? 'none' : 'flex';
+
+    const rect = event.target.closest('button').getBoundingClientRect();
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'flex-start';
+    modal.style.alignItems = 'flex-start';
+    content.style.position = 'fixed';
+    content.style.top = rect.bottom + 8 + 'px';
+    content.style.left = rect.left - 200 + 'px';
+    content.style.margin = '0';
+  }
+}
+
 function openRevokeCertModal(certId) {
   const item = demoData.certificados.find(c => c.id === certId);
   if (!item) return;
@@ -782,6 +853,96 @@ function initCertActionModals() {
     if (item) item.estado = 'revocado';
     populateCertificadosTable();
     closeRevokeModal();
+  });
+}
+
+function openEditPhoneModal() {
+  const principal = demoData.currentUser.telefonos.find(t => t.principal);
+  document.getElementById('edit-phone-input').value = principal ? principal.numero : '';
+  document.getElementById('modal-edit-phone').style.display = 'flex';
+}
+
+function openAddPhoneModal() {
+  document.getElementById('add-phone-input').value = '';
+  document.getElementById('modal-add-phone').style.display = 'flex';
+}
+
+function openDeletePhoneModal(phoneId) {
+  const phones = demoData.currentUser.telefonos;
+  if (phones.length <= 1) {
+    alert('Debe existir al menos un número de teléfono.');
+    return;
+  }
+
+  const phone = phones.find(t => t.id === phoneId);
+  if (!phone) return;
+
+  document.getElementById('delete-phone-message').textContent =
+    `¿Eliminar el número ${phone.numero}? No vas a poder deshacer esta acción.`;
+
+  const overlay = document.getElementById('modal-delete-phone');
+  overlay.dataset.phoneId = phoneId;
+  overlay.classList.add('visible');
+}
+
+function initPerfil() {
+  document.getElementById('form-edit-phone').addEventListener('submit', event => {
+    event.preventDefault();
+    const principal = demoData.currentUser.telefonos.find(t => t.principal);
+    if (principal) principal.numero = document.getElementById('edit-phone-input').value;
+    populatePerfil();
+    document.getElementById('modal-edit-phone').style.display = 'none';
+  });
+
+  document.getElementById('perfil-2fa-sms').addEventListener('change', () => {
+    demoData.currentUser.metodoAutenticacion = 'sms';
+  });
+  document.getElementById('perfil-2fa-email').addEventListener('change', () => {
+    demoData.currentUser.metodoAutenticacion = 'email';
+  });
+
+  document.getElementById('btn-add-phone').addEventListener('click', openAddPhoneModal);
+
+  document.getElementById('form-add-phone').addEventListener('submit', event => {
+    event.preventDefault();
+    const numero = document.getElementById('add-phone-input').value;
+    const nextId = Math.max(0, ...demoData.currentUser.telefonos.map(t => t.id)) + 1;
+    demoData.currentUser.telefonos.push({ id: nextId, numero, principal: false });
+    populatePerfil();
+    document.getElementById('modal-add-phone').style.display = 'none';
+  });
+
+  document.querySelectorAll('#modal-phone-menu .action-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.getElementById('modal-phone-menu').style.display = 'none';
+      const phoneId = currentPhoneMenuId;
+      if (item.dataset.action === 'usar-predeterminado') {
+        demoData.currentUser.telefonos.forEach(t => { t.principal = (t.id === phoneId); });
+        populatePerfil();
+      } else if (item.dataset.action === 'eliminar-telefono') {
+        openDeletePhoneModal(phoneId);
+      }
+    });
+  });
+
+  const deletePhoneOverlay = document.getElementById('modal-delete-phone');
+  const closeDeletePhoneModal = () => deletePhoneOverlay.classList.remove('visible');
+
+  document.getElementById('btn-cancel-delete-phone').addEventListener('click', closeDeletePhoneModal);
+  document.getElementById('btn-close-delete-phone').addEventListener('click', closeDeletePhoneModal);
+  deletePhoneOverlay.addEventListener('click', event => {
+    if (event.target === deletePhoneOverlay) closeDeletePhoneModal();
+  });
+
+  document.getElementById('btn-confirm-delete-phone').addEventListener('click', () => {
+    const phoneId = parseInt(deletePhoneOverlay.dataset.phoneId, 10);
+    const deleted = demoData.currentUser.telefonos.find(t => t.id === phoneId);
+    demoData.currentUser.telefonos = demoData.currentUser.telefonos.filter(t => t.id !== phoneId);
+    if (deleted && deleted.principal && demoData.currentUser.telefonos.length) {
+      demoData.currentUser.telefonos[0].principal = true;
+    }
+    populatePerfil();
+    closeDeletePhoneModal();
   });
 }
 
@@ -1483,6 +1644,8 @@ function openExportModal(tableKey) {
   const modal = document.getElementById('modal-export-csv');
   modal.dataset.table = tableKey;
   modal.querySelector('input[name="export-scope"][value="todos"]').checked = true;
+  document.getElementById('export-date-from').value = '';
+  document.getElementById('export-date-to').value = '';
 
   const config = columnConfigs[tableKey] || [];
   const list = document.getElementById('export-columns-list');
@@ -1504,7 +1667,7 @@ function escapeCsvValue(value) {
   return str;
 }
 
-function downloadTableAsCsv(tableKey, scope, columnKeys) {
+function downloadTableAsCsv(tableKey, scope, columnKeys, dateFrom, dateTo) {
   const tableEl = document.querySelector(exportTableSelectors[tableKey]);
   if (!tableEl || columnKeys.length === 0) return;
 
@@ -1512,7 +1675,16 @@ function downloadTableAsCsv(tableKey, scope, columnKeys) {
   (columnConfigs[tableKey] || []).forEach(c => { labelByKey[c.key] = c.label; });
 
   const rows = Array.from(tableEl.querySelectorAll('tbody tr')).filter(row => {
-    return scope === 'filtrado' ? row.style.display !== 'none' : true;
+    if (scope === 'filtrado' && row.style.display === 'none') return false;
+
+    if (dateFrom || dateTo) {
+      const fechaCell = row.querySelector('td[data-col="fecha"]');
+      const rowDate = fechaCell ? fechaCell.textContent.trim().slice(0, 10) : '';
+      if (dateFrom && rowDate < dateFrom) return false;
+      if (dateTo && rowDate > dateTo) return false;
+    }
+
+    return true;
   });
 
   const headerRow = columnKeys.map(key => labelByKey[key] || key);
@@ -1545,11 +1717,13 @@ function initExportCsv() {
     const modal = document.getElementById('modal-export-csv');
     const tableKey = modal.dataset.table;
     const scope = modal.querySelector('input[name="export-scope"]:checked').value;
+    const dateFrom = document.getElementById('export-date-from').value;
+    const dateTo = document.getElementById('export-date-to').value;
     const selectedCols = Array.from(
       modal.querySelectorAll('#export-columns-list input[type="checkbox"]:checked')
     ).map(cb => cb.value);
 
-    downloadTableAsCsv(tableKey, scope, selectedCols);
+    downloadTableAsCsv(tableKey, scope, selectedCols, dateFrom, dateTo);
     modal.style.display = 'none';
   });
 }
@@ -1574,6 +1748,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initUserActionModals();
   initCertActionModals();
   initExportCsv();
+  initPerfil();
 
   // Mostrar sección inicial
   showSection('firmas');

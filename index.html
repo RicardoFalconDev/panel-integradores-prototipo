@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="assets/css/inputs.css">
   <link rel="stylesheet" href="assets/css/header.css">
   <link rel="stylesheet" href="assets/css/exit-modal.css">
-  <link rel="stylesheet" href="assets/css/panel.css?v=22">
+  <link rel="stylesheet" href="assets/css/panel.css?v=24">
 </head>
 <body>
 
@@ -536,11 +536,11 @@
 
       <div class="profile-card">
         <div class="profile-header">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Isaac Meneses" class="profile-avatar">
+          <img src="" alt="" class="profile-avatar" id="perfil-avatar">
           <div class="profile-info">
-            <h3>Isaac Cristian Meneses</h3>
-            <p>isacris23@gmail.com</p>
-            <p class="role-badge">Administrador</p>
+            <h3 id="perfil-nombre-completo"></h3>
+            <p id="perfil-email-header"></p>
+            <p class="role-badge" id="perfil-rol-badge"></p>
           </div>
         </div>
 
@@ -548,15 +548,24 @@
           <h4>Información básica</h4>
           <div class="profile-field">
             <label>CUIL</label>
-            <p>20-96081435-2</p>
+            <p id="perfil-cuil"></p>
           </div>
           <div class="profile-field">
             <label>Correo electrónico</label>
-            <p>isacris23@gmail.com</p>
+            <p id="perfil-email"></p>
           </div>
           <div class="profile-field">
-            <label>Método de autenticación</label>
-            <p>Email + 2FA</p>
+            <label>Teléfono celular</label>
+            <p class="pin-cell">
+              <span id="perfil-telefono-principal"></span>
+              <button type="button" class="icon-copy-btn" aria-label="Editar teléfono celular" onclick="openEditPhoneModal()">
+                <span class="icon">edit</span>
+              </button>
+            </p>
+          </div>
+          <div class="profile-field">
+            <label>Rol</label>
+            <p id="perfil-rol"></p>
           </div>
         </div>
 
@@ -569,6 +578,30 @@
             <li>✓ Ver historial de actividad</li>
             <li>✓ Configurar panel</li>
           </ul>
+        </div>
+
+        <div class="profile-section">
+          <h4>Seguridad</h4>
+
+          <p class="export-section-label">Segundo factor de autenticación</p>
+          <div class="columns-config">
+            <label class="column-item">
+              <input type="radio" name="perfil-2fa" value="sms" id="perfil-2fa-sms">
+              <span>Código OTP por SMS</span>
+            </label>
+            <label class="column-item">
+              <input type="radio" name="perfil-2fa" value="email" id="perfil-2fa-email">
+              <span>Código por correo electrónico</span>
+            </label>
+          </div>
+
+          <p class="export-section-label">Números de teléfono</p>
+          <div class="phone-list" id="perfil-phone-list">
+            <!-- Filas cargadas por JS -->
+          </div>
+          <button type="button" class="btn-outline btn-add-phone" id="btn-add-phone">
+            <span>+ Agregar número alternativo</span>
+          </button>
         </div>
       </div>
     </section>
@@ -692,6 +725,18 @@
           <input type="radio" name="export-scope" value="filtrado">
           <span>Solo resultados filtrados</span>
         </label>
+      </div>
+
+      <p class="export-section-label">Rango de fechas (opcional)</p>
+      <div class="export-date-range">
+        <div class="export-date-field">
+          <label for="export-date-from">Desde</label>
+          <input type="date" id="export-date-from">
+        </div>
+        <div class="export-date-field">
+          <label for="export-date-to">Hasta</label>
+          <input type="date" id="export-date-to">
+        </div>
       </div>
 
       <p class="export-section-label">Columnas a incluir</p>
@@ -858,6 +903,100 @@
   </div>
 </div>
 
+<!-- Modal: Editar Teléfono Celular -->
+<div class="modal" id="modal-edit-phone" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Editar teléfono celular</h3>
+      <button class="modal-close" type="button" aria-label="Cerrar">
+        <span class="icon">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="form-edit-phone">
+        <div class="field-group">
+          <label class="field-label">Teléfono celular</label>
+          <div class="input-wrap">
+            <input type="tel" id="edit-phone-input" required>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" style="flex: 1;">
+            <span>Guardar</span>
+          </button>
+          <button type="button" class="btn-outline modal-close" style="flex: 1;">
+            <span>Cancelar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Agregar Número Alternativo -->
+<div class="modal" id="modal-add-phone" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Agregar número alternativo</h3>
+      <button class="modal-close" type="button" aria-label="Cerrar">
+        <span class="icon">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="form-add-phone">
+        <div class="field-group">
+          <label class="field-label">Teléfono celular</label>
+          <div class="input-wrap">
+            <input type="tel" id="add-phone-input" placeholder="+54 9 11 XXXX-XXXX" required>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" style="flex: 1;">
+            <span>Agregar</span>
+          </button>
+          <button type="button" class="btn-outline modal-close" style="flex: 1;">
+            <span>Cancelar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Menú (⋯) de acciones de teléfono -->
+<div class="modal modal-transparent" id="modal-phone-menu" style="display: none;">
+  <div class="modal-content modal-actions">
+    <button class="action-item" data-action="usar-predeterminado">
+      <span class="icon">check_circle</span>
+      <span>Usar como predeterminado</span>
+    </button>
+    <button class="action-item danger" data-action="eliminar-telefono">
+      <span class="icon">delete</span>
+      <span>Eliminar número</span>
+    </button>
+  </div>
+</div>
+
+<!-- Modal: Eliminar Teléfono (confirmación destructiva) -->
+<div class="exit-modal-overlay" id="modal-delete-phone">
+  <div class="exit-modal">
+    <button class="exit-modal-close" type="button" id="btn-close-delete-phone" aria-label="Cerrar">
+      <span class="icon">close</span>
+    </button>
+    <div class="exit-modal-icon">
+      <span class="icon">delete</span>
+    </div>
+    <h3 class="exit-modal-title">Eliminar número</h3>
+    <p class="exit-modal-body" id="delete-phone-message">¿Eliminar este número de teléfono? No vas a poder deshacer esta acción.</p>
+    <button class="exit-modal-btn-primary" type="button" id="btn-cancel-delete-phone">
+      <span>Cancelar</span>
+    </button>
+    <button class="exit-modal-btn-secondary" type="button" id="btn-confirm-delete-phone">
+      <span>Eliminar número</span>
+    </button>
+  </div>
+</div>
+
 <!-- Modal: Detalle de la firma -->
 <div class="modal" id="modal-firma-detalle" style="display: none;">
   <div class="card-wrap">
@@ -918,7 +1057,7 @@
   </div>
 </div>
 
-<script src="js/app.js?v=29"></script>
+<script src="js/app.js?v=31"></script>
 
 </body>
 </html>
