@@ -1,0 +1,913 @@
+/* ─── Branding — Panel de Gestión FID by Lakaut ─────────────────────
+   Controles de personalización del SDK + vista previa en vivo.
+   La vista previa (.sdk-frame) usa los tokens de sdk-tokens.css para
+   que cambiar el branding no recolorée el panel.
+──────────────────────────────────────────────────────────────────── */
+
+/* ─── Header con acciones ──────────────────────────────────────────── */
+.branding-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Botones del encabezado: 40 de alto, píldora, texto Inter semibold 16/24 (como el Figma) */
+#section-branding .branding-btn {
+  height: 40px;
+  min-width: 132px;
+  padding: 12px 18px;
+  width: auto;
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+}
+#section-branding .branding-btn span { font-family: inherit; font-size: 16px; line-height: 24px; font-weight: 600; letter-spacing: 0; color: inherit; }
+#section-branding .btn-outline.branding-btn { background: #fff; border: 1px solid #dee2e6; color: #212529; }
+#section-branding .btn-outline.branding-btn:hover { background: #f1f3f5; }
+#section-branding .btn-submit.branding-btn:not(.active) { background: #dee2e6; color: #868e96; border: 0; }
+#section-branding .btn-submit.branding-btn.active { background: var(--blue); color: #fff; border: 0; }
+.branding-btn-sm { height: 36px; padding: 6px 16px; cursor: pointer; }
+
+/* Estado del guardado: etiqueta junto a los botones, con los colores de feedback de FID (advertencia #FFF5DF/#B45309, éxito #E5F3E9/#046637, error #FEE9E7/#B62424).
+   Pendiente = punto + texto (advertencia); guardado = check (éxito); error = ícono (error). */
+.branding-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+  font: 500 14px/20px 'Inter', sans-serif;
+  letter-spacing: 0.1px;
+  border-radius: 999px;
+  white-space: nowrap;
+  animation: branding-status-in .15s ease-out;
+}
+
+.branding-status:empty { display: none; }
+.branding-status .icon { font-size: 18px; margin-left: -2px; --icon-fill: 1; }
+.branding-status-dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: currentColor; }
+.branding-status.is-dirty { color: #b45309; background: #fff5df; }
+.branding-status.is-dirty .branding-status-dot { background: #b45309; }
+.branding-status.is-saved { color: #046637; background: #e5f3e9; }
+.branding-status.is-saved .icon { color: #1e824c; }
+.branding-status.is-error { color: #b62424; background: #fee9e7; }
+.branding-status.is-error .icon { color: #b62424; }
+
+@keyframes branding-status-in { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .branding-status { animation: none; } }
+
+/* ─── Layout ───────────────────────────────────────────────────────── */
+.branding-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 440px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.branding-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.branding-card,
+.branding-preview {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+/* Título de tarjeta: Inter Semibold 16/24, en oración (igual que el Figma) */
+.branding-card h4,
+.branding-preview h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #212529;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.branding-card-desc {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  color: #495057;
+  margin: 4px 0 24px;
+}
+
+/* Label de formulario: 14/20 bold, #3B3A45 */
+.branding-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  color: #3b3a45;
+  margin-bottom: 8px;
+}
+
+.branding-label-spaced { margin-top: 20px; }
+
+.branding-card[hidden] { display: none; }
+
+.branding-hint {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  color: #6d757d;
+  margin-top: 8px;
+}
+
+.branding-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  color: #b62424;
+  margin-top: 8px;
+}
+
+.branding-error[hidden] { display: none; }
+
+.branding-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.branding-visually-hidden:focus-visible + label {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* ─── Logo ─────────────────────────────────────────────────────────── */
+.branding-logo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Zona de carga: vacía (clic para subir) o con el logo (hover: cambiar / eliminar) */
+.branding-logo-drop {
+  position: relative;
+  width: 152px;
+  height: 112px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e9ecef;
+  border: 1px dashed #adb5bd;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.branding-logo-drop[data-state="filled"] {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  padding: 16px;
+}
+
+/* El logo siempre queda centrado y contenido dentro del recuadro, sin importar el tamaño del SVG */
+.branding-logo-drop img {
+  position: absolute;
+  inset: 16px;
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  object-fit: contain;
+  object-position: center;
+}
+
+.branding-logo-drop img[hidden],
+.branding-logo-empty[hidden],
+.branding-logo-overlay[hidden] { display: none; }
+
+.branding-logo-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #868e96;
+  transition: color .15s ease;
+}
+
+.branding-logo-empty .icon { font-size: 32px; }
+
+.branding-logo-drop[data-state="empty"]:hover,
+.branding-logo-drop[data-state="empty"]:focus-within,
+.branding-logo-drop[data-state="empty"].is-hover {
+  background: #e8eefe;
+  border-color: var(--blue);
+}
+
+.branding-logo-drop[data-state="empty"]:hover .branding-logo-empty,
+.branding-logo-drop[data-state="empty"]:focus-within .branding-logo-empty,
+.branding-logo-drop[data-state="empty"].is-hover .branding-logo-empty { color: var(--blue); }
+
+.branding-logo-drop[data-state="filled"]:hover,
+.branding-logo-drop[data-state="filled"]:focus-within,
+.branding-logo-drop[data-state="filled"].is-hover { border-color: #adb5bd; }
+
+/* Cargando: mismo spinner del SDK (pista #dee2e6 + arco del color principal) */
+.branding-logo-spinner {
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 3px solid #dee2e6;
+  border-top-color: var(--blue);
+  animation: branding-logo-spin .8s linear infinite;
+}
+.branding-logo-spinner[hidden] { display: none; }
+@keyframes branding-logo-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .branding-logo-spinner { animation-duration: 2s; } }
+
+/* Capa con acciones sobre el logo cargado */
+.branding-logo-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(33, 37, 41, .64);
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+
+.branding-logo-drop:hover .branding-logo-overlay,
+.branding-logo-drop:focus-within .branding-logo-overlay,
+.branding-logo-drop.is-hover .branding-logo-overlay { opacity: 1; }
+
+@media (hover: none) {
+  .branding-logo-overlay { opacity: 1; background: rgba(33, 37, 41, .32); }
+}
+
+.branding-logo-action {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .72);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.branding-logo-action .icon { font-size: 20px; }
+
+.branding-logo-action:hover,
+.branding-logo-action:focus-visible {
+  background: #fff;
+  border-color: #fff;
+  color: #212529;
+  outline: none;
+}
+
+#branding-logo-remove:hover,
+#branding-logo-remove:focus-visible { color: #c92a2a; }
+
+.branding-logo-drop:has(.branding-logo-action:focus-visible),
+.branding-logo-row:has(#branding-logo-file:focus-visible) .branding-logo-drop {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.branding-logo-info { min-width: 0; flex: 1; }
+.branding-logo-info .branding-hint { margin: 0 0 16px; }
+.branding-logo-info .branding-btn { display: inline-flex; width: auto; min-width: 0; }
+.branding-logo-name.is-empty { font-weight: 400; color: #6d757d; }
+
+.branding-logo-name {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  color: #212529;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Color ────────────────────────────────────────────────────────── */
+.branding-color-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.branding-color-picker {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Selector abierto/enfocado: borde azul de 2 px */
+.branding-color-picker:focus,
+.branding-color-picker:focus-visible { outline: none; border: 2px solid var(--blue); }
+
+/* Muestra de color: 40 × 40 con esquinas de 4 px, centrada en el selector de 56 × 56 */
+.branding-color-picker::-webkit-color-swatch-wrapper { padding: 0; }
+.branding-color-picker::-webkit-color-swatch { border: 0; border-radius: 4px; }
+.branding-color-picker::-moz-color-swatch { border: 0; border-radius: 4px; }
+#branding-text-picker::-webkit-color-swatch { border: 1px solid #dee2e6; }
+#branding-text-picker::-moz-color-swatch { border: 1px solid #dee2e6; }
+
+.branding-text-input {
+  flex: 1;
+  min-width: 0;
+  height: 58px;
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  text-transform: uppercase;
+  color: #212529;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color .15s;
+}
+
+.branding-text-input::placeholder { color: #898999; text-transform: none; }
+.branding-text-input:focus { border-color: var(--blue); }
+.branding-text-input[aria-invalid="true"] { border-color: #b62424; }
+
+/* Callout de accesibilidad (WCAG): uno solo, calcula el contraste del texto contra el color principal.
+   Informa, nunca bloquea el guardado. Correcto = gris con título; contraste bajo = amarillo. */
+.branding-contrast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  border-radius: 8px;
+  color: #495057;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+}
+
+.branding-contrast[hidden] { display: none; }
+.branding-contrast .icon { font-size: 24px; flex-shrink: 0; color: #495057; }
+.branding-contrast-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.branding-contrast-title { font-size: 16px; font-weight: 500; line-height: 24px; color: #121828; }
+.branding-contrast-title[hidden] { display: none; }
+.branding-contrast-link {
+  align-self: flex-start;
+  display: inline;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #1d4ed8;
+  text-decoration: none;
+}
+.branding-contrast-link:hover { text-decoration: underline; }
+.branding-contrast-link[hidden] { display: none; }
+.branding-contrast.is-warning { background: #fffbee; border-color: #fbae1f; }
+.branding-contrast.is-warning .icon { color: #f59e0b; --icon-fill: 1; }
+.branding-contrast.is-warning .branding-contrast-body { display: block; }
+.branding-contrast.is-warning .branding-contrast-title { display: block; margin-bottom: 4px; }
+.branding-contrast.is-warning .branding-contrast-link { margin-left: 2px; }
+.branding-contrast:not(.is-warning) .icon { color: #0f4cff; --icon-fill: 1; }
+.branding-contrast-level { font-weight: 600; color: #046637; }
+.branding-contrast-fail { color: #b62424; font-weight: 600; }
+.branding-contrast-text { line-height: 20px; }
+
+.branding-field { flex: 1; min-width: 0; }
+.branding-field .branding-text-input { width: 100%; }
+.branding-field label {
+  display: block;
+  margin-top: 8px;
+  font: 400 14px/20px 'Inter', sans-serif;
+  letter-spacing: 0.1px;
+  color: #6d757d;
+}
+.branding-divider { margin: 16px 0; border: 0; border-top: 1px solid #dee2e6; }
+
+/* ─── Segmented control (espaciado, dispositivo, pantalla) ─────────── */
+.branding-seg {
+  display: inline-flex;
+  width: 100%;
+  padding: 4px;
+  gap: 4px;
+  background: #e9ecef;
+  border-radius: 10px;
+}
+
+.branding-seg label { flex: 1; position: relative; cursor: pointer; }
+
+.branding-seg input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.branding-seg span {
+  display: block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  text-align: center;
+  color: #495057;
+  border-radius: 7px;
+  transition: background .15s, color .15s;
+}
+
+.branding-seg input:checked + span {
+  background: #fff;
+  color: #212529;
+  font-weight: 600;
+}
+
+.branding-seg input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 1px; }
+
+/* Opciones con tamaño (XS, S, M, Full, Otro): nombre + valor en px */
+.branding-seg-sizes label { display: flex; }
+.branding-seg-sizes span {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6px 12px;
+}
+
+.branding-seg-sizes small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  color: #6d757d;
+}
+
+
+.branding-radius-custom { margin-top: 16px; }
+.branding-radius-custom[hidden] { display: none; }
+.branding-number-input { width: 100%; text-transform: none; }
+.branding-field label.is-error { color: #b62424; }
+.branding-radius-custom .branding-label { color: #3b3a45; font-weight: 700; }
+
+/* ─── Vista previa ─────────────────────────────────────────────────── */
+.branding-preview {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  min-width: 0;
+}
+
+/* Columna izquierda: título, ayuda y lista de pantallas. Queda fija al hacer scroll */
+.branding-preview-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 24px;
+}
+
+.branding-preview-intro { display: flex; flex-direction: column; gap: 4px; }
+.branding-preview-intro .branding-card-desc { margin: 0; }
+
+/* Lista de pantallas: botones sueltos, blancos con borde gris; el elegido lleva fondo azul claro y borde azul de la marca */
+.branding-seg-list {
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  gap: 8px;
+  background: none;
+  border-radius: 0;
+}
+.branding-seg-list label { flex: none; }
+.branding-seg-list span {
+  padding: 7px 12px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-align: center;
+  color: #212529;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+.branding-seg-list label:hover span { border-color: var(--blue); }
+.branding-seg-list input:checked + span {
+  background: #e8eefe;
+  border-color: var(--blue);
+  color: #212529;
+  font-weight: 600;
+}
+
+/* Escenario: el SDK embebido, centrado sobre el fondo de la aplicación */
+.branding-stage {
+  padding: 24px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SDK (réplica de las pantallas del iFrame, alimentada por los tokens de sdk-tokens.css)
+═══════════════════════════════════════════════════════════════════ */
+.sdk-frame {
+  /* Tamaño real del SDK: no se deforma; js/branding.js lo escala para que quepa */
+  display: flex;
+  flex-direction: column;
+  width: var(--frame-w);
+  height: var(--frame-h);
+  transform-origin: top left;
+  background: var(--bg-surface);
+  /* Borde por fuera del contenido (no resta ancho): el marco mide exactamente 360 × 800 como en el flujo */
+  outline: 1px solid var(--stroke-default);
+  outline-offset: -1px;
+  border-radius: 16px;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-family: var(--font-family-default), system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.sdk-frame[data-device="mobile"] { --frame-w: 328px; --frame-h: 696px; }
+
+/* Caja que ocupa el tamaño ya escalado (la fija js/branding.js) */
+.sdk-scaler { position: relative; flex: none; }
+
+.sdk-frame .icon { font-size: 24px; line-height: 1; }
+
+.sdk-body { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 16px; }
+
+.sdk-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+  padding: 28px 24px;
+  background: var(--bg-default);
+  border: 1px solid var(--stroke-default);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* Cada pantalla se arma en bloques: .sdk-main (contenido), .sdk-rest (código) y .sdk-foot (acciones) */
+.sdk-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.sdk-frame[data-screen="inicio"] .sdk-screen[data-for="inicio"],
+.sdk-frame[data-screen="codigo"] .sdk-screen[data-for="codigo"],
+.sdk-frame[data-screen="firmando"] .sdk-screen[data-for="firmando"],
+.sdk-frame[data-screen="exito"] .sdk-screen[data-for="exito"],
+.sdk-frame[data-screen="error"] .sdk-screen[data-for="error"] { display: flex; }
+
+.sdk-main,
+.sdk-rest,
+.sdk-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+/* text/m-semibold + text/xs-regular */
+.sdk-text { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+
+.sdk-title {
+  font-size: var(--font-size-20);
+  line-height: var(--font-line-height-28);
+  font-weight: var(--font-style-semibold);
+  letter-spacing: var(--font-letter-spacing-default);
+  color: var(--text-primary);
+}
+
+.sdk-title-m-regular { font-size: var(--font-size-18); line-height: var(--font-line-height-26); font-weight: var(--font-style-regular); }
+
+.sdk-sub {
+  font-size: var(--font-size-14);
+  line-height: var(--font-line-height-20);
+  letter-spacing: var(--font-letter-spacing-small);
+  color: var(--text-secondary);
+}
+
+.sdk-sub strong { font-weight: var(--font-style-bold); }
+.sdk-sub-gap { margin-top: 12px; }
+
+.sdk-link {
+  color: var(--text-link);
+  font-weight: var(--font-style-semibold);
+  text-decoration: underline;
+}
+
+/* Link de términos y condiciones: texto oscuro, como en el SDK */
+.sdk-link-dark { color: var(--text-primary); font-weight: var(--font-style-bold); }
+
+.sdk-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 0;
+  text-align: left;
+  font-size: var(--font-size-14);
+  line-height: var(--font-line-height-20);
+  letter-spacing: var(--font-letter-spacing-small);
+  color: var(--text-primary);
+}
+
+.sdk-list li { display: flex; align-items: center; gap: 16px; }
+
+.sdk-tile {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--brand-surface);
+  border: 1px solid var(--stroke-brand-subtle);
+  color: var(--brand-default);
+}
+
+.sdk-tile .icon { font-size: 24px; }
+
+.sdk-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  font-size: var(--font-size-14);
+  line-height: var(--font-line-height-20);
+  letter-spacing: var(--font-letter-spacing-small);
+}
+
+.sdk-checkbox {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--brand-default);
+  color: var(--button-primary-text);
+}
+
+.sdk-checkbox .icon { font-size: 18px; font-weight: 700; }
+
+.sdk-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  height: 48px;
+  padding: 0 24px;
+  border: 1px solid var(--button-primary-bg);
+  border-radius: var(--radius-button);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  font-size: var(--font-size-16);
+  font-weight: var(--font-style-semibold);
+  line-height: var(--font-line-height-24);
+}
+
+.sdk-btn-outline {
+  background: var(--button-secondary-bg);
+  border-color: var(--button-secondary-border);
+  color: var(--button-secondary-text);
+}
+
+.sdk-actions { display: flex; gap: 12px; width: 100%; }
+.sdk-actions .sdk-btn { flex: 1; min-width: 0; padding: 0 12px; font-size: var(--font-size-14); }
+
+.sdk-otp-group { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+
+.sdk-otp {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.sdk-otp-cell {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--stroke-default);
+  border-radius: 8px;
+  font-size: var(--font-size-24);
+  line-height: var(--font-line-height-32);
+  font-weight: var(--font-style-regular);
+  color: var(--text-primary);
+  background: var(--bg-default);
+}
+
+.sdk-otp-cell.is-focus {
+  border: 2px solid var(--stroke-primary);
+  background: var(--bg-subtle);
+}
+
+.sdk-timer {
+  font-size: var(--font-size-12);
+  line-height: var(--font-line-height-16);
+  letter-spacing: var(--font-letter-spacing-small);
+  color: var(--text-secondary);
+  text-align: left;
+  min-height: 18px;
+}
+
+.sdk-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--stroke-default);
+  border-top-color: var(--brand-default);
+  border-radius: 50%;
+  animation: sdk-spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes sdk-spin { to { transform: rotate(360deg); } }
+
+.sdk-ill { display: block; flex-shrink: 0; overflow: visible; }
+
+/* Ilustraciones vectoriales: relleno inyectado por CSS (accent-9 pleno y accent-8 suave) */
+.ill-primary { fill: var(--accent-9); }
+.ill-primary-50 { fill: var(--accent-8); }
+
+/* Lottie de marca: clases agregadas por tintLottie() (js/branding.js) */
+.lt-primary.lt-fill { fill: var(--accent-9); }
+.lt-primary.lt-stroke { stroke: var(--accent-9); }
+.lt-primary-50.lt-fill { fill: var(--accent-8); }
+.lt-primary-50.lt-stroke { stroke: var(--accent-8); }
+
+/* Animaciones Lottie reales del SDK (colores propios, no cambian con la marca) */
+.sdk-lottie { width: 160px; height: 160px; flex-shrink: 0; }
+.sdk-lottie-lg { width: 200px; height: 200px; }
+
+/* Ilustración de error: SVG fijo (tokens feedback-error-*) */
+.sdk-errorimg { display: block; width: 100px; height: 100px; flex-shrink: 0; }
+
+.sdk-badge-error {
+  padding: 8px 16px;
+  border: 1px solid var(--feedback-error-border);
+  border-radius: var(--radius-full);
+  background: var(--feedback-error-bg);
+  color: var(--feedback-error-text);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-style-medium);
+  line-height: var(--font-line-height-20);
+}
+
+.sdk-footer {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 24px;
+  background: var(--bg-surface);
+  border: 1px solid var(--stroke-default);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  font-size: var(--font-size-10);
+  line-height: var(--font-line-height-14);
+  color: var(--text-primary);
+}
+
+.sdk-footer img { height: 16px; width: auto; }
+
+/* ─── Móvil: mismo armado que el flujo, dentro de la tarjeta (328 × 696) ─────────────────── */
+
+/* Embebido: solo la tarjeta del SDK (328 × 664) y el pie de 32 px, sin encabezado ni márgenes.
+   El borde lo da el marco (outline), por eso la tarjeta y el pie no repiten el suyo. */
+.sdk-frame[data-device="mobile"] { background: var(--bg-default); border-radius: var(--radius-lg); }
+.sdk-frame[data-device="mobile"] .sdk-body { padding: 0; }
+.sdk-frame[data-device="mobile"] .sdk-card { padding: 24px 16px 24px; justify-content: flex-start; border: 0; border-radius: 0; }
+.sdk-frame[data-device="mobile"] .sdk-footer { border: 0; box-shadow: inset 0 1px 0 var(--stroke-default); border-radius: 0; height: 32px; }
+.sdk-frame[data-device="mobile"] .sdk-sub-gap { margin-top: 18px; }
+
+.sdk-frame[data-device="mobile"] .sdk-screen {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Contenido centrado en el espacio libre; las acciones quedan abajo */
+.sdk-frame[data-device="mobile"] .sdk-main { flex: 1; justify-content: center; gap: 16px; }
+.sdk-frame[data-device="mobile"] .sdk-main-center { gap: 24px; }
+.sdk-frame[data-device="mobile"] .sdk-main-top { flex: none; justify-content: flex-start; padding-top: 24px; gap: 24px; }
+.sdk-frame[data-device="mobile"] .sdk-list { margin-top: 8px; }
+.sdk-frame[data-device="mobile"] .sdk-foot { align-items: stretch; gap: 24px; }
+
+/* Pantallas de código: el bloque de ingreso arriba y los botones abajo */
+.sdk-frame[data-device="mobile"] .sdk-screen[data-for="codigo"] { gap: 106px; }
+.sdk-frame[data-device="mobile"] .sdk-rest { flex: 1; align-items: stretch; justify-content: space-between; gap: 24px; }
+
+
+/* Botones a ancho completo, el principal arriba */
+.sdk-frame[data-device="mobile"] .sdk-btn { width: 100%; min-width: 0; font-size: var(--font-size-16); }
+.sdk-frame[data-device="mobile"] .sdk-actions { flex-direction: column-reverse; gap: 8px; }
+.sdk-frame[data-device="mobile"] .sdk-actions .sdk-btn { flex: none; width: 100%; padding: 0 16px; font-size: var(--font-size-16); }
+
+.sdk-frame[data-device="mobile"] .sdk-lottie { width: 130px; height: 130px; }
+.sdk-frame[data-device="mobile"] .sdk-lottie-lg { width: 128px; height: 128px; }
+
+/* Tamaños de ilustración del flujo */
+.sdk-frame[data-device="mobile"] .sdk-ill.ill-onboarding { width: 60px; height: 60px; }
+.sdk-frame[data-device="mobile"] .sdk-ill.ill-sms { width: 90px; height: 70px; }
+
+.sdk-frame[data-device="mobile"] .sdk-footer { padding: 8px 24px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sdk-spinner { animation-duration: 3s; }
+}
+
+/* ─── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .branding-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Con menos de 1440 px la lista de pantallas pasa arriba, en fila; entre 861 y 1100 px la tarjeta ocupa todo el ancho y vuelve a la columna */
+@media (max-width: 1439px) {
+  .branding-preview { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .branding-preview-nav { position: static; }
+  .branding-seg-list { flex-direction: row; overflow-x: auto; }
+  .branding-seg-list label { flex: none; }
+  .branding-seg-list span { white-space: nowrap; }
+}
+
+@media (min-width: 861px) and (max-width: 1100px) {
+  .branding-preview { grid-template-columns: 200px minmax(0, 1fr); gap: 20px; }
+  .branding-preview-nav { position: sticky; }
+  .branding-seg-list { flex-direction: column; overflow-x: visible; }
+  .branding-seg-list span { white-space: normal; }
+}
+
+@media (max-width: 768px) {
+  .branding-header-actions { width: 100%; }
+  .branding-stage { padding: 16px 8px; }
+}
+
+
+/* ─── Encabezado de la pantalla: igual que el resto del sitio ───────── */
+#section-branding .section-header h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: -0.56px;
+  color: #212529;
+}
+
+#section-branding .section-subtitle {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #6d757d;
+}
+
+
+/* Selector de fuente: 56 de alto, borde de 1 px (como el Select del Figma) */
+#branding-font {
+  height: 56px;
+  border: 1px solid #e1e1eb;
+  font-family: 'Inter', sans-serif;
+  color: #0b0c0e;
+}
+
+/* Tipografía: entre el título y el selector van 16 px (en las otras tarjetas, 24) */
+.branding-card-desc + .branding-label { margin-top: -8px; }

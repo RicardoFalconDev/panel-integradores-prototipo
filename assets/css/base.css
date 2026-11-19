@@ -19,9 +19,11 @@ body {
   background: var(--bg-page);
 }
 
-/* Material Symbols Outlined */
+/* Material Symbols Rounded · peso 300 · sin relleno (FILL 0) salvo ícono relleno (--icon-fill: 1) */
 .icon {
-  font-family: 'Material Symbols Outlined';
+  --icon-fill: 0;
+  font-family: 'Material Symbols Rounded';
+  font-variation-settings: 'FILL' var(--icon-fill), 'wght' 300, 'GRAD' 0, 'opsz' 24;
   font-weight: normal;
   font-style: normal;
   font-size: 24px;

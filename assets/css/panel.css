@@ -10,9 +10,11 @@
   --badge-info: #17a2b8;
 }
 
-/* ─── Iconos: Material Symbols Outlined ────────────────────────────── */
+/* ─── Iconos: Material Symbols Rounded, peso 300 ───────────────────── */
 .icon {
-  font-family: 'Material Symbols Outlined';
+  --icon-fill: 0;
+  font-family: 'Material Symbols Rounded';
+  font-variation-settings: 'FILL' var(--icon-fill), 'wght' 300, 'GRAD' 0, 'opsz' 24;
   font-weight: 400;
   font-style: normal;
   display: inline-flex;
@@ -1539,7 +1541,7 @@ label.column-item span {
   }
 }
 
-/* ─── Ajuste del ícono del exit-modal (reutiliza Material Symbols Outlined) ── */
+/* ─── Ajuste del ícono del exit-modal (reutiliza Material Symbols Rounded) ── */
 
 .exit-modal-icon .icon {
   font-size: 32px;

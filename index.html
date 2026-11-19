@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,100..700,0..1,0&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="assets/css/tokens.css">
@@ -18,8 +18,53 @@
   <link rel="stylesheet" href="assets/css/header.css">
   <link rel="stylesheet" href="assets/css/exit-modal.css">
   <link rel="stylesheet" href="assets/css/panel.css?v=24">
+  <link rel="stylesheet" href="assets/css/sdk-tokens.css?v=1">
+  <link rel="stylesheet" href="assets/css/branding.css?v=66">
 </head>
 <body>
+
+<!-- Ilustraciones del SDK (vectores de Figma). El color sale de CSS: .ill-primary y .ill-primary-50 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="ill-onboarding-blur-0_0_4" transform="translate(16.4 40)"><path fill-rule="evenodd" clip-rule="evenodd" d="M77.116 15.8436C80.6947 12.2649 80.6947 6.4627 77.116 2.88401C73.5373 -0.694671 67.7351 -0.694671 64.1564 2.88401L29.5738 37.4667C28.0993 38.9411 27.0533 40.7885 26.5476 42.8114L23.8661 53.5377C23.4741 55.1057 24.8943 56.5259 26.4623 56.1339L37.1886 53.4524C39.2115 52.9467 41.0589 51.9007 42.5333 50.4262L77.116 15.8436ZM77.2574 15.985C80.9142 12.3282 80.9142 6.39938 77.2574 2.74259C73.6006 -0.914197 67.6718 -0.914197 64.015 2.74259L29.4323 37.3252C27.9323 38.8253 26.8681 40.7049 26.3536 42.7629L23.672 53.4892C23.2434 55.2036 24.7964 56.7566 26.5108 56.328L37.2371 53.6464C39.2951 53.1319 41.1747 52.0677 42.6748 50.5677L77.2574 15.985Z"/>
+    </clipPath>
+    <g id="ill-onboarding">
+      <g id="Icons">
+      <path id="Rectangle 32" d="M0 20C0 16.6863 2.68629 14 6 14H45.6C48.9137 14 51.6 16.6863 51.6 20V74C51.6 77.3137 48.9137 80 45.6 80H6C2.68629 80 0 77.3137 0 74V20Z" class="ill-primary"/>
+      <path id="Shape" opacity="0.2" d="M77.2574 2.74259C80.9142 6.39938 80.9142 12.3282 77.2574 15.985L70.6617 22.5807L42.6748 50.5677C41.1747 52.0677 39.2951 53.1319 37.2371 53.6464L26.5108 56.328C24.7964 56.7566 23.2434 55.2036 23.672 53.4892L26.3536 42.7629C26.8681 40.7049 27.9323 38.8253 29.4323 37.3252L57.4193 9.33825L64.015 2.74259C67.6718 -0.914197 73.6006 -0.914197 77.2574 2.74259Z" class="ill-primary-50"/>
+      <foreignObject x="-16.4" y="-40" width="136.4" height="136.4"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(20px);clip-path:url(#ill-onboarding-blur-0_0_4);height:100%;width:100%"></div></foreignObject><path id="Shape (Stroke)" data-figma-bg-blur-radius="40" d="M77.116 15.8436C80.6947 12.2649 80.6947 6.4627 77.116 2.88401C73.5373 -0.694671 67.7351 -0.694671 64.1564 2.88401L29.5738 37.4667C28.0993 38.9411 27.0533 40.7885 26.5476 42.8114L23.8661 53.5377C23.4741 55.1057 24.8943 56.5259 26.4623 56.1339L37.1886 53.4524C39.2115 52.9467 41.0589 51.9007 42.5333 50.4262L77.116 15.8436ZM77.2574 15.985C80.9142 12.3282 80.9142 6.39938 77.2574 2.74259C73.6006 -0.914197 67.6718 -0.914197 64.015 2.74259L29.4323 37.3252C27.9323 38.8253 26.8681 40.7049 26.3536 42.7629L23.672 53.4892C23.2434 55.2036 24.7964 56.7566 26.5108 56.328L37.2371 53.6464C39.2951 53.1319 41.1747 52.0677 42.6748 50.5677L77.2574 15.985Z" fill-rule="evenodd" clip-rule="evenodd" fill="white"/>
+      <path id="Polygon 2" d="M27.4133 54.0244C26.5277 54.2538 25.7213 53.4475 25.9507 52.5618L26.9798 48.5896C27.2126 47.6911 28.3337 47.3857 28.99 48.042L31.9331 50.9851C32.5894 51.6415 32.2841 52.7625 31.3855 52.9953L27.4133 54.0244Z" fill="white"/>
+      </g>
+    </g>
+    <g id="ill-email">
+      <g id="Icons">
+      <path id="Vector" d="M39.639 13.8879C39.5986 12.0779 40.4771 10.3267 42.0811 9.01956C43.6851 7.71243 45.8833 6.95643 48.1922 6.91789L112.032 1.08003C114.29 1.03254 116.471 1.87295 118.096 3.41637C119.72 4.95978 120.655 7.07978 120.695 9.30999L120.729 11.2273L82.9695 36.5118C82.3089 36.8957 81.5406 37.0988 80.7572 37.0965C79.9745 37.129 79.1989 36.9558 78.524 36.5976L39.6737 15.444L39.639 13.8879ZM39.8262 22.2778L40.5018 52.5613C40.5422 54.3713 41.4981 56.0919 43.1593 57.3445C44.8204 58.5971 47.0507 59.2792 49.3595 59.2407L113.173 65.5492C115.431 65.5017 117.581 64.5702 119.15 62.9596C120.719 61.349 121.578 59.1913 121.539 56.9611L120.878 19.6475L87.0798 41.9153L87.0512 41.9369C85.2194 43.0389 83.0786 43.641 80.8841 43.6714C78.7077 43.7134 76.5036 43.2192 74.6547 42.1762L74.6253 42.1557L39.8262 22.2778Z" fill-rule="evenodd" clip-rule="evenodd" class="ill-primary"/>
+      <path id="Rectangle 19" opacity="0.9" d="M0 33.2121C0 24.9298 7.14354 18.4539 15.3861 19.2638L68.1776 24.4514C75.3527 25.1565 80.8224 31.19 80.8224 38.3997V64.6983C80.8224 71.9696 75.2617 78.0333 68.0176 78.6614L15.2261 83.2386C7.03859 83.9486 0 77.4939 0 69.2756V33.2121Z" class="ill-primary-50"/>
+      <g id="***">
+      <path d="M19.0985 58.3966C18.3493 58.3966 17.7496 57.7749 17.7766 57.0262L17.9909 51.0807L13.0362 54.252C12.3972 54.6609 11.5459 54.4499 11.1721 53.7898L10.9511 53.3996C10.5829 52.7496 10.8257 51.9238 11.4872 51.5765L16.7384 48.8194L11.0841 45.8507C10.6432 45.6192 10.4813 45.0687 10.7268 44.6353L11.4014 43.4441C11.6507 43.004 12.2182 42.8633 12.6442 43.1359L17.9909 46.5581L17.7601 40.1558C17.7421 39.6566 18.1419 39.2422 18.6414 39.2422H19.9772C20.4767 39.2422 20.8765 39.6566 20.8585 40.1558L20.6277 46.5581L25.9744 43.1359C26.4004 42.8633 26.9679 43.004 27.2171 43.4441L27.8918 44.6353C28.1373 45.0687 27.9754 45.6192 27.5344 45.8507L21.8802 48.8194L27.1314 51.5765C27.7929 51.9238 28.0357 52.7496 27.6675 53.3996L27.4465 53.7898C27.0726 54.4499 26.2214 54.6609 25.5824 54.252L20.6277 51.0807L20.842 57.0262C20.869 57.7749 20.2693 58.3966 19.5201 58.3966H19.0985Z" fill="white"/>
+      <path d="M42.3028 58.3966C41.5536 58.3966 40.9539 57.7749 40.9809 57.0262L41.1952 51.0807L36.2405 54.252C35.6015 54.6609 34.7502 54.4499 34.3764 53.7898L34.1554 53.3996C33.7872 52.7496 34.03 51.9238 34.6915 51.5765L39.9427 48.8194L34.2884 45.8507C33.8475 45.6192 33.6856 45.0687 33.9311 44.6353L34.6057 43.4441C34.855 43.004 35.4225 42.8633 35.8485 43.1359L41.1952 46.5581L40.9885 40.8233C40.9573 39.9594 41.6492 39.2422 42.5136 39.2422C43.378 39.2422 44.0699 39.9594 44.0387 40.8233L43.832 46.5581L49.1787 43.1359C49.6047 42.8633 50.1722 43.004 50.4214 43.4441L51.0961 44.6353C51.3416 45.0687 51.1797 45.6192 50.7387 45.8507L45.0845 48.8194L50.3357 51.5765C50.9972 51.9238 51.24 52.7496 50.8718 53.3996L50.6508 53.7898C50.2769 54.4499 49.4257 54.6609 48.7867 54.252L43.832 51.0807L44.0463 57.0262C44.0733 57.7749 43.4736 58.3966 42.7244 58.3966H42.3028Z" fill="white"/>
+      <path d="M65.5071 58.3966C64.7579 58.3966 64.1582 57.7749 64.1852 57.0262L64.3995 51.0807L59.4448 54.252C58.8058 54.661 57.9545 54.4499 57.5807 53.7898L57.3597 53.3996C56.9915 52.7496 57.2343 51.9238 57.8958 51.5765L63.147 48.8194L57.4927 45.8507C57.0518 45.6192 56.8899 45.0687 57.1354 44.6353L57.81 43.4441C58.0593 43.004 58.6268 42.8633 59.0528 43.1359L64.3995 46.5581L64.1687 40.1558C64.1507 39.6566 64.5505 39.2422 65.05 39.2422H66.3858C66.8853 39.2422 67.2851 39.6566 67.2671 40.1558L67.0363 46.5581L72.383 43.1359C72.809 42.8633 73.3765 43.004 73.6257 43.4441L74.3004 44.6353C74.5459 45.0687 74.384 45.6192 73.943 45.8507L68.2888 48.8194L73.54 51.5765C74.2015 51.9238 74.4443 52.7496 74.0761 53.3996L73.8551 53.7898C73.4812 54.4499 72.63 54.6609 71.991 54.252L67.0363 51.0807L67.2506 57.0262C67.2776 57.7749 66.6779 58.3966 65.9287 58.3966H65.5071Z" fill="white"/>
+      </g>
+      <path id="Rectangle 19 (Stroke)" d="M68.1548 24.6839L15.3632 19.4963C7.25807 18.6998 0.233591 25.0679 0.233591 33.2121V69.2756C0.233591 77.3569 7.15487 83.704 15.2059 83.0059L67.9974 78.4286C75.1208 77.811 80.5888 71.8484 80.5888 64.6983V38.3997C80.5888 31.3102 75.2103 25.3772 68.1548 24.6839ZM15.3861 19.2638C7.14354 18.4539 0 24.9298 0 33.2121V69.2756C0 77.4939 7.03859 83.9486 15.2261 83.2386L68.0176 78.6614C75.2617 78.0333 80.8224 71.9696 80.8224 64.6983V38.3997C80.8224 31.19 75.3527 25.1565 68.1776 24.4514L15.3861 19.2638Z" fill-rule="evenodd" clip-rule="evenodd" fill="white"/>
+      </g>
+    </g>
+    <clipPath id="ill-sms-blur-0_0_4" transform="translate(47.1909 26.898)"><path fill-rule="evenodd" clip-rule="evenodd" d="M63.6798 20.7085H13.1818C6.10968 20.7085 0.376622 27.0337 0.376622 34.8362V62.546C0.376622 70.3485 6.10967 76.6736 13.1818 76.6736H23.0656C26.7021 76.6736 30.1862 78.2854 32.7353 81.1468L36.0133 84.8265C37.3416 86.3175 39.5199 86.3175 40.8482 84.8265L44.1262 81.1468C46.6753 78.2854 50.1594 76.6736 53.796 76.6736H63.6798C70.7519 76.6736 76.4849 70.3485 76.4849 62.546V34.8361C76.4849 27.0337 70.7519 20.7085 63.6798 20.7085ZM63.6798 20.293C70.9599 20.293 76.8615 26.8042 76.8615 34.8361V62.546C76.8615 70.578 70.9599 77.0892 63.6798 77.0892H53.796C50.2605 77.0892 46.8731 78.6561 44.3948 81.4381L41.1168 85.1177C39.6409 86.7745 37.2206 86.7745 35.7447 85.1177L32.4667 81.4381C29.9884 78.6561 26.6011 77.0892 23.0656 77.0892H13.1818C5.90167 77.0892 0 70.578 0 62.546V34.8362C0 26.8042 5.90167 20.293 13.1818 20.293H63.6798Z"/>
+    </clipPath>
+    <g id="ill-sms">
+      <g id="Icono">
+      <path id="Vector" d="M74.0974 0C71.4204 0 68.853 1.05225 66.9601 2.92527C65.0671 4.79829 64.0037 7.33865 64.0037 9.9875V84.0125C64.0037 86.6613 65.0671 89.2017 66.9601 91.0747C68.853 92.9477 71.4204 94 74.0974 94H110.91C113.587 94 116.154 92.9477 118.047 91.0747C119.94 89.2017 121.004 86.6613 121.004 84.0125V9.9875C121.004 7.33865 119.94 4.79829 118.047 2.92527C116.154 1.05225 113.587 0 110.91 0H74.0974ZM85.9724 74.025H99.0349C99.8223 74.025 100.577 74.3345 101.134 74.8854C101.691 75.4363 102.004 76.1834 102.004 76.9625C102.004 77.7416 101.691 78.4887 101.134 79.0396C100.577 79.5905 99.8223 79.9 99.0349 79.9H85.9724C85.1851 79.9 84.4299 79.5905 83.8732 79.0396C83.3164 78.4887 83.0037 77.7416 83.0037 76.9625C83.0037 76.1834 83.3164 75.4363 83.8732 74.8854C84.4299 74.3345 85.1851 74.025 85.9724 74.025Z" class="ill-primary"/>
+      <path id="Union" d="M76.8615 34.8361C76.8615 26.8042 70.9599 20.293 63.6798 20.293H13.1818C5.90167 20.293 0 26.8042 0 34.8362V62.546C0 70.578 5.90167 77.0892 13.1818 77.0892H23.0656C26.6011 77.0892 29.9884 78.6561 32.4667 81.4381L35.7447 85.1177C37.2206 86.7745 39.6409 86.7745 41.1168 85.1177L44.3948 81.4381C46.8731 78.6561 50.2605 77.0892 53.796 77.0892H63.6798C70.9599 77.0892 76.8615 70.578 76.8615 62.546V34.8361Z" class="ill-primary-50"/>
+      <foreignObject x="-47.1909" y="-26.898" width="171.243" height="160.449"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(23.6px);clip-path:url(#ill-sms-blur-0_0_4);height:100%;width:100%"></div></foreignObject><path id="Union (Stroke)" data-figma-bg-blur-radius="47.1909" d="M63.6798 20.7085H13.1818C6.10968 20.7085 0.376622 27.0337 0.376622 34.8362V62.546C0.376622 70.3485 6.10967 76.6736 13.1818 76.6736H23.0656C26.7021 76.6736 30.1862 78.2854 32.7353 81.1468L36.0133 84.8265C37.3416 86.3175 39.5199 86.3175 40.8482 84.8265L44.1262 81.1468C46.6753 78.2854 50.1594 76.6736 53.796 76.6736H63.6798C70.7519 76.6736 76.4849 70.3485 76.4849 62.546V34.8361C76.4849 27.0337 70.7519 20.7085 63.6798 20.7085ZM63.6798 20.293C70.9599 20.293 76.8615 26.8042 76.8615 34.8361V62.546C76.8615 70.578 70.9599 77.0892 63.6798 77.0892H53.796C50.2605 77.0892 46.8731 78.6561 44.3948 81.4381L41.1168 85.1177C39.6409 86.7745 37.2206 86.7745 35.7447 85.1177L32.4667 81.4381C29.9884 78.6561 26.6011 77.0892 23.0656 77.0892H13.1818C5.90167 77.0892 0 70.578 0 62.546V34.8362C0 26.8042 5.90167 20.293 13.1818 20.293H63.6798Z" fill-rule="evenodd" clip-rule="evenodd" fill="white"/>
+      <g id="***">
+      <path d="M15.7999 59.3264C14.9139 59.3264 14.2047 58.5913 14.2366 57.7058L14.4485 51.8195L9.56771 54.9469C8.8056 55.4352 7.78975 55.1834 7.34404 54.3956C6.90569 53.6208 7.19499 52.637 7.98297 52.2228L13.1647 49.4992L7.98297 46.7756C7.19499 46.3614 6.90569 45.3776 7.34404 44.6028C7.78975 43.815 8.8056 43.5632 9.56771 44.0515L14.4485 47.1789L14.2366 41.2926C14.2047 40.4072 14.9139 39.672 15.7999 39.672C16.6859 39.672 17.3951 40.4072 17.3632 41.2926L17.1513 47.1789L22.0321 44.0515C22.7942 43.5632 23.81 43.815 24.2558 44.6028C24.6941 45.3776 24.4048 46.3614 23.6168 46.7756L18.4351 49.4992L23.6168 52.2228C24.4048 52.637 24.6941 53.6208 24.2558 54.3956C23.81 55.1834 22.7942 55.4352 22.0321 54.9469L17.1513 51.8195L17.3632 57.7058C17.3951 58.5913 16.6859 59.3264 15.7999 59.3264Z" fill="white"/>
+      <path d="M39.5841 59.3264C38.6981 59.3264 37.9889 58.5913 38.0208 57.7058L38.2328 51.8195L33.3519 54.9469C32.5898 55.4352 31.574 55.1834 31.1283 54.3956C30.6899 53.6208 30.9792 52.637 31.7672 52.2228L36.9489 49.4992L31.7672 46.7756C30.9792 46.3614 30.6899 45.3776 31.1283 44.6028C31.574 43.815 32.5898 43.5632 33.3519 44.0515L38.2328 47.1789L38.0208 41.2926C37.9889 40.4072 38.6981 39.672 39.5841 39.672C40.4701 39.672 41.1793 40.4072 41.1474 41.2926L40.9355 47.1789L45.8163 44.0515C46.5784 43.5632 47.5943 43.815 48.04 44.6028C48.4783 45.3776 48.189 46.3614 47.4011 46.7756L42.2193 49.4992L47.4011 52.2228C48.189 52.637 48.4783 53.6208 48.04 54.3956C47.5943 55.1834 46.5784 55.4352 45.8163 54.9469L40.9355 51.8195L41.1474 57.7058C41.1793 58.5913 40.4701 59.3264 39.5841 59.3264Z" fill="white"/>
+      <path d="M63.3684 59.3264C62.4823 59.3264 61.7732 58.5913 61.8051 57.7058L62.017 51.8195L57.1362 54.9469C56.3741 55.4352 55.3582 55.1834 54.9125 54.3956C54.4741 53.6208 54.7635 52.637 55.5514 52.2228L60.7332 49.4992L55.5514 46.7756C54.7635 46.3614 54.4741 45.3776 54.9125 44.6028C55.3582 43.815 56.3741 43.5632 57.1362 44.0515L62.017 47.1789L61.8051 41.2926C61.7732 40.4072 62.4823 39.672 63.3684 39.672C64.2544 39.672 64.9635 40.4072 64.9317 41.2926L64.7197 47.1789L69.6005 44.0515C70.3627 43.5632 71.3785 43.815 71.8242 44.6028C72.2626 45.3776 71.9733 46.3614 71.1853 46.7756L66.0035 49.4992L71.1853 52.2228C71.9733 52.637 72.2626 53.6208 71.8242 54.3956C71.3785 55.1834 70.3627 55.4352 69.6005 54.9469L64.7197 51.8195L64.9317 57.7058C64.9635 58.5913 64.2544 59.3264 63.3684 59.3264Z" fill="white"/>
+      </g>
+      </g>
+    </g>
+  </defs>
+</svg>
+
 
 <!-- SIDEBAR NAVIGATION -->
 <aside class="sidebar">
@@ -43,6 +88,10 @@
     <button class="nav-item" data-section="actividad">
       <span class="icon">history</span>
       <span>Actividad</span>
+    </button>
+    <button class="nav-item" data-section="branding">
+      <span class="icon">palette</span>
+      <span>Personalización</span>
     </button>
   </nav>
 
@@ -606,6 +655,266 @@
       </div>
     </section>
 
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SECCIÓN: PERSONALIZACIÓN -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="section-branding">
+      <div class="section-header section-header-with-action">
+        <div>
+          <h2>Personalización</h2>
+          <p class="section-subtitle">Elegí cómo se ve el SDK para tus usuarios y revisalo en la vista previa.</p>
+        </div>
+        <div class="branding-header-actions">
+          <p class="branding-status" id="branding-status" role="status" aria-live="polite"></p>
+          <button type="button" class="btn-outline branding-btn" id="branding-reset">
+            <span>Restablecer</span>
+          </button>
+          <button type="button" class="btn-submit branding-btn" id="branding-save">
+            <span>Guardar cambios</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="branding-layout">
+
+        <!-- ── CONTROLES ── -->
+        <div class="branding-controls">
+
+          <!-- Logo (se puede apagar con LOGO_ENABLED en js/branding.js) -->
+          <div class="branding-card" id="branding-logo-card">
+            <h4>Logo</h4>
+            <div class="branding-logo-row">
+              <input type="file" id="branding-logo-file" class="branding-visually-hidden" accept=".svg,image/svg+xml">
+              <div class="branding-logo-drop" id="branding-logo-box" data-state="empty">
+                <label for="branding-logo-file" class="branding-logo-empty" id="branding-logo-empty">
+                  <span class="icon" aria-hidden="true">add</span>
+                  <span class="branding-visually-hidden">Subir logo</span>
+                </label>
+                <span class="branding-logo-spinner" id="branding-logo-spinner" role="status" aria-label="Cargando logo" hidden></span>
+                <img id="branding-logo-thumb" alt="Logo cargado" hidden>
+                <div class="branding-logo-overlay" id="branding-logo-overlay" hidden>
+                  <label for="branding-logo-file" class="branding-logo-action" id="branding-logo-change" title="Cambiar logo" tabindex="0">
+                    <span class="icon" aria-hidden="true">sync</span>
+                    <span class="branding-visually-hidden">Cambiar logo</span>
+                  </label>
+                  <button type="button" class="branding-logo-action" id="branding-logo-remove" title="Eliminar logo" aria-label="Eliminar logo">
+                    <span class="icon" aria-hidden="true">delete</span>
+                  </button>
+                </div>
+              </div>
+              <div class="branding-logo-info">
+                <p class="branding-hint">Subí el logo en formato SVG (Hasta 50 KB)</p>
+                <label for="branding-logo-file" class="btn-outline branding-btn branding-btn-sm" id="branding-logo-btn">
+                  <span id="branding-logo-btn-label">Subir logo</span>
+                </label>
+              </div>
+            </div>
+            <p class="branding-error" id="branding-logo-error" role="alert" hidden></p>
+          </div>
+
+          <!-- Colores: principal y texto de botones -->
+          <div class="branding-card">
+            <h4>Color principal</h4>
+            <p class="branding-card-desc">Se aplica a botones, ilustraciones, casillas e indicadores de progreso.</p>
+            <div class="branding-color-row">
+              <input type="color" id="branding-color-picker" class="branding-color-picker" value="#2a39d0" aria-label="Elegir color principal">
+              <div class="branding-field">
+                <input type="text" id="branding-color-hex" class="branding-text-input" value="#2A39D0" maxlength="7" spellcheck="false" autocomplete="off" aria-describedby="branding-contrast branding-color-error">
+                <label for="branding-color-hex">Color en formato HEX. Ejemplo: #2A39D0</label>
+              </div>
+            </div>
+            <p class="branding-error branding-visually-hidden" id="branding-color-error" role="alert" hidden></p>
+
+
+            <hr class="branding-divider">
+
+            <h4>Color de texto en botones</h4>
+            <p class="branding-card-desc">Se aplica al texto de los botones principales.</p>
+            <div class="branding-color-row">
+              <input type="color" id="branding-text-picker" class="branding-color-picker" value="#ffffff" aria-label="Elegir color de texto en botones">
+              <div class="branding-field">
+                <input type="text" id="branding-text-hex" class="branding-text-input" value="#FFFFFF" maxlength="7" spellcheck="false" autocomplete="off" aria-describedby="branding-contrast branding-text-error">
+                <label for="branding-text-hex">Color en formato HEX. Ejemplo: #FFFFFF</label>
+              </div>
+            </div>
+            <p class="branding-error branding-visually-hidden" id="branding-text-error" role="alert" hidden></p>
+
+            <hr class="branding-divider">
+
+            <div class="branding-contrast" id="branding-contrast" role="status" aria-live="polite">
+              <span class="icon" id="branding-contrast-icon" aria-hidden="true">info</span>
+              <div class="branding-contrast-body">
+                <strong class="branding-contrast-title" id="branding-contrast-title">Accesibilidad</strong>
+                <span class="branding-contrast-text" id="branding-contrast-text"></span>
+                <a class="branding-contrast-link" href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener">Leer más</a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Redondeado de botones -->
+          <div class="branding-card">
+            <h4>Redondeado de botones</h4>
+            <p class="branding-card-desc">Elegí qué tan redondeadas son las esquinas.</p>
+            <div class="branding-seg branding-seg-sizes" role="radiogroup" aria-label="Redondeado de botones">
+              <label><input type="radio" name="branding-radius" value="xs"><span>XS<small>4 px</small></span></label>
+              <label><input type="radio" name="branding-radius" value="s"><span>S<small>8 px</small></span></label>
+              <label><input type="radio" name="branding-radius" value="m"><span>M<small>16 px</small></span></label>
+              <label><input type="radio" name="branding-radius" value="full" checked><span>Full<small>Píldora</small></span></label>
+              <label><input type="radio" name="branding-radius" value="custom"><span>Otro</span></label>
+            </div>
+
+            <div class="branding-radius-custom" id="branding-radius-custom-row" hidden>
+              <label class="branding-label" for="branding-radius-custom">Radio (px)</label>
+              <input type="text" id="branding-radius-custom" class="branding-text-input branding-number-input" value="" placeholder="Ej: 12" inputmode="decimal" autocomplete="off" spellcheck="false" aria-describedby="branding-radius-error">
+              <p class="branding-error" id="branding-radius-error" role="alert" hidden></p>
+            </div>
+          </div>
+
+          <!-- Tipografía -->
+          <div class="branding-card">
+            <h4>Tipografía</h4>
+            <p class="branding-card-desc">Se aplica a todos los textos.</p>
+            <label class="branding-label" for="branding-font">Fuente</label>
+            <select class="field-select selected" id="branding-font"></select>
+          </div>
+
+
+        </div>
+
+        <!-- ── VISTA PREVIA ── -->
+        <div class="branding-preview">
+          <div class="branding-preview-nav">
+            <div class="branding-preview-intro">
+              <h4>Vista previa</h4>
+              <p class="branding-card-desc">Elegí una pantalla para ver cómo queda con tus cambios.</p>
+            </div>
+            <div class="branding-seg branding-seg-list" role="radiogroup" aria-label="Pantalla del SDK">
+              <label><input type="radio" name="branding-screen" value="inicio" checked><span>Inicio</span></label>
+              <label><input type="radio" name="branding-screen" value="codigo"><span>OTP</span></label>
+              <label><input type="radio" name="branding-screen" value="firmando"><span>Pantalla de carga</span></label>
+              <label><input type="radio" name="branding-screen" value="exito"><span>Éxito</span></label>
+              <label><input type="radio" name="branding-screen" value="error"><span>Error</span></label>
+            </div>
+          </div>
+
+          <div class="branding-stage">
+           <div class="sdk-scaler" id="sdk-scaler">
+            <div class="sdk-frame" id="sdk-frame" data-device="mobile" data-screen="inicio" role="group" aria-label="Vista previa del SDK" inert>
+
+              <div class="sdk-body">
+                <div class="sdk-card">
+
+                  <!-- Pantalla: Inicio -->
+                  <div class="sdk-screen" data-for="inicio">
+                    <div class="sdk-main">
+                      <svg class="sdk-ill ill-onboarding" viewBox="0 0 80 80" width="80" height="80" aria-hidden="true" focusable="false"><use href="#ill-onboarding"/></svg>
+                      <div class="sdk-text">
+                        <h3 class="sdk-title">Creá tu firma digital</h3>
+                        <p class="sdk-sub">Para emitir tu certificado de firma digital y poder firmar, primero necesitamos confirmar tu identidad.</p>
+                      </div>
+                      <ul class="sdk-list">
+                        <li><span class="sdk-tile"><span class="icon">pin</span></span><span>Te enviaremos un código para verificar tu correo y teléfono de contacto.</span></li>
+                        <li><span class="sdk-tile"><span class="icon">ar_on_you</span></span><span>Vamos a escanear tu rostro para asegurar que sos vos.</span></li>
+                        <li><span class="sdk-tile"><span class="icon">shield_lock</span></span><span>Vas a crear la clave para firmar tus documentos de forma segura.</span></li>
+                      </ul>
+                    </div>
+                    <div class="sdk-foot">
+                      <div class="sdk-check">
+                        <span class="sdk-checkbox"><span class="icon">check</span></span>
+                        <span>Confirmo que he leído, comprendido y acepto los <span class="sdk-link sdk-link-dark">términos y condiciones del acuerdo con suscriptores</span></span>
+                      </div>
+                      <div class="sdk-btn">Continuar</div>
+                    </div>
+                  </div>
+
+                  <!-- Pantalla: Código por SMS -->
+                  <div class="sdk-screen" data-for="codigo">
+                    <div class="sdk-main sdk-main-top">
+                      <svg class="sdk-ill ill-sms" viewBox="0 0 121.004 94" width="121.004" height="94" aria-hidden="true" focusable="false"><use href="#ill-sms"/></svg>
+                      <div class="sdk-text">
+                        <h3 class="sdk-title sdk-title-m-regular">Ingresá el código de seguridad</h3>
+                        <p class="sdk-sub">Lo enviamos por SMS al <strong>+54 XXXXXXX 78.</strong></p>
+                        <p class="sdk-sub sdk-sub-gap">¿No tenés acceso?<br><span class="sdk-link">Cambiar método de autenticación.</span></p>
+                      </div>
+                    </div>
+                    <div class="sdk-rest">
+                      <div class="sdk-otp-group">
+                        <div class="sdk-otp">
+                          <span class="sdk-otp-cell">4</span>
+                          <span class="sdk-otp-cell">8</span>
+                          <span class="sdk-otp-cell">2</span>
+                          <span class="sdk-otp-cell is-focus"></span>
+                          <span class="sdk-otp-cell"></span>
+                          <span class="sdk-otp-cell"></span>
+                        </div>
+                        <p class="sdk-timer">El código vence en 00:50</p>
+                      </div>
+                      <div class="sdk-actions">
+                        <div class="sdk-btn sdk-btn-outline">Reenviar código</div>
+                        <div class="sdk-btn">Verificar código</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Pantalla: Firmando documento -->
+                  <div class="sdk-screen" data-for="firmando">
+                    <div class="sdk-main sdk-main-center">
+                      <div class="sdk-spinner"></div>
+                      <div class="sdk-text">
+                        <h3 class="sdk-title">Firmando tu documento</h3>
+                        <p class="sdk-sub">Aguardá unos segundos mientras preparamos todo.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Pantalla: Éxito -->
+                  <div class="sdk-screen" data-for="exito">
+                    <div class="sdk-main sdk-main-center">
+                      <div class="sdk-lottie" data-lottie="assets/sdk/success-check.json" data-loop="false" aria-hidden="true"></div>
+                      <div class="sdk-text">
+                        <h3 class="sdk-title">Validamos tu identidad</h3>
+                        <p class="sdk-sub">Tus datos están correctos. Ya podés continuar con el proceso.</p>
+                      </div>
+                    </div>
+                    <div class="sdk-foot">
+                      <div class="sdk-btn">Continuar</div>
+                    </div>
+                  </div>
+
+                  <!-- Pantalla: Error -->
+                  <div class="sdk-screen" data-for="error">
+                    <div class="sdk-main sdk-main-center">
+                      <img class="sdk-errorimg" src="assets/sdk/error-x.svg" width="100" height="100" alt="">
+                      <span class="sdk-badge-error">Intento 1 de 3</span>
+                      <div class="sdk-text">
+                        <h3 class="sdk-title">No pudimos validar tu identidad</h3>
+                        <p class="sdk-sub">Asegurate de tener buena luz y que tu rostro esté despejado.</p>
+                      </div>
+                    </div>
+                    <div class="sdk-foot">
+                      <div class="sdk-actions">
+                        <div class="sdk-btn sdk-btn-outline">Ir al inicio</div>
+                        <div class="sdk-btn">Firmar documento</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="sdk-footer">
+                  <span>POWERED BY</span>
+                  <img src="assets/icons/logo-fid.svg" alt="FID by Lakaut">
+                </div>
+              </div>
+
+            </div>
+           </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
   </div>
 </main>
 
@@ -1058,6 +1367,9 @@
 </div>
 
 <script src="js/app.js?v=31"></script>
+<script src="js/vendor/lottie.min.js"></script>
+<script src="assets/sdk/lottie-data.js"></script>
+<script src="js/branding.js?v=44"></script>
 
 </body>
 </html>

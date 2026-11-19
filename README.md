@@ -30,6 +30,15 @@ Prototipo navegable del panel de gestión de FID (Firma Digital) by Lakaut en HT
    - Información básica (CUIL, email, método de autenticación)
    - Lista de permisos asignados
 
+6. **Personalización** (sección `branding` en el código)
+   - Personalización del SDK (el header de la vista previa no lleva logo, solo el botón de cerrar): color principal, tipografía y redondeado de botones (la personalización del logo SVG está oculta por ahora: se reactiva con `LOGO_ENABLED` en `js/branding.js`)
+   - Vista previa en vivo con 7 pantallas (Inicio, Código, Correo, Validando, Firmando, Éxito, Error) en móvil (360×720) y escritorio (600×720). El SDK se dibuja a tamaño real y se escala con `transform` para caber en la columna, así conserva siempre su proporción
+   - Ilustraciones del SDK (onboarding, SMS, correo) como vectores inline (sprite SVG en `index.html`) pintados por CSS con la escala accent: color pleno `--accent-9` y variante suave `--accent-8`
+   - La animación de validación facial (Lottie) también se pinta por CSS: sus azules se clasifican con las clases `lt-primary` (100%) y `lt-primary-50` (50%); los tonos de marca son siempre el color principal con un porcentaje de opacidad, sin colores nuevos
+   - Colores semánticos (éxito verde, error rojo) y links no cambian con la marca; animaciones (Lottie) e imagen de error en `assets/sdk/`
+   - Validación de contraste WCAG 2.0 AA (mínimo 4.5:1) antes de guardar
+   - Archivos: `assets/css/branding.css`, `js/branding.js` (guarda en `localStorage`)
+
 ### Componentes Transversales
 
 - **Filtros**: Panel de filtros por columna (expandible)

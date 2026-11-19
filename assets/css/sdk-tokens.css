@@ -1,0 +1,183 @@
+/* FID SDK · tokens (vista previa del panel)
+ * Copia de los tokens del SDK acotada a .sdk-frame para no afectar el resto del panel.
+ * El color principal entra solo por --accent-9, la fuente por --font-family-default y el radio por --radius-button. */
+
+/* FID SDK · tokens.css
+ * Generado desde el archivo de Figma “FID SDK — Variables”.
+ * Nombre en Figma  →  variable CSS:   button/primary-bg  →  --button-primary-bg
+ * Los componentes usan SOLO los tokens semánticos (sección 2). Los primitivos (sección 1)
+ * son materia prima y no se usan directamente en componentes. */
+
+/* ===== 1 · Primitivos: escalas de color de 12 pasos ===== */
+.sdk-frame {
+  /* gray: fondos, bordes y texto (un solo gris para todo el SDK) */
+  --gray-1: #FCFCFD;  --gray-2: #F8F9FA;  --gray-3: #F1F3F5;  --gray-4: #E9ECEF;
+  --gray-5: #E3E7EA;  --gray-6: #DEE2E6;  --gray-7: #CED4DA;  --gray-8: #B7BFC6;
+  --gray-9: #868E96;  --gray-10: #6D757D; --gray-11: #495057; --gray-12: #212529;
+
+  /* indigo: marca FID (paso 9 = #2A39D0). Alimenta la escala accent */
+  --indigo-1: #F9FAFE;  --indigo-2: #F2F6FE;  --indigo-3: #E8EEFE;  --indigo-4: #DDE6FF;
+  --indigo-5: #CEDBFE;  --indigo-6: #BDCEFE;  --indigo-7: #A6BDFE;  --indigo-8: #87A4FE;
+  --indigo-9: #2A39D0;  --indigo-10: #252FC3; --indigo-11: #1B1EA5; --indigo-12: #0A0E56;
+
+  /* blue: links (paso 11 = #0000EE) e información */
+  --blue-1: #F8FAFE;  --blue-2: #F2F6FE;  --blue-3: #E7EFFF;  --blue-4: #DAE7FF;
+  --blue-5: #CBDCFF;  --blue-6: #B8D0FF;  --blue-7: #A0BFFE;  --blue-8: #7EA7FE;
+  --blue-9: #0F4CFF;  --blue-10: #0030F9; --blue-11: #0000EE; --blue-12: #000094;
+
+  /* red: error */
+  --red-1: #FFF8F8;  --red-2: #FEF3F2;  --red-3: #FEE9E7;  --red-4: #FFDDDB;
+  --red-5: #FFCECB;  --red-6: #FFBCB7;  --red-7: #FEA39E;  --red-8: #FC7E79;
+  --red-9: #B62424;  --red-10: #AA1A1C; --red-11: #900911; --red-12: #510C0C;
+
+  /* green: éxito */
+  --green-1: #F8FBF9;  --green-2: #F1F8F3;  --green-3: #E5F3E9;  --green-4: #D7EDDD;
+  --green-5: #C5E5CE;  --green-6: #AFDCBD;  --green-7: #95D0A7;  --green-8: #71BD8B;
+  --green-9: #1E824C;  --green-10: #137944; --green-11: #046637; --green-12: #0F3C22;
+
+  /* amber: advertencia */
+  --amber-1: #FFFAEE;  --amber-2: #FFF5DF;  --amber-3: #FFEDC6;  --amber-4: #FEE3AC;
+  --amber-5: #FFD588;  --amber-6: #FFC45D;  --amber-7: #FBAE1F;  --amber-8: #E7950A;
+  --amber-9: #B45309;  --amber-10: #A84C01; --amber-11: #8F3F00; --amber-12: #57280A;
+
+  /* base y translúcidos (sombras, superposiciones) */
+  --base-white: #FFFFFF;
+  --base-black: #000000;
+  --black-a-1: rgba(0, 0, 0, 0.02);  --black-a-2: rgba(0, 0, 0, 0.04);  --black-a-3: rgba(0, 0, 0, 0.06);
+  --black-a-4: rgba(0, 0, 0, 0.08);  --black-a-5: rgba(0, 0, 0, 0.1);   --black-a-6: rgba(0, 0, 0, 0.12);
+  --black-a-7: rgba(0, 0, 0, 0.16);  --black-a-8: rgba(0, 0, 0, 0.24);  --black-a-9: rgba(0, 0, 0, 0.44);
+  --black-a-10: rgba(0, 0, 0, 0.5);  --black-a-11: rgba(0, 0, 0, 0.6);  --black-a-12: rgba(0, 0, 0, 0.9);
+  --white-a-1: rgba(255, 255, 255, 0.02);  --white-a-2: rgba(255, 255, 255, 0.04);  --white-a-3: rgba(255, 255, 255, 0.06);
+  --white-a-4: rgba(255, 255, 255, 0.08);  --white-a-5: rgba(255, 255, 255, 0.1);   --white-a-6: rgba(255, 255, 255, 0.14);
+  --white-a-7: rgba(255, 255, 255, 0.18);  --white-a-8: rgba(255, 255, 255, 0.26);  --white-a-9: rgba(255, 255, 255, 0.5);
+  --white-a-10: rgba(255, 255, 255, 0.56); --white-a-11: rgba(255, 255, 255, 0.7);  --white-a-12: rgba(255, 255, 255, 0.94);
+}
+
+/* ===== 2 · Semánticos: lo que usa la vista previa ===== */
+.sdk-frame {
+  /* text: jerarquía primary > secondary > tertiary */
+  --text-primary: var(--gray-12);
+  --text-secondary: var(--gray-11);
+  --text-tertiary: var(--gray-10);
+  --text-brand: var(--accent-9);
+  --text-link: var(--blue-11);
+  --text-placeholder: var(--gray-9);
+  --text-disabled: var(--gray-8);
+  --text-inverse: var(--base-white);
+  --text-inverse-subtle: var(--gray-7);
+
+  /* bg */
+  --bg-default: var(--base-white);
+  --bg-surface: var(--gray-2);
+  --bg-subtle: var(--gray-4);
+  --bg-muted: var(--gray-6);
+  --bg-strong: var(--gray-7);
+  --bg-inverse: var(--gray-12);
+
+  /* stroke */
+  --stroke-default: var(--gray-6);
+  --stroke-subtle: var(--gray-4);
+  --stroke-strong: var(--gray-7);
+  --stroke-primary: var(--accent-9);
+  --stroke-brand-subtle: var(--accent-6);
+
+  /* button */
+  --button-primary-bg: var(--accent-9);
+  --button-primary-bg-hover: var(--accent-10);
+  --button-primary-text: var(--base-white);
+  --button-secondary-bg: var(--base-white);
+  --button-secondary-bg-hover: var(--gray-3);
+  --button-secondary-border: var(--gray-6);
+  --button-secondary-text: var(--gray-12);
+  --button-tertiary-text: var(--accent-9);
+  --button-tertiary-bg-hover: var(--accent-3);
+  --button-danger-bg: var(--red-9);
+  --button-danger-bg-hover: var(--red-10);
+  --button-danger-text: var(--base-white);
+  --button-disabled-bg: var(--gray-6);
+  --button-disabled-border: var(--gray-7);
+  --button-disabled-text: var(--gray-9);
+
+  /* feedback: nunca cambian con la marca */
+  --feedback-error-bg: var(--red-3);
+  --feedback-error-surface: var(--red-2);
+  --feedback-error-border: var(--red-6);
+  --feedback-error-text: var(--red-9);
+  --feedback-error-icon: var(--red-9);
+  --feedback-success-bg: var(--green-3);
+  --feedback-success-border: var(--green-6);
+  --feedback-success-text: var(--green-11);
+  --feedback-success-icon: var(--green-9);
+  --feedback-warning-bg: var(--amber-2);
+  --feedback-warning-border: var(--amber-7);
+  --feedback-warning-text: var(--amber-9);
+  --feedback-warning-icon: var(--amber-9);
+  --feedback-info-bg: var(--blue-3);
+  --feedback-info-border: var(--blue-6);
+  --feedback-info-text: var(--blue-11);
+  --feedback-info-icon: var(--blue-9);
+
+  /* brand: siguen a accent (cambian con el color del cliente) */
+  --brand-default: var(--accent-9);
+  --brand-surface: var(--accent-2);
+  --brand-tint: var(--accent-3);
+
+  /* accent: por defecto = indigo. Se recalcula desde el color del cliente en accent-from-primary.css */
+  --accent-1: var(--indigo-1);  --accent-2: var(--indigo-2);  --accent-3: var(--indigo-3);  --accent-4: var(--indigo-4);
+  --accent-5: var(--indigo-5);  --accent-6: var(--indigo-6);  --accent-7: var(--indigo-7);  --accent-8: var(--indigo-8);
+  --accent-9: var(--indigo-9);  --accent-10: var(--indigo-10); --accent-11: var(--indigo-11); --accent-12: var(--indigo-12);
+
+  /* decor y overlay */
+  --decor-subtle: var(--blue-3);
+  --decor-soft: var(--blue-5);
+  --decor-default: var(--blue-8);
+  --overlay-default: var(--base-black);
+}
+
+/* ===== 3 · Fuente, radios, espaciado y tamaños ===== */
+.sdk-frame {
+  --font-family-default: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; /* lo configura el cliente */
+  --font-style-regular: 400;
+  --font-style-medium: 500;
+  --font-style-semibold: 600;
+  --font-style-bold: 700;
+
+  /* radios: --radius-button lo configura el cliente (xs 4, s 8, m 16, full 999 o cualquier valor ≥ 0) */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+  --radius-button: 999px;
+
+  /* espaciado y tamaños */
+  --spacing-0: 0px;   --spacing-4: 4px;   --spacing-8: 8px;   --spacing-12: 12px; --spacing-16: 16px;
+  --spacing-20: 20px; --spacing-24: 24px; --spacing-32: 32px; --spacing-40: 40px; --spacing-52: 52px; --spacing-56: 56px;
+  --size-icon-sm: 20px;
+  --border-width-default: 1px;
+
+  /* tamaños, interlineados y espaciado entre letras de los estilos de texto */
+  --font-size-10: 10px; --font-size-12: 12px; --font-size-14: 14px; --font-size-16: 16px;
+  --font-size-18: 18px; --font-size-20: 20px; --font-size-24: 24px; --font-size-32: 32px;
+  --font-line-height-14: 14px; --font-line-height-16: 16px; --font-line-height-20: 20px; --font-line-height-22: 22px;
+  --font-line-height-24: 24px; --font-line-height-26: 26px; --font-line-height-28: 28px; --font-line-height-32: 32px;
+  --font-line-height-44: 44px;
+  --font-letter-spacing-default: 0;
+  --font-letter-spacing-small: 0.1px;
+}
+
+/* ===== 4 · Escala accent calculada desde el color principal del cliente ===== */
+.sdk-frame {
+  /* --accent-9: lo inyecta el cliente (por defecto #2A39D0 desde tokens.css) */
+  --accent-1:  color-mix(in srgb, var(--accent-9)  3%, white);
+  --accent-2:  color-mix(in srgb, var(--accent-9)  5%, white);   /* brand/surface */
+  --accent-3:  color-mix(in srgb, var(--accent-9) 10%, white);   /* brand/tint, button/tertiary-bg-hover */
+  --accent-4:  color-mix(in srgb, var(--accent-9) 15%, white);   /* aro de foco de la celda de código */
+  --accent-5:  color-mix(in srgb, var(--accent-9) 22%, white);
+  --accent-6:  color-mix(in srgb, var(--accent-9) 29%, white);   /* stroke/brand-subtle */
+  --accent-7:  color-mix(in srgb, var(--accent-9) 39%, white);
+  --accent-8:  color-mix(in srgb, var(--accent-9) 54%, white);   /* variante suave de las ilustraciones */
+  --accent-10: color-mix(in srgb, var(--accent-9) 97%, black);   /* button/primary-bg-hover */
+  --accent-11: color-mix(in srgb, var(--accent-9) 87%, black);
+  --accent-12: color-mix(in srgb, var(--accent-9) 46%, black);
+}
