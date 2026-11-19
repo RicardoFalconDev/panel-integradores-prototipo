@@ -1613,3 +1613,184 @@ label.column-item span {
   display: inline-flex;
   width: auto;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════ */
+/* SIDEBAR Y HEADER SEGÚN EL HANDOFF (Figma "[Handoff] Portal Integradores") */
+/* ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --nav-text: #333333;      /* lktgray/900-main */
+  --nav-active-bg: #edf4ff; /* lktblue/50 */
+}
+
+.sidebar {
+  background: #fff;
+  border-right: 1px solid var(--border-card);
+}
+
+.sidebar-header {
+  border-bottom: 1px solid var(--border-card);
+  justify-content: flex-start;
+  padding: 16px 24px 8px;
+}
+
+.sidebar-logo { margin-left: 16px; }
+
+.sidebar-nav {
+  gap: 4px;
+  padding: 24px;
+}
+
+.nav-item {
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--nav-text);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+}
+
+.nav-item:hover {
+  background: var(--bg-page);
+  color: var(--nav-text);
+}
+
+.nav-item.active {
+  background: var(--nav-active-bg);
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* Header: usuario a la derecha */
+.panel-header {
+  background: #fff;
+  border-bottom: 1px solid var(--border-card);
+  padding: 16px 24px;
+}
+
+.panel-header-content {
+  justify-content: flex-end;
+  max-width: none;
+}
+
+.header-user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-user-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-card);
+  object-fit: cover;
+}
+
+.header-user-text {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.header-user-name {
+  font: 600 14px/1.5 'Inter', sans-serif;
+  letter-spacing: -0.28px;
+  color: var(--text-dark);
+}
+
+.header-user-email {
+  font: 400 12px/1.5 'Inter', sans-serif;
+  letter-spacing: -0.24px;
+  color: var(--text-sub);
+}
+
+.header-user-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border: 1px solid var(--border-card);
+  border-radius: 24px;
+  background: #fff;
+  color: var(--text-dark);
+}
+
+.header-user-btn:hover { background: var(--btn-outline-hover); }
+
+.header-user-btn:focus-visible,
+.nav-item:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.caret-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.15s;
+}
+
+.header-user-btn[aria-expanded="true"] .caret-icon { transform: rotate(180deg); }
+
+.header-user-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(11, 12, 14, 0.08);
+  z-index: 300;
+}
+
+.header-user-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font: 400 14px/20px 'Inter', sans-serif;
+  color: var(--text-dark);
+  text-align: left;
+}
+
+.header-user-menu button .icon { font-size: 20px; }
+.header-user-menu button:hover { background: var(--bg-page); }
+
+@media (max-width: 768px) {
+  .sidebar-header { justify-content: center; padding: 12px; }
+  .sidebar-logo { margin-left: 0; height: 24px; }
+  .sidebar-nav { padding: 8px; }
+  .panel-header { padding: 16px; }
+}
+
+@media (max-width: 480px) {
+  .header-user-text { display: none; }
+  .panel-header-content { flex-direction: row; align-items: center; }
+}
+
+/* Contenido: 24 px de margen, como en el handoff */
+.panel-content { padding: 24px; }
+#section-branding .section-header-with-action { align-items: center; }

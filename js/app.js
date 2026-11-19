@@ -281,6 +281,7 @@ function initNavigation() {
       // Mostrar sección correspondiente
       showSection(section);
       appState.currentSection = section;
+      history.replaceState(null, '', `#${section}`);
     });
   });
 }
@@ -1732,6 +1733,46 @@ function initExportCsv() {
 // INICIALIZACIÓN
 // ─────────────────────────────────────────────────────────────────────
 
+
+// ─────────────────────────────────────────────────────────────────────
+// HEADER: usuario y menú de la cuenta
+// ─────────────────────────────────────────────────────────────────────
+
+function goToSection(sectionId) {
+  document.querySelectorAll('.nav-item[data-section]').forEach(i => {
+    i.classList.toggle('active', i.dataset.section === sectionId);
+  });
+  showSection(sectionId);
+  appState.currentSection = sectionId;
+  history.replaceState(null, '', `#${sectionId}`);
+}
+
+function initHeaderUser() {
+  const u = demoData.currentUser;
+  const avatar = document.getElementById('header-avatar');
+  avatar.src = u.avatar;
+  avatar.alt = `${u.nombre} ${u.apellido}`;
+  document.getElementById('header-user-name').textContent = `${u.nombre} ${u.apellido}`;
+  document.getElementById('header-user-email').textContent = u.email;
+
+  const btn = document.getElementById('header-user-btn');
+  const menu = document.getElementById('header-user-menu');
+  const close = () => { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); };
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = menu.hidden;
+    menu.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    if (open) menu.querySelector('button').focus();
+  });
+  menu.querySelectorAll('[data-go]').forEach(item => {
+    item.addEventListener('click', () => { close(); goToSection(item.dataset.go); });
+  });
+  document.addEventListener('click', (e) => { if (!menu.hidden && !menu.contains(e.target)) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { close(); btn.focus(); } });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initTabs();
@@ -1750,7 +1791,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initExportCsv();
   initPerfil();
 
-  // Mostrar sección inicial
-  showSection('firmas');
+  initHeaderUser();
+
+  // Sección inicial: la del link (#branding, #usuarios…) o Firmas
+  const inicial = location.hash.slice(1);
+  if (inicial && document.getElementById(`section-${inicial}`)) {
+    goToSection(inicial);
+  } else {
+    showSection('firmas');
+  }
   populateFiremosTable();
 });
